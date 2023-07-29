@@ -1,0 +1,38 @@
+/* stylesheet for Project 1 */
+
+
+/* import the "Roboto" font from Google Fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+/* put "box sizing" - can use this for all projects */
+/* use border-box - so if you add padding (etc) it doesn't affect width */
+* {
+	box-sizing: border-box;
+}
+
+
+body {
+	/* set the body fonts to Roboto font */
+	font-family: 'Roboto', sans-serif;
+
+
+	/*	I want to "center" everything & display elements in a "column" */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	/*	I want my contents to be justified to the center */
+	justify-content: center;
+
+
+	/*	I want  height to be 100% of viewpoint height (height of browser) */
+	height: 100vh;
+
+	/*	I don't want scrollbars to show by default if there is overflow */
+	overflow: hidden;
+
+	/*	I don't want to have any margin */
+	margin:0;
+}
