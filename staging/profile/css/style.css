@@ -65,12 +65,6 @@ body {
 /* profile */
 .column-profile {
     position: relative;
-<<<<<<< HEAD
-=======
-/*    text-align: center;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
->>>>>>> 4fd72e246a353f87eea819e46f7b172cce5a70fa
     align-content: center;
     line-height: 1.5;
 }
@@ -92,11 +86,8 @@ body {
     }
 
 
-<<<<<<< HEAD
+
 /* text */
-=======
-/* text 
->>>>>>> 4fd72e246a353f87eea819e46f7b172cce5a70fa
 
 .profile-text {
     margin: 0;
