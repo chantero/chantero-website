@@ -64,7 +64,10 @@ body {
 
 /* profile */
 .column-profile {
-    justify-content: center; 
+    position: relative;
+/*    text-align: center;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
     align-content: center;
     line-height: 1.5;
 }
