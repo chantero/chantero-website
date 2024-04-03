@@ -64,6 +64,7 @@ body {
 
 /* profile */
 .column-profile {
+    -webkit-align-content: center;
     align-content: center;
     line-height: 1.5;
 }
