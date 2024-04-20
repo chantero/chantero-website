@@ -171,9 +171,7 @@ label {
 
 /* Media Query for Phones (e.g., iPhone X) */
 @media only screen and (max-width: 768px) {
-    .page-title {
-        padding-top: 7em;
-    }
+
     .container {
         padding: 10px;
     }
