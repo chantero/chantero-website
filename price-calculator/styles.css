@@ -1,4 +1,4 @@
-* {
+/** {
     box-sizing: border-box;
 }
 
@@ -76,11 +76,234 @@ label {
   margin-top: 10px;
   margin-bottom: 20px;
   text-align: center;
+}*/
+
+
+* {
+    box-sizing: border-box;
 }
 
-@media screen and (max-width: 600px) {
-  .comparison {
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: large;
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
-  }
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    background-color: #fdf6e3;
+}
 
+span {
+/*    padding: 15px;*/
+    width: 4em;
+}
+
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: large;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    background-color: #fdf6e3;
+}
+
+span {
+    padding: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.page-title {
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.comparison {
+    display: block;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #ddedea;
+}
+
+.comparison-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.item-label {
+    flex: 0 0 auto;
+    width: 45%; /* Adjusted for responsiveness */
+    max-width: 100px; /* Maximum width for labels */
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allows items to wrap to the next line */
+}
+
+.input-container label {
+    margin-right: 10px;
+    flex: 0 0 auto;
+}
+
+.input-container input {
+    width: calc(55% - 10px); /* Adjusted for responsiveness */
+    max-width: 200px; /* Maximum width for input fields */
+    padding: 5px;
+    font-size: large;
+}
+
+.results {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Media Query for Tablets (e.g., iPad) */
+@media only screen and (max-width: 1024px) {
+    .container {
+        padding: 20px;
+    }
+}
+
+/* Media Query for Phones (e.g., iPhone X) */
+@media only screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    .comparison-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .item-label {
+        margin-bottom: 5px;
+        width: 100%;
+    }
+    .input-container input {
+        width: calc(100% - 10px);
+    }
+}
+
+.page-title {
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.comparison {
+    display: block;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #ddedea;
+}
+
+.comparison-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.item-label {
+    flex: 0 0 auto;
+    width: 45%; /* Adjusted for responsiveness */
+    max-width: 100px; /* Maximum width for labels */
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allows items to wrap to the next line */
+}
+
+.input-container label {
+    margin-right: 10px;
+    flex: 0 0 auto;
+}
+
+.input-container input {
+    width: calc(55% - 10px); /* Adjusted for responsiveness */
+    max-width: 200px; /* Maximum width for input fields */
+    padding: 5px;
+    font-size: large;
+}
+
+.results {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Media Query for Tablets (e.g., iPad) */
+@media only screen and (max-width: 1024px) {
+    .container {
+        padding: 20px;
+    }
+}
+
+/* Media Query for Phones (e.g., iPhone X) */
+@media only screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    .comparison-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .item-label {
+        margin-bottom: 5px;
+        width: 100%;
+    }
+    .input-container input {
+        width: calc(100% - 10px);
+    }
+}
+
+
+.color-green {
+    font-size: xx-large;
+    color: #228b22;
+}
+
+.color-blue {
+    font-size: xx-large;
+    color: #337ca0;
+}
+
+.color-red {
+    font-size: xx-large;
+    color: #db504a;
+}
