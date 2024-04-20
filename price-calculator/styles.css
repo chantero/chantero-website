@@ -1,0 +1,94 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: large;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin:0;
+    background-color: #fdf6e3;
+}
+
+span {
+    padding: 15px;
+}
+
+label {
+    font-weight: bold;
+
+}
+
+
+.page-title {
+    text-align: center;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.comparison {
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #ddedea;
+}
+
+.comparison-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.item-label {
+  flex: 0 0 auto;
+  width: 80px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.input-container label {
+  margin-right: 10px;
+}
+
+.input-container input {
+  width: 120px;
+  padding: 5px;
+  font-size: large;
+}
+
+.results {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+  .comparison {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+
+.no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.no-spin {
+    -moz-appearance:textfield !important;
+}
