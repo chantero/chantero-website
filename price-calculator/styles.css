@@ -36,6 +36,7 @@ label {
 }
 
 .comparison {
+  display: block;
   margin-bottom: 20px;
   border: 2px solid #ccc;
   border-radius: 10px;
@@ -83,12 +84,3 @@ label {
     align-items: stretch;
   }
 
-
-.no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
-    -webkit-appearance: none !important;
-    margin: 0 !important;
-}
-
-.no-spin {
-    -moz-appearance:textfield !important;
-}
