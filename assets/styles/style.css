@@ -1,6 +1,8 @@
 html, body {
   height: 100%;
+  scroll-behavior: smooth;
 }
+
 
 body,
 h1,
@@ -35,17 +37,20 @@ header {
 
 }
 
+a {
+    text-decoration: none;
+}
+
 header a {
   color: #4A4C5F;
-  text-decoration: none;
   margin: 0 10px;
   padding: 10px 20px;
+  text-decoration: none;
 }
 
 
 header a:hover {
   background-color: rgba(255, 255, 255, 0.6);
-  text-decoration: none;
   margin: 0 10px;
   border-radius: 70px;
   color: #5B96CE;
@@ -181,6 +186,34 @@ footer .logo img {
 
 /* blog sub-page */
 
+.category-style  {
+    font-size: xx-large;
+    text-align: center;
+    color: #005A9C;
+}
+
+
+.category-style:hover {
+  color: #58111A;
+  text-decoration: none;
+
+}
+
+
+
+.article-toc h4 a {
+  color: #005A9C;
+  text-decoration: none;
+
+}
+
+
+.article-toc h4 a:hover {
+  color: #58111A;
+
+}
+
+
 article {
   margin-top: 30px;
   margin-bottom: 20px;
@@ -194,10 +227,12 @@ article a {
   font-size: large;
 }
 
+
 .article-toc a {
   color: #5B96CE;
   text-decoration: none;
   font-size: large;
+  text-decoration: none;
 }
 
 
@@ -207,10 +242,13 @@ article a {
 
 }
 
+
+
 .article-date {
   font-style: italic;
   color: #888;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 2em;
 }
 
 .link-to-article-toc {
@@ -221,4 +259,16 @@ article a {
 
 .link-to-article-toc:hover {
   text-decoration: underline;
+}
+
+
+
+/* hr style */
+
+.divider {
+    margin-top: 3em;
+    margin-bottom: 3em;
+    border: none;
+    border-top: 3px dashed black;
+
 }
