@@ -102,6 +102,7 @@ document.getElementById('browse-button').addEventListener('click', function() {
   document.getElementById('file-input').click();
 });
 
+
 document.getElementById('file-input').addEventListener('change', function(e) {
   var file = e.target.files[0];
   var reader = new FileReader();
