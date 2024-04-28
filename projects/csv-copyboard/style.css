@@ -1,0 +1,191 @@
+* {box-sizing: border-box;}
+
+
+body {
+  font-family: Arial, sans-serif; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 4em;
+  background-color: #85FFBD;
+  
+  background-image: linear-gradient(135deg, #85FFBD 0%, #FFFB7D 100%);
+  background-attachment: fixed; 
+  /* background attachment make sure the gradient fit screen */
+
+  font-size: 24px;
+  width: 100%;
+}
+
+h1, p {
+  text-align: center;
+}
+
+/* this is the yellow rounded edge choose file area */
+#file-input {
+  margin: auto 20px 30px 20px;
+  display: flex;
+  font-size: 24px;
+  border-radius: 25px;
+  padding: 25px;
+  width: 80%;
+  align-items: center;
+  min-width: 500px;
+  text-align: center;
+  background-color: #FF9999;
+}
+
+
+#file-input::file-selector-button {
+  padding: 16px 24px;
+  margin-right: 50px;
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: black;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.15);
+  font-size: 24px;
+}
+
+
+#file-input::file-selector-button:hover {
+  background-color: #C7EEFF;
+}
+
+#file-input::file-selector-button:active{
+  position: relative;
+  top:3px;
+  left:2px;
+}
+
+
+
+#csv-table {
+  display: block;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  font-weight: 600;
+  background-color: #9DDCF6;
+  width: 100%;
+  max-height: 70vh; /* Limit the height of the table */
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+
+}
+
+#csv-table th,
+#csv-table td {
+  padding: 1em;
+  border: 1px solid black;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+#csv-table tr:nth-child(even) {
+  background-color: white; /* Shade alternate rows with a different color */
+}
+
+/* Specify a minimum width for each column */
+#csv-table th:first-child,
+#csv-table td:first-child {
+  min-width: 100px; /* Adjust as needed */
+}
+
+/* Adjust the flex basis for better responsiveness */
+@media (min-width: 768px) {
+  #csv-table th,
+  #csv-table td {
+    flex-basis: auto; /* Let the browser decide the width */
+  }
+}
+
+
+.copy-button {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 24px;
+  margin-top: 2em;
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: black;
+  cursor: pointer;
+  font-size: 20px;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.15);
+}
+
+
+.copy-button:hover {
+background-color: #FFAEAE;
+}
+
+
+.copy-button:active{
+  position: relative;
+  top:3px;
+  left:2px;
+  box-shadow: 0px 0px;
+}
+
+
+
+.copy-alert {
+position: fixed;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+background-color: #B0E57C;
+color: black;
+padding: 0.5em;
+font-size: 18px;
+border-radius: 5px;
+border: solid;
+text-align: center;
+border-radius: 25px;
+box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.15);
+}
+
+
+
+#drag-drop-area {
+  margin: auto; /* Center the element horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 24px;
+  width: 100%; /* Set the width to 100% */
+  max-width: 100%; /* Ensure it doesn't exceed the width of the container */
+  text-align: center;
+
+  background-color: #FBDA61;
+  background-image: linear-gradient(13deg, #FBDA61 0%, #FF5ACD 100%);
+
+  padding: 40px;
+  margin-bottom: 2em;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+
+#drag-drop-area p {
+  margin-bottom: 20px;
+}
+
+#drag-drop-area button {
+  padding: 16px 24px;
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: black;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.15);
+  font-size: 24px;
+}
+
+#drag-drop-area button:hover {
+  background-color: #C7EEFF;
+}
