@@ -10,21 +10,37 @@ function formatAndUpdate(inputId, resultId) {
     result.innerText = formattedNumber;
 }
 
+
+
 function copyResult(resultId) {
     var resultText = document.getElementById(resultId).innerText;
-    navigator.clipboard.writeText(resultText);
-    var tooltip = document.getElementById('tooltip' + resultId.slice(-1));
-    setTimeout(function(){ tooltip.style.display = 'none'; }, 2000); // Hide tooltip after 2 seconds
+    navigator.clipboard.writeText(resultText)
+        .then(function() {
+            showCopyIndicator(resultText);
+        })
+        .catch(function(error) {
+            console.error('Unable to copy: ', error);
+        });
+}
+
+// Function to show copy indicator using alert
+function showCopyIndicator(content) {
+
+    var message = 'Copied: ' + content;
+
+    var alertBox = document.createElement('div');
+    alertBox.className = 'copy-alert';
+
+    alertBox.textContent = message;
+    document.body.appendChild(alertBox);
+
+    setTimeout(function() {
+        document.body.removeChild(alertBox);
+    }, 700);
 }
 
 
-function displayTooltip(resultId) {
-  var copyText = document.getElementById(resultId);
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); // For mobile devices
-  navigator.clipboard.writeText(copyText.value);
-  alert("Copied the text: " + copyText.value);
-}
+
 
 function addInputField() {
     var container = document.querySelector('.container');
@@ -59,3 +75,4 @@ function addInputField() {
     var hr = document.createElement('hr');
     resultContainer.appendChild(hr);
 }
+

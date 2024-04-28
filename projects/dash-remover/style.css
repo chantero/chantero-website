@@ -9,7 +9,8 @@ body {
     justify-content: center;
     margin: 3em;
     font-size: large;
-    background: linear-gradient(90deg, #69b7eb, #b3dbd3, #f4d6db);
+    background-image: linear-gradient(to left bottom, #88aee9, #64c9ee, #70dede, #a5eec7, #e4f7b9);
+    background-attachment: fixed;
 }
 
 p {
@@ -42,11 +43,15 @@ button {
 
 button:hover{
     color:black;
-    background-color: #ECCA9C;
+    background-color: #FFD95C;  /* gold */
 }
 
 button:active {
     transform: translateY(4px); /* Move the button down slightly when clicked */
+}
+
+.add-button:hover{
+    background-color: #E0B0FF; /* purple */
 }
 
 input {
@@ -65,5 +70,22 @@ input {
     font-size: xx-large;
     font-weight: bolder;
     color: #0F2167;
+}
+
+
+.copy-alert {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    font-size: xx-large;
+    transform: translate(-50%, -50%);
+    background-color: rgba(34,34,34,0.8);
+    color: white;
+    padding: 1em;
+    border-radius: 10px;
+    border: solid #3D3D3D;
+    text-align: center;
+    border-radius: 25px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 }
 
