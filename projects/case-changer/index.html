@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Case Converter</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Case Changer</h1>
+    <p>Change text to uppercase, title case or lowercase</p>
+    <hr>
+
+    <h3>Insert your text in the blue box</h3>
+    <textarea id="textInput" oninput="updateText()"></textarea>
+    
+
+    <hr>
+    <h3>Results</h3>
+    <div class="item">
+        <div class="box" id="uppercaseBox"></div>
+        <button onclick="copyText('uppercaseBox')" class="button-uppercase">Copy Uppercase</button>
+    </div>
+    
+    <hr>
+
+    <div class="item">
+        <div class="box" id="titlecaseBox"></div>
+        <button onclick="copyText('titlecaseBox')" class="button-titlecase">Copy Title Case</button>
+    </div>
+
+    <hr>
+
+    <div class="item">
+        <div class="box" id="lowercaseBox"></div>
+        <button onclick="copyText('lowercaseBox')" class="button-lowercase">Copy Lowercase</button>
+    </div>
+
+    <hr>
+    <div>
+      <a href="https://chantero.com/projects" style="font-size:250%; text-decoration:none;">🍪</a>
+      <a href="https://chantero.com" style="font-size:250%; text-decoration:none;">🧁</a>
+    </div>
+
+
+</div>
+
+<script>
+function updateText() {
+    var inputText = document.getElementById("textInput").value;
+    
+    // Uppercase
+    document.getElementById("uppercaseBox").innerText = inputText.toUpperCase();
+    
+    // Title Case
+    document.getElementById("titlecaseBox").innerText = toTitleCase(inputText);
+    
+    // Lowercase
+    document.getElementById("lowercaseBox").innerText = inputText.toLowerCase();
+}
+
+function toTitleCase(text) {
+    return text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+function copyText(id) {
+    var text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(function() {
+        console.log('Text copied to clipboard');
+    }, function(err) {
+        console.error('Failed to copy text: ', err);
+    });
+}
+</script>
+
+</body>
+</html>
