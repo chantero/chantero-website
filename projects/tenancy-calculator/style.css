@@ -1,0 +1,92 @@
+/* put "box sizing" - can use this for all projects */
+/* use border-box - so if you add padding (etc) it doesn't affect width */
+* {
+	box-sizing: border-box;
+}
+
+
+body {
+	font-family: 'Arial', sans-serif;
+	margin: 2em;
+    padding-bottom: 4em;
+    background-image: linear-gradient(to left bottom, #ffddf0, #f7d8f3, #edd5f7, #dfd2fb, #ced0fe, #c0d4ff, #b2d8ff, #a6dcff, #a3e6ff, #a3efff, #a8f7fe, #b1fffa);
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+input {
+    font-size: x-large;
+    font-weight: bolder;
+    width: 200px;
+    text-align: center;
+    padding:0.5em 1.2em;
+    border:0.2em solid black;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.5em;
+    background: white;
+}
+
+
+hr {
+    margin-top: 3em;
+    margin-bottom: 3em;
+    border: none;
+    border-top: 3px dashed black;
+
+}
+
+
+
+
+table {
+
+    border-collapse: collapse;
+    border: solid 2px;
+    font-size: large;
+    background: white;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.stampduty-table-header {
+    background: #FAA0A0;
+}
+
+.fees-table-header {
+    background: #ADD8E6;
+}
+
+
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+th:hover,
+td:hover {
+    background-color: #ccc;
+}
+
+
+.footer-links {
+    text-align: center;
+    margin-bottom: 2em;
+
