@@ -86,7 +86,6 @@ hr {
   width: 100%;
   max-height: 70vh; /* Limit the height of the table */
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-
 }
 
 #csv-table th,
@@ -94,6 +93,7 @@ hr {
   padding: 1em;
   border: 1px solid black;
   white-space: nowrap; /* Prevent text wrapping */
+  text-align: center; /* Align content to center */
 }
 
 #csv-table tr:nth-child(even) {
@@ -116,7 +116,7 @@ hr {
 
 
 .copy-button {
-  display: block;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px 24px;
