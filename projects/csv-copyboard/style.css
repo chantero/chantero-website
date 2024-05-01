@@ -94,6 +94,12 @@ hr {
   border: 1px solid black;
   white-space: nowrap; /* Prevent text wrapping */
   text-align: center; /* Align content to center */
+
+
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
 }
 
 #csv-table tr:nth-child(even) {
@@ -116,7 +122,9 @@ hr {
 
 
 .copy-button {
-  display: flex;
+  display: block;
+  margin: auto;     /* so that buttons are in the center */  
+  text-align: center;
   align-items: center;
   justify-content: center;
   padding: 20px 24px;
