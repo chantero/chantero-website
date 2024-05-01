@@ -1,31 +1,50 @@
+/* dash remover css */
+
+/* standard css */
 * {
     box-sizing: border-box;
 }
 
 body {
     font-family: 'Arial', sans-serif;
+    margin: 3em 1.5em 3em 1.5em;
+    font-size: large;
     align-items: center;
     text-align: center;
     justify-content: center;
-    margin: 3em;
     font-size: large;
-    background-image: linear-gradient(to left bottom, #88aee9, #64c9ee, #70dede, #a5eec7, #e4f7b9);
+
     background-attachment: fixed;
+    background-image: linear-gradient(to left bottom, #88aee9, #64c9ee, #70dede, #a5eec7, #e4f7b9);
 }
 
-p {
-    padding-block: 0.5em;
-    text-align: center;
-}
 
 hr {
-    margin-bottom: 2em;
+    margin-top: 3em;
+    margin-bottom: 3em;
     border: none;
     border-top: 3px dashed black;
-
 }
 
 
+.footer-links, a {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: xxx-large;
+    text-decoration: none;
+}
+
+/* project css  */
+
+input {
+    font-size: large;
+    width: 200px;
+    text-align: center;
+    padding:0.5em 1.2em;
+    border:0.2em solid black;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.5em;
+}
 
 button {
     padding:0.5em 1.2em;
@@ -54,15 +73,7 @@ button:active {
     background-color: #E0B0FF; /* purple */
 }
 
-input {
-    font-size: large;
-    width: 200px;
-    text-align: center;
-    padding:0.5em 1.2em;
-    border:0.2em solid black;
-    margin:0 0.3em 0.3em 0;
-    border-radius:0.5em;
-}
+
 
 .result {
     text-align: center;

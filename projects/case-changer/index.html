@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Case Converter</title>
+    <title>Case Changer</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -38,41 +38,41 @@
         <button onclick="copyText('lowercaseBox')" class="button-lowercase">Copy Lowercase</button>
     </div>
 
-    <hr>
-    <div>
-      <a href="https://chantero.com/projects" style="font-size:250%; text-decoration:none;">🍪</a>
-      <a href="https://chantero.com" style="font-size:250%; text-decoration:none;">🧁</a>
+    <div class="footer-links">
+      <hr>
+        <a href="https://chantero.com/projects">🍪</a>
+        <a href="https://chantero.com">🧁</a>
     </div>
 
 
 </div>
 
 <script>
-function updateText() {
-    var inputText = document.getElementById("textInput").value;
-    
-    // Uppercase
-    document.getElementById("uppercaseBox").innerText = inputText.toUpperCase();
-    
-    // Title Case
-    document.getElementById("titlecaseBox").innerText = toTitleCase(inputText);
-    
-    // Lowercase
-    document.getElementById("lowercaseBox").innerText = inputText.toLowerCase();
-}
+    function updateText() {
+        var inputText = document.getElementById("textInput").value;
+        
+        // Uppercase
+        document.getElementById("uppercaseBox").innerText = inputText.toUpperCase();
+        
+        // Title Case
+        document.getElementById("titlecaseBox").innerText = toTitleCase(inputText);
+        
+        // Lowercase
+        document.getElementById("lowercaseBox").innerText = inputText.toLowerCase();
+    }
 
-function toTitleCase(text) {
-    return text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-}
+    function toTitleCase(text) {
+        return text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
 
-function copyText(id) {
-    var text = document.getElementById(id).innerText;
-    navigator.clipboard.writeText(text).then(function() {
-        console.log('Text copied to clipboard');
-    }, function(err) {
-        console.error('Failed to copy text: ', err);
-    });
-}
+    function copyText(id) {
+        var text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text).then(function() {
+            console.log('Text copied to clipboard');
+        }, function(err) {
+            console.error('Failed to copy text: ', err);
+        });
+    }
 </script>
 
 </body>

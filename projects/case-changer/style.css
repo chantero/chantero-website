@@ -1,13 +1,14 @@
-
+/* case changer css */
 * {
     box-sizing: border-box;
 }
 
-
 body {
     font-family: Arial, sans-serif;
-    margin: 3em 1.5em 1.5em 1.5em;
+    margin: 3em 1.5em 3em 1.5em;
     font-size: large;
+
+    background-attachment: fixed;
     background-image: linear-gradient(to left, #fbf3fb, #f7f2fd, #f0f2ff, #e9f2ff, #e1f2ff);
 }
 
@@ -26,7 +27,15 @@ hr {
 
 }
 
-/* this is the place where you insert text */
+.footer-links, a {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: xxx-large;
+    text-decoration: none;
+}
+
+
+/* project css */
 
 textarea {
     width: 90%;

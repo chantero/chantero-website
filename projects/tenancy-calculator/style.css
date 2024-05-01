@@ -1,5 +1,6 @@
-/* put "box sizing" - can use this for all projects */
-/* use border-box - so if you add padding (etc) it doesn't affect width */
+/* tenancy calculator css */
+
+/* standard css */
 * {
 	box-sizing: border-box;
 }
@@ -7,12 +8,33 @@
 
 body {
 	font-family: 'Arial', sans-serif;
-	margin: 2em;
-    padding-bottom: 4em;
+    margin: 3em 1.5em 3em 1.5em;
+    font-size: large;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    background-attachment: fixed;
     background-image: linear-gradient(to left bottom, #ffddf0, #f7d8f3, #edd5f7, #dfd2fb, #ced0fe, #c0d4ff, #b2d8ff, #a6dcff, #a3e6ff, #a3efff, #a8f7fe, #b1fffa);
 }
 
 
+hr {
+    margin-top: 3em;
+    margin-bottom: 3em;
+    border: none;
+    border-top: 3px dashed black;
+
+}
+
+.footer-links, a {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: xxx-large;
+    text-decoration: none;
+}
+
+/* project css */
 .container {
     display: flex;
     flex-direction: column;
@@ -36,16 +58,8 @@ input {
 }
 
 
-hr {
-    margin-top: 3em;
-    margin-bottom: 3em;
-    border: none;
-    border-top: 3px dashed black;
 
-}
-
-
-
+/* project specific css */
 
 table {
 
@@ -86,7 +100,11 @@ td:hover {
 }
 
 
-.footer-links {
-    text-align: center;
-    margin-bottom: 2em;
+
+
+.notes-section {
+    text-align: left;
+}
+
+
 

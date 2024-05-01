@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tenancy Calculator</title>
-
     <link rel="stylesheet" type="text/css" href="style.css">
-
 </head>
 
 <body>
@@ -17,6 +17,7 @@
     <br><br>
 
     <h3>Stamp Duty for Tenancy (Malaysia)</h3>
+
         <div id="result">
             <table border='1' id="resultTable">
                 <tr class="stampduty-table-header">
@@ -25,17 +26,17 @@
                     <th>Round Up (RM)</th>
                 </tr>
                 <tr>
-                    <td>1 year tenancy</td>
+                    <td>1 year term</td>
                     <td id="result1Year">-</td>
                     <td id="result1YearRounded">-</td>
                 </tr>
                 <tr>
-                    <td>Above 1 year to 3 years tenancy</td>
+                    <td>1 to 3 years term</td>
                     <td id="result1To3Years">-</td>
                     <td id="result1To3YearsRounded">-</td>
                 </tr>
                 <tr>
-                    <td>Above 3 years tenancy</td>
+                    <td>Above 3 years term</td>
                     <td id="resultMoreThan3Years">-</td>
                     <td id="resultMoreThan3YearsRounded">-</td>
                 </tr>
@@ -59,50 +60,50 @@
 
             </table>
         </div>
+
     </div>
     <hr>
     
+    <div class="notes-section">
+        <h2>Notes</h2>
+        <ul>
+            <li>
+                <p>This calculator was created on 1 May 2024.</p>
+            </li>
 
-    <h2>Notes</h2>
+            <li>
+                <p>You can click on the generated "numbers" to copy it to your clipboard.</p>
+            </li>
 
-    <ul>
+            <li>
+                <p>The calculations shown above are "estimated charges" provided for ease of reference only. The actual legal fees and stamp duties may vary.</p>
+            </li>
 
-        <li>This calculator was created on 1 May 2024.</p></li>
+            <li>
+                <h4>Tenancy Ad-valorem Stamp Duty Formula:</h4>
+                    <p>[Monthly Rent] x 12 months - RM2,000 / 250 = N</p>
+                    <p>
+                        * 1 year term: N<br>
+                        * 1 year to 3 years term: N x 2<br>
+                        * 3 Years term and above: N x 4<br>
+                    </p>
+                    <p>[Additional copies will be RM10 each]</p>
+            </li>
 
-        <li>
-            <p>You can click on the generated "numbers" of tables to copy it to your clipboard.</p>
-        </li>
+            <li>
+                <h4>Sabah Tenancy Legal Fees Formula:</h4>
+                <p>([Monthly Rent] x 12 months) - 12,000) * 1.75 / 100 + 700</p>
+            </li>
+        </ul>
+    </div>
 
-        <li>
-            <p>The calculations shown above are "estimated charges" provided for ease of reference only. The actual legal fees and stamp duties may vary.</p>
-        </li>
-
-        <li><h4>Tenancy Ad-valorem Stamp Duty Formula:</h4>
-            <p>
-                [Monthly Rent] x 12 months - RM2,000 / 250 = N 
-                <br><br>
-                * 1 year term: N
-                <br>
-                * 1 year to 3 years term: N x 2
-                <br>
-                * 3 Years term and above: N x 4
-                <br><br>
-                [Additional copies will be RM10 each]
-            </p>
-        </li>
-
-        <li><h4>Sabah Tenancy Legal Fees Formula:</h4>
-            <p>([Monthly Rent] x 12 months) - 12,000) * 1.75 / 100 + 700</p>
-        </li>
-    </ul>
-
-    <hr>
 
     <div class="footer-links">
-
-      <a href="https://chantero.com/projects" style="font-size:250%; text-decoration:none;">🍪</a>
-      <a href="https://chantero.com" style="font-size:250%; text-decoration:none;">🧁</a>
+      <hr>
+      <a href="https://chantero.com/projects">🍪</a>
+      <a href="https://chantero.com">🧁</a>
     </div>
+
 
     <script src="script.js"></script>
 </body>
