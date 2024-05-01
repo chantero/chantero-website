@@ -20,8 +20,8 @@ body {
 
 
 hr {
-    margin-top: 3em;
-    margin-bottom: 3em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
     border: none;
     border-top: 3px dashed black;
 
@@ -101,10 +101,7 @@ td:hover {
 
 
 
-
-.notes-section {
+.notes-section li {
     text-align: left;
 }
-
-
 
