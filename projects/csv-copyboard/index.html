@@ -14,10 +14,7 @@
 <!-- add -->
   <input type="file" id="file-input" name="file-input" accept=".csv" style="display:none">
   <div id="drag-drop-area">
-    <p>Drag and drop a CSV file here or</p>
-
-    <button id="browse-button">Browse</button>
-
+    <p>Click or Drag and Drop CSV file here</p>
   </div>
 
 
@@ -132,9 +129,6 @@
       document.getElementById('file-input').click();
     });
 
-    document.getElementById('browse-button').addEventListener('click', function() {
-      document.getElementById('file-input').click();
-    });
 
     document.getElementById('file-input').addEventListener('change', function(e) {
       var file = e.target.files[0];
