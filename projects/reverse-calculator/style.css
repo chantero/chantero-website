@@ -1,0 +1,75 @@
+/* number to ringgit css */
+
+/* standard css */
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 3em 1.5em 3em 1.5em;
+    font-size: large;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-attachment: fixed;
+    background-image: linear-gradient(to top, #fbc7d4, #9796f0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+hr {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    border: none;
+    border-top: 3px dashed black;
+
+}
+
+.footer-links, a {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: xxx-large;
+    text-decoration: none;
+}
+
+
+input {
+    font-size: x-large;
+    font-weight: bolder;
+    width: 200px;
+    text-align: center;
+    padding:0.5em 1.2em;
+    border:0.2em solid black;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.5em;
+    background: white;
+}
+
+input::selection {
+    background: pink;
+}
+
+/* hide the input number buttons up/down */
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+
+#percentage {
+    background-color: #FFCDD2;
+    width: 120px;
+}
+
+#result {
+    background-color: gold;
+    border-radius:0.5em;
+    border: solid 5px black;
+    padding: 15px;
+    font-size: xx-large;
+    font-weight: 600;
+
+}

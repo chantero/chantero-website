@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reverse Calculator</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Reverse Calculator</h1>
+
+    <br>
+
+    <h2><label for="total_number">Fees (including tax):</label></h2>
+    <input type="number" id="total_number" oninput="calculate()">
+
+    <h2><label for="percentage">Tax Percent (%)</label></h2>
+    <input type="number" id="percentage" value="8" oninput="calculate()">
+
+    <br><hr>
+    <h2>Fees (excluding tax):</h2><br>
+    <h2><span id="result" onclick="copyResultToClipboard()"></span></h2>
+
+
+
+    <div class="footer-links">
+      <hr>
+      <a href="https://chantero.com/projects">🍪</a>
+      <a href="https://chantero.com">🧁</a>
+    </div>
+
+    <script>
+        function calculate() {
+            var totalNumber = parseFloat(document.getElementById('total_number').value);
+            var taxPercentage = parseFloat(document.getElementById('percentage').value);
+
+            var feesExcludingTax = totalNumber / (1 + taxPercentage / 100);
+            var roundedResult = feesExcludingTax.toFixed(2); // Round to two decimal places
+            document.getElementById('result').innerText = roundedResult;
+        }
+
+        function copyResultToClipboard() {
+            var resultElement = document.getElementById('result');
+            var resultText = resultElement.innerText;
+
+            var textArea = document.createElement("textarea");
+            textArea.value = resultText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+
+            // Provide visual feedback
+            resultElement.style.backgroundColor = "skyblue";
+            setTimeout(function() {
+                resultElement.style.backgroundColor = "";
+            }, 300);
+        }
+    </script>
+</body>
+</html>
