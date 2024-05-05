@@ -34,6 +34,10 @@ hr {
 }
 
 
+.notes-section li {
+    text-align: left;
+}
+
 input {
     font-size: x-large;
     font-weight: bolder;
