@@ -48,18 +48,14 @@
             </li>
 
             <li>
-                <p>
-                    The "decimal points" numbers/words is a bit quirky:
-                    <ul>
-                        <li>decimal point "words" will only work well up to 2 decimals, after that it will just state the number.</li>
-                        
-                        <li>decimal point "number" will only show up to 2 decimal points, and ignore any additional demical points that you key in.</li>
+                <p>The "decimal points" numbers/words will only show the first 2 decimals. The others will be ignored.</p>
+             </li>
 
 
-                        <li>Best NOT to insert any decimal points if your number has "zero" decimals, as it may show up as "and Sen Zero".</li>
+             <li>
+                <p>If you add 3rd decimal number (number 6 and above), it will round up the 2nd decimal number - example: 10.356 will be rounded to 10.36</p>
+             </li>
 
-                    </ul>
-            </li>
 
             <li><p>Should work ok for normal money type numbers</p></li>
 
@@ -80,80 +76,70 @@
 
 
 <script>
-var th = ['', 'thousand', 'million', 'billion', 'trillion'];
-var dg = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-var tn = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-var tw = ['twenty ', 'thirty ', 'forty ', 'fifty ', 'sixty ', 'seventy ', 'eighty ', 'ninety '];
+    function toWords(s) {
+        s = s.toString();
+        s = s.replace(/[\, ]/g, '');
+        if (s != parseFloat(s)) return '[ NOT A NUMBER ]';
+        var parts = s.split('.');
+        var dollars = parts[0];
+        var cents = parts[1] || '00';
 
-function toWords(s) {
-    s = s.toString();
-    s = s.replace(/[\, ]/g, '');
-    if (s != parseFloat(s)) return '[ NOT A NUMBER ]';
-    var x = s.indexOf('.');
-    if (x == -1) x = s.length;
-    if (x > 15) return '[ TOO BIG ]';
-    var n = s.split('');
-    var str = '';
-    var sk = 0;
-    for (var i = 0; i < x; i++) {
-        if ((x - i) % 3 == 2) {
-            if (n[i] == '1') {
-                str += tn[Number(n[i + 1])] + ' ';
-                i++;
-                sk = 1;
-            } else if (n[i] != 0) {
-                str += tw[n[i] - 2] + ' ';
-                sk = 1;
-            }
-        } else if (n[i] != 0) {
-            str += dg[n[i]] + ' ';
-            if ((x - i) % 3 == 0) str += 'hundred ';
-            sk = 1;
+        var dollarsStr = '';
+        var centsStr = '';
+
+        // Convert dollars part
+        if (dollars.length > 0) {
+            dollarsStr = toWordsHelper(dollars) +' ';
         }
-        if ((x - i) % 3 == 1) {
-            if (sk) str += th[(x - i - 1) / 3] + ' ';
-            sk = 0;
-        }
+
+        // Convert cents part
+        if (cents.length > 0 && parseInt(cents) > 0) {
+          cents = cents.slice(0, 2); // Limit to two decimal places
+            centsStr = 'and Sen ' + toWordsHelper(cents.padEnd(2, '0')).replace(/\s+/, '');
+         }
+
+        return dollarsStr + centsStr;
     }
 
-    // decimal
-    if (x != s.length) {
-        var y = s.length;
-        str += 'and Sen ';
+    function toWordsHelper(s) {
+        var th = ['', 'thousand', 'million', 'billion', 'trillion'];
+        var dg = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        var tn = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+        var tw = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
-    // works for 2 digit only
-    for (var i = x + 1; i < y; i++) {
-            if (i === x + 1) {
-                if (n[i] === '1') {
-                    str += tn[Number(n[i + 1])] + ' ';
+        var str = '';
+        var sk = 0;
+
+        for (var i = 0; i < s.length; i++) {
+            if ((s.length - i) % 3 == 2) {
+                if (s[i] == '1') {
+                    str += tn[Number(s[i + 1])] + ' ';
                     i++;
-                } else if (n[i] !== '0') {
-                    str += tw[n[i] - 2] + ' ';
+                    sk = 1;
+                } else if (s[i] != 0) {
+                    str += tw[s[i] - 2] + '-';
+                    sk = 1;
                 }
-            } else {
-                str += dg[n[i]] + ' ';
+            } else if (s[i] != 0) {
+                str += dg[s[i]] + ' ';
+                if ((s.length - i) % 3 == 0) str += 'hundred ';
+                sk = 1;
+            }
+            if ((s.length - i) % 3 == 1) {
+                if (sk) str += th[(s.length - i - 1) / 3] + ' ';
+                sk = 0;
             }
         }
+        return titleCase(str.trim());
     }
 
 
-    final = str.replace(/\s+/g, ' ').replace(/- /g, '-');
-    if (final.substring(final.length-1) == "-"){
-        final = final.substring(0, final.length-1);
-    }
-    return final.trim().toLowerCase().split(' ').map(function(word) {
-        if (word === 'and') {
-            return word.toLowerCase(); // Convert "and" to lowercase
-        } else if (word.includes('-')) {
-            return word.split('-').map(function(subword) {
-                return subword.charAt(0).toUpperCase() + subword.slice(1).toLowerCase();
-            }).join('-');
-        } else {
-            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-        }
-    }).join(' ');
-
+function titleCase(str) {
+    return str.toLowerCase().replace(/\b(?!and\b)\w/g, function(match) {
+        return match.toUpperCase();
+    });
 }
+
 
 function convertToWords() {
     var numberInput = document.getElementById("numberInput").value;
@@ -168,9 +154,20 @@ function convertToWords() {
 
 
 function numberWithCommas(x) {
-    var roundedNumber = parseFloat(x).toFixed(2); // Round to two decimal places
+ 
+    // to fixed rounds up the number
+    // var roundedNumber = parseFloat(x).toFixed(2); // Round to two decimal places
+
+
+   var parts = x.toString().split('.');
+    var integerPart = parts[0];
+    var decimalPart = parts[1] ? parts[1].slice(0, 2) : '00'; // Truncate to two decimal places
+    return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + decimalPart;
+
+
     return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
 }
+
 
 
 function copyToClipboard(elementId) {
