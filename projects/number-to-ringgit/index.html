@@ -126,61 +126,61 @@
     }
 
 
-function titleCase(str) {
-    return str.toLowerCase().replace(/\b(?!and\b)\w/g, function(match) {
-        return match.toUpperCase();
-    });
-}
+    function titleCase(str) {
+        return str.toLowerCase().replace(/\b(?!and\b)\w/g, function(match) {
+            return match.toUpperCase();
+        });
+    }
 
 
-function convertToWords() {
-    var numberInput = document.getElementById("numberInput").value;
-    var numberWithSeparator = "RM" + numberWithCommas(numberInput);
-    var wordsOnly = "Ringgit Malaysia " + toWords(numberInput);
-    var RinggitWordsOnly = wordsOnly + " (" + numberWithSeparator + ") Only";
-    
-    document.getElementById("numberWithSeparator").innerText = numberWithSeparator;
-    document.getElementById("wordsOnly").innerText = wordsOnly;
-    document.getElementById("RinggitWordsOnly").innerText = RinggitWordsOnly;
-}
+    function convertToWords() {
+        var numberInput = document.getElementById("numberInput").value;
+        var numberWithSeparator = "RM" + numberWithCommas(numberInput);
+        var wordsOnly = "Ringgit Malaysia " + toWords(numberInput);
+        var RinggitWordsOnly = wordsOnly + " (" + numberWithSeparator + ") Only";
+        
+        document.getElementById("numberWithSeparator").innerText = numberWithSeparator;
+        document.getElementById("wordsOnly").innerText = wordsOnly;
+        document.getElementById("RinggitWordsOnly").innerText = RinggitWordsOnly;
+    }
 
 
-function numberWithCommas(x) {
- 
-    // to fixed rounds up the number
-    // var roundedNumber = parseFloat(x).toFixed(2); // Round to two decimal places
+    function numberWithCommas(x) {
+     
+        // to fixed rounds up the number
+        // var roundedNumber = parseFloat(x).toFixed(2); // Round to two decimal places
 
 
-   var parts = x.toString().split('.');
-    var integerPart = parts[0];
-    var decimalPart = parts[1] ? parts[1].slice(0, 2) : '00'; // Truncate to two decimal places
-    return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + decimalPart;
+       var parts = x.toString().split('.');
+        var integerPart = parts[0];
+        var decimalPart = parts[1] ? parts[1].slice(0, 2) : '00'; // Truncate to two decimal places
+        return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + decimalPart;
 
 
-    return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
-}
+        return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+    }
 
 
 
-function copyToClipboard(elementId) {
-    var copyText = document.getElementById(elementId);
-    var textArea = document.createElement("textarea");
-    textArea.value = copyText.innerText;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
+    function copyToClipboard(elementId) {
+        var copyText = document.getElementById(elementId);
+        var textArea = document.createElement("textarea");
+        textArea.value = copyText.innerText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
 
-    var copyIndicator = document.getElementById("copyIndicator");
-    copyIndicator.style.top = copyText.offsetTop + "px";
-    copyIndicator.style.left = copyText.offsetLeft + "px";
-    copyIndicator.classList.add("show");
+        var copyIndicator = document.getElementById("copyIndicator");
+        copyIndicator.style.top = copyText.offsetTop + "px";
+        copyIndicator.style.left = copyText.offsetLeft + "px";
+        copyIndicator.classList.add("show");
 
-    copyText.style.backgroundColor = "pink";
-    setTimeout(function() {
-        copyIndicator.classList.remove("show");
-        copyText.style.backgroundColor = "";
-    }, 500);
+        copyText.style.backgroundColor = "pink";
+        setTimeout(function() {
+            copyIndicator.classList.remove("show");
+            copyText.style.backgroundColor = "";
+        }, 500);
 
 
 
