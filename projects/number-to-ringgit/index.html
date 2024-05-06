@@ -119,14 +119,7 @@
                     }
                     sk = 1;
                 }
-                // } else if (s[i] != 0) {
-                //     str += tw[s[i] - 2] + '-';
-                //     sk = 1;
-                // }
-
-
-
-
+ 
             } else if (s[i] != 0) {
                 str += dg[s[i]] + ' ';
                 if ((s.length - i) % 3 == 0) str += 'hundred ';
@@ -162,11 +155,7 @@
 
     function numberWithCommas(x) {
      
-        // to fixed rounds up the number
-        // var roundedNumber = parseFloat(x).toFixed(2); // Round to two decimal places
-
-
-       var parts = x.toString().split('.');
+        var parts = x.toString().split('.');
         var integerPart = parts[0];
         var decimalPart = parts[1] ? parts[1].slice(0, 2) : '00'; // Truncate to two decimal places
         return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' + decimalPart;
