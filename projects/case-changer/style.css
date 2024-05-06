@@ -140,3 +140,15 @@ button:active {
 .button-lowercase:hover {
     background: #00AA00;
 }
+
+
+
+#sentencecaseBox {
+    background: #E7D1F7;
+}
+.button-sentencecase {
+    background: #E7D1F7;
+}
+.button-sentencecase:hover {
+    background: #CB97F0;
+}

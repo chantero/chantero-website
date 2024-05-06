@@ -38,6 +38,14 @@
         <button onclick="copyText('lowercaseBox')" class="button-lowercase">Copy Lowercase</button>
     </div>
 
+    <hr>
+    
+    <div class="item">
+        <div class="box" id="sentencecaseBox"></div>
+        <button onclick="copyText('sentencecaseBox')" class="button-sentencecase">Copy Sentence Case</button>
+    </div>
+
+
     <div class="footer-links">
       <hr>
         <a href="https://chantero.com/projects">🍪</a>
@@ -59,11 +67,25 @@
         
         // Lowercase
         document.getElementById("lowercaseBox").innerText = inputText.toLowerCase();
+
+        // Sentence Case
+        document.getElementById("sentencecaseBox").innerText = toSentenceCase(inputText);
+
+
     }
+
 
     function toTitleCase(text) {
         return text.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
+
+
+
+    function toSentenceCase(str) {
+       return str.replace(/(^\w|\.\s\w|\!\s\w|\?\s\w)/g, function(char) {
+            return char.toUpperCase();
+        });
+}
 
     function copyText(id) {
         var text = document.getElementById(id).innerText;
