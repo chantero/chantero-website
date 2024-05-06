@@ -108,10 +108,25 @@
                     str += tn[Number(s[i + 1])] + ' ';
                     i++;
                     sk = 1;
+
+
                 } else if (s[i] != 0) {
-                    str += tw[s[i] - 2] + '-';
+                    // Add condition to check if there's a word after the tw's
+                    if (s[i + 1] && s[i + 1] != '0') {
+                        str += tw[s[i] - 2] + '-';
+                    } else {
+                        str += tw[s[i] - 2] + ' ';
+                    }
                     sk = 1;
                 }
+                // } else if (s[i] != 0) {
+                //     str += tw[s[i] - 2] + '-';
+                //     sk = 1;
+                // }
+
+
+
+
             } else if (s[i] != 0) {
                 str += dg[s[i]] + ' ';
                 if ((s.length - i) % 3 == 0) str += 'hundred ';
