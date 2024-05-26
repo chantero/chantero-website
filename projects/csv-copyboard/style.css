@@ -14,9 +14,7 @@ body {
   justify-content: center;
   font-size: large;
 
-  background-attachment: fixed;   /* to make sure the gradient fit screen */
-  background-image: linear-gradient(to top, #FFC0CB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background-color: #F69CCF;
 }
 
 
@@ -44,7 +42,7 @@ hr {
   font-size: 24px;
   border-radius: 25px;
   padding: 25px;
-  width: 80%;
+  width: 75%;
   align-items: center;
   min-width: 500px;
   text-align: center;
