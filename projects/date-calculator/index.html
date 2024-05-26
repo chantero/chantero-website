@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chantero | Date Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+/*        background-color: #f4f4f4;*/
+        background-color: #DAEAFA;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: large;
+        position: relative;
+    }
+
+    .title {
+        color: #1976D2 ;
+
+    }
+
+    .subtitle {
+        font-size: normal;
+        padding-bottom: 10px;
+        color: #666;
+
+    }
+
+    .container {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center; /* Center align text */
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: larger;
+    }
+
+    input[type="date"],
+    input[type="number"] {
+        width: calc(100% - 12px);
+        padding: 10px; /* Increase padding */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: larger;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+
+    input[type="date"]:focus,
+    input[type="number"]:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+
+    #result {
+        font-weight: bold;
+        margin-top: 20px;
+        font-size: xxx-large; /* Increase font size */
+        color: #03A9F4; /* Change color to blue */
+    }
+
+    .result-info {
+        display: none; /* Hide result info by default */
+        margin-top: 10px;
+        font-size: 16px; /* Increase font size */
+        color: #666; /* Change color to gray */
+        line-height: 1.5; /* Increase line height for readability */
+        text-align: center; /* Center align text */
+    }
+
+    .toggle-checkbox {
+        display: none; /* Hide the default checkbox */
+    }
+
+    .custom-checkbox {
+        padding-top: 25px;
+        display: inline-block;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .custom-checkbox span {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: #fff;
+        border: 2px solid #333;
+        border-radius: 5px;
+        position: relative;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    .custom-checkbox span:before {
+        content: "✔";
+        font-size: 24px; /* Increase the size of the tick */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the tick */
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .toggle-checkbox:checked + .custom-checkbox span:before {
+        opacity: 1;
+    }
+
+    .toggle-checkbox:checked + .custom-checkbox span {
+        background-color: #CEEBF4;
+        border-color: #007bff;
+    }
+
+</style>
+</head>
+<body>
+
+
+<div class="container">
+    <div class="form-group">
+        <h1 class="title">Date Calculator</h1>
+        <p class="subtitle">calculate the number of days between dates</p>
+        <br>
+        <label for="start-date">Start Date</label>
+        <input type="date" id="start-date" onchange="calculateDate()">
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="end-date">End Date</label>
+        <input type="date" id="end-date" onchange="calculateDate()">
+    </div>
+
+    <input type="checkbox" id="toggle-start-date" class="toggle-checkbox" onchange="toggleIncludeStartDate()">
+    <label for="toggle-start-date" class="custom-checkbox">
+        <span></span>
+        Include Start Date
+    </label>
+
+    <div id="result"></div>
+    <div class="result-info" id="result-info">
+        <p><strong style="color: #333;">Note:</strong> Excludes the start date, and includes the end date.</p>
+    </div>
+</div>
+
+
+<script>
+    let includeStartDate = false;
+
+    function toggleIncludeStartDate() {
+        includeStartDate = !includeStartDate;
+        const noteInfo = document.getElementById("result-info");
+
+        if (includeStartDate) {
+            noteInfo.innerHTML = "<p>Includes the start date and end date.</p>";
+        } else {
+            noteInfo.innerHTML = "<p>Excludes the start date, and includes the end date.</p>";
+        }
+
+        calculateDate();
+    }
+
+    function calculateDate() {
+        const startDate = new Date(document.getElementById("start-date").value);
+        const endDate = new Date(document.getElementById("end-date").value);
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            document.getElementById("result-info").style.display = "none"; // Hide result info if dates are invalid
+            return;
+        }
+
+        const diffTime = Math.abs(endDate - startDate);
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (includeStartDate) {
+            diffDays += 1;
+        }
+
+        document.getElementById("result").textContent = diffDays + " days";
+        document.getElementById("result-info").style.display = "block"; // Show result info
+    }
+</script>
+
+</body>
+</html>
