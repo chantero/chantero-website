@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chantero | Date Calculator</title>
 <style>
+    /* CSS styles here */
     body {
         font-family: Arial, sans-serif;
         background-color: #DAEAFA;
@@ -19,15 +20,13 @@
     }
 
     .title {
-        color: #1976D2 ;
-
+        color: #1976D2;
     }
 
     .subtitle {
         font-size: normal;
         padding-bottom: 10px;
         color: #666;
-
     }
 
     .container {
@@ -35,8 +34,10 @@
         border-radius: 10px;
         padding: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 400px;
+        width: 100%; /* Set width to 100% */
+        max-width: 400px; /* Set maximum width */
         text-align: center; /* Center align text */
+        margin: 1em;
     }
 
     .form-group {
@@ -52,8 +53,8 @@
 
     input[type="date"],
     input[type="number"] {
-        width: calc(100% - 12px);
-        padding: 10px; /* Increase padding */
+        width: calc(90% - 12px);
+        padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: larger;
@@ -67,25 +68,24 @@
         border-color: #007bff;
     }
 
-
     #result {
         font-weight: bold;
         margin-top: 20px;
-        font-size: xxx-large; /* Increase font size */
-        color: #03A9F4; /* Change color to blue */
+        font-size: xxx-large;
+        color: #03A9F4;
     }
 
     .result-info {
-        display: none; /* Hide result info by default */
+        display: none;
         margin-top: 10px;
-        font-size: 16px; /* Increase font size */
-        color: #666; /* Change color to gray */
-        line-height: 1.5; /* Increase line height for readability */
-        text-align: center; /* Center align text */
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+        text-align: center;
     }
 
     .toggle-checkbox {
-        display: none; /* Hide the default checkbox */
+        display: none;
     }
 
     .custom-checkbox {
@@ -109,11 +109,11 @@
 
     .custom-checkbox span:before {
         content: "✔";
-        font-size: 24px; /* Increase the size of the tick */
+        font-size: 24px;
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%); /* Center the tick */
+        transform: translate(-50%, -50%);
         opacity: 0;
         transition: opacity 0.2s ease;
     }
@@ -127,10 +127,15 @@
         border-color: #007bff;
     }
 
+    /* Responsive Styles */
+    @media only screen and (max-width: 480px) {
+        .container {
+            padding: 10px; /* Adjust padding for smaller screens */
+        }
+    }
 </style>
 </head>
 <body>
-
 
 <div class="container">
     <div class="form-group">
@@ -157,7 +162,6 @@
         <p><strong style="color: #333;">Note:</strong> Excludes the start date, and includes the end date.</p>
     </div>
 </div>
-
 
 <script>
     let includeStartDate = false;
