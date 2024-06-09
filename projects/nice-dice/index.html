@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Chantero | Nice Dice!</title>
-
 </head>
 <body onload="addInitialSection()">
     <h1>Nice Dice!</h1>
@@ -13,8 +12,6 @@
     <div id="container"></div>
 
     <script>
-
-
         function addInitialSection() {
             addDiceSection();
         }
@@ -40,15 +37,11 @@
             totalDiv.innerText = `Total: ${total}`;
         }
 
-        function toggleColorPicker(index) {
-            const colorPicker = document.getElementById(`diceColor${index}`);
-            colorPicker.click(); // Automatically open the color picker
-        }
-
         function updateColorButton(index) {
             const color = document.getElementById(`diceColor${index}`).value;
             const button = document.getElementById(`diceColorButton${index}`);
             button.style.backgroundColor = color;
+            button.innerText = color;  // Display color code on the button for better UX
         }
 
         function addDiceSection() {
@@ -63,10 +56,9 @@
                 <label for="diceType${numSections}">Type of Dice (dX):</label>
                 <input type="number" id="diceType${numSections}" class="dice-type" min="2" value="6">
                 <div class="color-picker-container">
-                    <button class="dice-color-button" id="diceColorButton${numSections}" onclick="toggleColorPicker(${numSections})">Dice Colour</button>
-                    <input type="color" id="diceColor${numSections}" class="dice-color" value="#ffffff" onchange="updateColorButton(${numSections})" style="display: none;">
+                    <input type="color" id="diceColor${numSections}" class="dice-color" value="#ffffff" onchange="updateColorButton(${numSections})">
+                    <button class="dice-color-button" id="diceColorButton${numSections}" style="background-color: #ffffff;" onclick="document.getElementById('diceColor${numSections}').click();">Pick Dice Color</button>
                 </div>
-                
                 <button onclick="rollDice(${numSections})" class="roll-dice-button">Roll Dice</button>
                 <div class="result" id="result${numSections}"></div>
                 <div class="total" id="total${numSections}"></div>

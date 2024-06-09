@@ -87,15 +87,26 @@ button {
     width: 50%;
     box-sizing: border-box;
     text-align: center;
+    cursor: pointer;
 }
 
+
 .dice-color-button {
-    background-color: white;
+    background-color: whitesmoke;
 }
 
 .dice-color-button:hover {
     background-color: lightgray;
 }
+
+
+#diceColor1 {
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    height: 1px;
+}
+
 
 .result {
     margin-top: 10px;
@@ -121,3 +132,4 @@ button {
     font-weight: bold;
     font-size: x-large;
 }
+
