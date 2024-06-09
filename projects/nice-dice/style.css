@@ -1,0 +1,123 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin-top: 4em;
+    text-align: center;
+    background: #D3CCE3;
+    background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);
+    background: linear-gradient(to right, #E9E4F0, #D3CCE3);
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    max-width: 100%;
+    margin: auto;
+    padding: 20px;
+}
+
+.add-dice {
+  background: #fff;
+  border: solid 3px black;
+  width: 200px;
+  box-sizing: border-box;
+  color: #212121;
+  background-color: paleturquoise;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.add-dice:not(:disabled):hover {
+  background-color: turquoise;
+}
+
+.add-dice:not(:disabled):hover:active {
+  transform: translateY(3px);
+}
+
+.roll-dice-button {
+  background: #fff;
+  border: solid 3px black;
+  width: 200px;
+  box-sizing: border-box;
+  color: #212121;
+  background-color: #93ea76;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.roll-dice-button:not(:disabled):hover {
+  background-color: #84d36a;
+}
+
+.roll-dice-button:not(:disabled):hover:active {
+  transform: translateY(3px);
+}
+
+.dice-section {
+    flex: 1 1 200px;
+    max-width: 300px;
+    border-radius: 10px;
+    background-color: #fffce6;
+    margin: 1em;
+    padding-top: 2.5em;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    padding-bottom: 1em;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: black;
+    font-size: larger;
+}
+
+input[type="number"],
+input[type="color"],
+input[type="text"],
+button {
+    margin-bottom: 25px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: large;
+    width: 50%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.dice-color-button {
+    background-color: white;
+}
+
+.dice-color-button:hover {
+    background-color: lightgray;
+}
+
+.result {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.roll-number {
+    display: inline-block;
+    border-radius: 15px;
+    font-size: x-large;
+    font-weight: bold;
+    border: 3px solid black;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    justify-items: center;
+    align-content: center;
+    margin: 10px;
+}
+
+.total {
+    margin: 10px;
+    font-weight: bold;
+    font-size: x-large;
+}

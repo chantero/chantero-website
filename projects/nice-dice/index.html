@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Chantero | Nice Dice!</title>
+
+</head>
+<body onload="addInitialSection()">
+    <h1>Nice Dice!</h1>
+    <button onclick="addDiceSection()" class="add-dice">+ Add Dice</button>
+    <div id="container"></div>
+
+    <script>
+
+
+        function addInitialSection() {
+            addDiceSection();
+        }
+
+        function rollDice(index) {
+            const numDice = parseInt(document.getElementById(`numDice${index}`).value);
+            const diceType = parseInt(document.getElementById(`diceType${index}`).value);
+            const diceColor = document.getElementById(`diceColor${index}`).value;
+            let total = 0;
+            let rolls = [];
+
+            // Generating random numbers using Math.random()
+            for (let i = 0; i < numDice; i++) {
+                const roll = Math.floor(Math.random() * diceType) + 1;
+                rolls.push(roll);
+                total += roll;
+            }
+
+            const resultDiv = document.getElementById(`result${index}`);
+            resultDiv.innerHTML = rolls.map(roll => `<div class="roll-number" style="background-color: ${diceColor}">${roll}</div>`).join('');
+
+            const totalDiv = document.getElementById(`total${index}`);
+            totalDiv.innerText = `Total: ${total}`;
+        }
+
+        function toggleColorPicker(index) {
+            const colorPicker = document.getElementById(`diceColor${index}`);
+            colorPicker.click(); // Automatically open the color picker
+        }
+
+        function updateColorButton(index) {
+            const color = document.getElementById(`diceColor${index}`).value;
+            const button = document.getElementById(`diceColorButton${index}`);
+            button.style.backgroundColor = color;
+        }
+
+        function addDiceSection() {
+            const container = document.getElementById('container');
+            const numSections = container.querySelectorAll('.dice-section').length + 1;
+
+            const newSection = document.createElement('div');
+            newSection.classList.add('dice-section');
+            newSection.innerHTML = `
+                <label for="numDice${numSections}">Number of Dice:</label>
+                <input type="number" id="numDice${numSections}" class="num-dice" min="1" value="1">
+                <label for="diceType${numSections}">Type of Dice (dX):</label>
+                <input type="number" id="diceType${numSections}" class="dice-type" min="2" value="6">
+                <div class="color-picker-container">
+                    <button class="dice-color-button" id="diceColorButton${numSections}" onclick="toggleColorPicker(${numSections})">Dice Colour</button>
+                    <input type="color" id="diceColor${numSections}" class="dice-color" value="#ffffff" onchange="updateColorButton(${numSections})" style="display: none;">
+                </div>
+                
+                <button onclick="rollDice(${numSections})" class="roll-dice-button">Roll Dice</button>
+                <div class="result" id="result${numSections}"></div>
+                <div class="total" id="total${numSections}"></div>
+            `;
+            container.appendChild(newSection);
+        }
+    </script>
+</body>
+</html>
