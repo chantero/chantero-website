@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chantero | Acres Roods Perches Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #7F7FD5;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+            margin: 3em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            justify-content: center;
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: black;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+        #acres-group {
+            background-color: #d1f2eb;
+        }
+        #roods-group {
+            background-color: #ffdde1;
+        }
+        #perches-group {
+            background-color: #ffeaa7;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.2em;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .conversion {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+            text-align: left;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .result table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .result th, .result td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        .result th {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: normal;
+        }
+        .result td {
+            background-color: #fff;
+            color: #333;
+        }
+        .total {
+            font-size: x-large;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-top: 3em;
+        }
+        .total-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .total-table th, .total-table td {
+            padding: 12px;
+            border: 1px solid black;
+            text-align: center;
+        }
+        .total-table th {
+            background-color: #CE615D;
+            color: white;
+            font-weight: bold;
+        }
+        .total-table td {
+            background-color: #FFF6BF;
+            color: #333;
+            font-weight: bold;
+            font-size: large;
+        }
+
+        #totalAcres {
+            margin-top: 5px;
+            font-size: xxx-large;
+            font-weight: bold;
+            color: #AD1143;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Acres Roods Perches Calculator</h1>
+        <div id="acres-group" class="form-group">
+            <label for="acres">Acres:</label>
+            <input type="number" id="acres" name="acres">
+            <div class="conversion">1 Acre = 43,560 square feet / 0.404686 ha / 4,046.86 m²</div>
+            <div class="result">
+                <table id="acresTable">
+                    <thead>
+                        <tr>
+                            <th>Acres</th>
+                            <th>Square Feet</th>
+                            <th>Hectares</th>
+                            <th>Square Meters</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="roods-group" class="form-group">
+            <label for="roods">Roods:</label>
+            <input type="number" id="roods" name="roods">
+            <div class="conversion">1 Rood = 0.25 acres / 10,890 square feet / 0.101171 ha / 1,011.71 m²</div>
+            <div class="result">
+                <table id="roodsTable">
+                    <thead>
+                        <tr>
+                            <th>Acres</th>
+                            <th>Square Feet</th>
+                            <th>Hectares</th>
+                            <th>Square Meters</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="perches-group" class="form-group">
+            <label for="perches">Perches:</label>
+            <input type="number" id="perches" name="perches">
+            <div class="conversion">1 Perch = 0.00625 acres / 272.25 square feet / 0.002529 ha / 25.29 m²</div>
+            <div class="result">
+                <table id="perchesTable">
+                    <thead>
+                        <tr>
+                            <th>Acres</th>
+                            <th>Square Feet</th>
+                            <th>Hectares</th>
+                            <th>Square Meters</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="results">
+            <div class="total">Total Results</div>
+            <p id="totalAcres"> Acres</p>
+            <table class="total-table">
+                <thead>
+                    <tr>
+                        <th>Total in Square Feet</th>
+                        <th>Total in Hectares</th>
+                        <th>Total in Square Meters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="totalSquareFeet"></td>
+                        <td id="totalHectares"></td>
+                        <td id="totalSquareMeters"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            const roods = parseFloat(document.getElementById('roods').value) || 0;
+            const acres = parseFloat(document.getElementById('acres').value) || 0;
+            const perches = parseFloat(document.getElementById('perches').value) || 0;
+
+            // Conversion factors
+            const roodsToAcresFactor = 0.25;
+            const perchesToAcresFactor = 0.00625;
+            const acreToSquareFeet = 43560;
+            const acreToHectares = 0.404686;
+            const acreToSquareMeters = 4046.86;
+
+            // Calculations
+            const roodsToAcres = roods * roodsToAcresFactor;
+            const perchesToAcres = perches * perchesToAcresFactor;
+            const totalAcres = roodsToAcres + acres + perchesToAcres;
+            const totalSquareFeet = totalAcres * acreToSquareFeet;
+            const totalHectares = totalAcres * acreToHectares;
+            const totalSquareMeters = totalAcres * acreToSquareMeters;
+
+            // Conversion results for individual inputs
+            const roodsToSquareFeet = roods * 10890;
+            const roodsToHectares = roods * 0.101171;
+            const roodsToSquareMeters = roods * 1011.71;
+
+            const perchesToSquareFeet = perches * 272.25;
+            const perchesToHectares = perches * 0.002529;
+            const perchesToSquareMeters = perches * 25.29;
+
+            // Display results in tables
+            displayConversion('roodsTable', roods, roodsToAcres, roodsToSquareFeet, roodsToHectares, roodsToSquareMeters);
+            displayConversion('acresTable', acres, acres, acres * acreToSquareFeet, acres * acreToHectares, acres * acreToSquareMeters);
+            displayConversion('perchesTable', perches, perchesToAcres, perchesToSquareFeet, perchesToHectares, perchesToSquareMeters);
+
+            // Display total results
+            document.getElementById('totalAcres').textContent = `${totalAcres.toLocaleString()} acres`;
+            document.getElementById('totalSquareFeet').textContent = (totalSquareFeet === 0 ? '' : `${totalSquareFeet.toLocaleString()}`);
+            document.getElementById('totalHectares').textContent = (totalHectares === 0 ? '' : `${totalHectares.toLocaleString()}`);
+            document.getElementById('totalSquareMeters').textContent = (totalSquareMeters === 0 ? '' : `${totalSquareMeters.toLocaleString()}`);
+        }
+
+        function displayConversion(tableId, value, acres, sqFeet, hectares, sqMeters) {
+            const table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+            table.innerHTML = `
+                <tr>
+                    <td>${acres.toLocaleString()}</td>
+                    <td>${sqFeet.toLocaleString()}</td>
+                    <td>${hectares.toLocaleString()}</td>
+                    <td>${sqMeters.toLocaleString()}</td>
+                </tr>`;
+        }
+
+        document.getElementById('roods').addEventListener('input', calculate);
+        document.getElementById('acres').addEventListener('input', calculate);
+        document.getElementById('perches').addEventListener('input', calculate);
+    </script>
+</body>
+
+
+
+</html>
