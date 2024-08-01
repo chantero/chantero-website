@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Individual Beneficial Ownership Calculator</title>
+
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 2.5em;
+        font-size: larger;
+
+      }
+
+    input {
+        font-size: larger;
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+    .upper {
+        text-transform: uppercase;
+    }
+
+
+    /* CSS */
+    .button-19 {
+      appearance: button;
+      background-color: #1899D6;
+      border: solid transparent;
+      border-radius: 16px;
+      border-width: 0 0 4px;
+      box-sizing: border-box;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: inline-block;
+      font-family: din-round,sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      line-height: 20px;
+      margin: 20px;
+      outline: none;
+      overflow: visible;
+      padding: 13px 16px;
+      text-align: center;
+      text-transform: uppercase;
+      touch-action: manipulation;
+      transform: translateZ(0);
+      transition: filter .2s;
+      user-select: none;
+      -webkit-user-select: none;
+      vertical-align: middle;
+      white-space: nowrap;
+      width: 30%;
+    }
+
+    .button-19:after {
+      background-clip: padding-box;
+      background-color: #1CB0F6;
+      border: solid transparent;
+      border-radius: 16px;
+      border-width: 0 0 4px;
+      bottom: -4px;
+      content: "";
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: -1;
+    }
+
+    .button-19:main,
+    .button-19:focus {
+      user-select: auto;
+    }
+
+    .button-19:hover:not(:disabled) {
+      filter: brightness(1.1);
+      -webkit-filter: brightness(1.1);
+    }
+
+    .button-19:disabled {
+      cursor: auto;
+    }
+
+    .button-19:active {
+      border-width: 4px 0 0;
+      background: none;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Individual Beneficial Ownership Calculator</h1>
+
+<subtitle>
+    <p>A mini-tool to calculate an individual's ultimate ownership percentage in an entity, including subsidiary entities.</p> 
+    <ul>
+        <li>"Ultimate Owner" is the individual shareholder of "Entity 1"</li> 
+        <li>"Entity 1" is the shareholder of "Entity 2"</li> 
+        <li>"Entity 2" is the shareholder of "Entity 3", and so on.</li>
+    </ul>
+</subtitle>
+
+<hr><br>
+
+<div>
+    <label for="ultimateOwner">Insert the name of the Ultimate Individual Owner:</label>
+    <input type="text" id="ultimateOwner" oninput="calculateUltimateOwnership()" placeholder="Ultimate Owner">
+</div>
+
+
+<p>Insert the name and ownership percentage of each entity:</p>
+
+<form>
+    <div id="entities">
+        <div>
+            <label for="entityName1">Entity 1 Name:</label>
+            <input type="text" class="entityName" id="entityName1" placeholder="Entity 1" oninput="calculateUltimateOwnership()">
+            <label for="entity1"> Entity 1 Ownership (%):</label>
+            <input type="number" class="entity" id="entity1" min="0" max="100" step="any" required oninput="calculateUltimateOwnership()">
+        </div>
+    </div>
+
+    <button class="button-19" type="button" onclick="addEntity()">Add a Subsidiary Entity</button>
+
+</form>
+
+<div id="result"></div>
+
+<script>
+let entityCounter = 1;
+
+function addEntity() {
+    entityCounter++;
+    let newEntityDiv = document.createElement('div');
+    newEntityDiv.innerHTML = `
+        <label for="entityName${entityCounter}">Entity ${entityCounter} Name:</label>
+        <input type="text" class="entityName" id="entityName${entityCounter}" placeholder="Entity ${entityCounter}" oninput="calculateUltimateOwnership()">
+        <label for="entity${entityCounter}">Entity ${entityCounter} Ownership (%):</label>
+        <input type="number" class="entity" id="entity${entityCounter}" min="0" max="100" step="any" required oninput="calculateUltimateOwnership()">
+    `;
+    document.getElementById('entities').appendChild(newEntityDiv);
+}
+
+function calculateUltimateOwnership() {
+    let entities = document.getElementsByClassName('entity');
+    let entityNames = document.getElementsByClassName('entityName');
+    let ultimateOwner = document.getElementById('ultimateOwner').value || "Ultimate Owner";
+
+    let resultText = '';
+
+    // Calculate ultimate ownership
+    let cumulativeOwnership = 1;
+    let ownershipBreakdown = [];
+    for (let i = 0; i < entities.length; i++) {
+        let entityName = entityNames[i].value.trim() || `Entity ${i + 1}`;
+        let ownershipPercentage = parseFloat(entities[i].value);
+
+        cumulativeOwnership *= ownershipPercentage / 100;
+
+        // Display ownership for each entity
+        let ownershipInPercent = cumulativeOwnership * 100;
+        ownershipBreakdown.push(`<span class="bold">${ownershipInPercent.toFixed(2)}%</span> in <span class="bold upper">${entityName}</span>`);
+    }
+
+    // Display ownership breakdown
+    resultText += `<p><span class="bold upper">${ultimateOwner}</span>'s ownership/beneficial ownership (percentage):</p>`;
+    resultText += `<ul>`;
+    ownershipBreakdown.forEach(line => {
+        resultText += `<li>${line}</li>`;
+    });
+    resultText += `</ul>`;
+
+    document.getElementById('result').innerHTML = resultText;
+}
+
+
+
+</script>
+
+</body>
+</html>
