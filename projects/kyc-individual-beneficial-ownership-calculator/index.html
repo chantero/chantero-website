@@ -99,10 +99,17 @@
         background-color: #40B5AD;
     }
 
+    .export-button {
+        background-color: #B47CC7;
+    }
+
+    .export-button:hover {
+        background-color: #90af76;
+    }
 
     .result {
-        background-color: #ffffff;
-        border: 1px solid #dee2e6;
+        background-color: #fdfddc;
+        border: 2px solid black;
         border-radius: 4px;
         padding: 1em;
         margin-top: 1em;
@@ -172,6 +179,23 @@
             max-width: 100%;
         }
     }
+
+
+    .copy-indicator {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+        font-size: 14px;
+        text-align: center;
+        margin: 10px
+ 
+    }
+
+
+
 </style>
 
 </head>
@@ -211,7 +235,12 @@
         <button type="button" onclick="addEntity()">Add a Subsidiary Entity</button>
     </form>
 
-    <div id="result" class="result"></div>
+    <div id="result" onclick="copyResults()" class="result"></div>
+
+    <!-- Copy indicator -->
+    <div id="copy-indicator" class="copy-indicator">copied to clipboard</div>
+    
+    <button class="export-button" type="button" onclick="exportToHTML()">Export Form</button>
 </div>
 
 <script>
@@ -270,6 +299,50 @@ function calculateUltimateOwnership() {
 
     document.getElementById('result').innerHTML = resultText;
 }
+
+    // Function to handle form export
+    function exportToHTML() {
+        // Get all input elements (text and number types)
+        var inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+
+        // Update the value attribute of all input elements with the user's input
+        inputs.forEach(function(input) {
+            input.setAttribute('value', input.value);
+        });
+
+        // Export the HTML with updated values
+        var htmlContent = document.documentElement.outerHTML;
+        var encodedHTML = encodeURIComponent(htmlContent);
+        var link = document.createElement('a');
+        link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
+        link.setAttribute('download', 'ownership.html');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+
+    function copyResults() {
+    // Get the result container's text including newlines
+    const resultText = document.getElementById('result').innerText;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(resultText).then(() => {
+        showCopyIndicator();
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+
+    function showCopyIndicator() {
+        const indicator = document.getElementById('copy-indicator');
+        indicator.style.display = 'block';
+        setTimeout(() => {
+            indicator.style.display = 'none';
+        }, 800); // Display for 800ms
+    }
+
+
 </script>
 
 </body>
