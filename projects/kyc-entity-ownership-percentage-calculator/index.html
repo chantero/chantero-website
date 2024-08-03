@@ -4,20 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Entity Ownership Percentage Calculator</title>
-
 <style>
   body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     padding: 2.5em;
-    margin: 0;
   }
 
   .calculator {
-    background-color: #c5d0e6;
+    background-color: #c5d0e6; /* Pastel blue background */
     padding: 20px;
     border-radius: 10px;
-    max-width: 100%;
+    max-width: 40%; /* Adjusted max-width */
     margin: 0 auto;
     text-align: center;
   }
@@ -25,7 +23,6 @@
   .calculator h1 {
     margin-top: 0;
   }
-
   .entity {
     margin-bottom: 20px;
     padding: 10px;
@@ -33,13 +30,12 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     text-align: left;
+    margin-bottom: 20px;
   }
 
   .entity input[type="text"],
-  .entity input[type="number"],
-  .shareholder input[type="text"],
-  .shareholder input[type="number"] {
-    width: calc(100% - 20px);
+  .entity input[type="number"] {
+    width: calc(100% - 20px); /* Subtract padding */
     padding: 8px;
     margin: 8px 0;
     border: 1px solid #ccc;
@@ -53,8 +49,17 @@
     background-color: #f5f5f5;
     border: 1px solid #ccc;
     border-radius: 4px;
-    position: relative;
+    position: relative; /* To allow for absolute positioning of remove button */
     text-align: left;
+  }
+  .shareholder input[type="text"],
+  .shareholder input[type="number"] {
+    width: calc(100% - 20px); /* Subtract padding */
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
   }
 
   .shareholder .shareholder-header {
@@ -67,23 +72,22 @@
 
   .add-shareholder {
     margin-top: 10px;
-    background-color: #34dffb;
+    background-color: #34dffb ; /* light blue */
     color: black;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     padding: 8px 16px;
   }
-
+ 
   .add-shareholder:hover {
     background-color: #45a049;
   }
-
   .remove-shareholder {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #f44336;
+    background-color: #f44336; /* Red */
     color: white;
     border: none;
     border-radius: 50%;
@@ -95,11 +99,9 @@
     padding: 0;
     font-size: 14px;
   }
-
   .remove-shareholder:hover {
     background-color: #da190b;
   }
-
   .result {
     margin-top: 20px;
     background-color: #fff;
@@ -107,36 +109,25 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     text-align: left;
-    cursor: pointer;
-    user-select: text;
+    cursor: pointer; /* Enable cursor for copying */
+    user-select: text; /* Allow text selection */
   }
-
   .result h2 {
     margin-top: 0;
   }
-
   .result-text {
-    color: #333;
+    color: #333; /* Dark grey text color */
   }
-
   .copy-indicator {
     display: none;
     color: green;
     font-size: 14px;
     margin-top: 5px;
   }
-
   .copy-indicator.show {
     display: block;
   }
-
-  @media screen and (min-width: 768px) {
-    .calculator {
-      max-width: 60%;
-    }
-  }
 </style>
-
 </head>
 <body>
   <div class="calculator">
@@ -151,18 +142,7 @@
       </div>
 
       <div class="shareholders">
-        <div class="shareholder" style="background-color: #ffcccb;">
-          <div class="shareholder-header">Shareholder 1</div>
-          <button class="remove-shareholder" onclick="removeShareholder(this)">-</button>
-          <div>
-            <label for="shareholderName">Name:</label>
-            <input type="text" class="shareholderName" placeholder="Optional" oninput="calculateOwnership()">
-          </div>
-          <div>
-            <label for="shareholderShares">Shares:</label>
-            <input type="number" class="shareholderShares" onchange="calculateOwnership()">
-          </div>
-        </div>
+        <!-- Initial Shareholder will be added here -->
       </div>
 
       <button class="add-shareholder" onclick="addShareholder(this)">Add Shareholder</button>
@@ -176,6 +156,10 @@
   </div>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      addShareholder(document.querySelector('.add-shareholder'));
+    });
+
     function calculateOwnership() {
       var entities = document.querySelectorAll('.entity');
       var results = [];
@@ -186,16 +170,19 @@
         var shareholders = entity.querySelectorAll('.shareholder');
         var totalSharesOwned = 0;
 
+        // Calculate total shares owned
         shareholders.forEach(function(shareholder, index) {
           var sharesInput = shareholder.querySelector('.shareholderShares');
           var shares = parseFloat(sharesInput.value);
           if (!isNaN(shares)) {
             totalSharesOwned += shares;
 
+            // Update shareholder header with name if provided
             var shareholderName = shareholder.querySelector('.shareholderName').value;
             var header = shareholder.querySelector('.shareholder-header');
             header.textContent = shareholderName ? shareholderName : `Shareholder ${index + 1}`;
 
+            // Calculate and display percentage ownership
             var percentageOwnership = (shares / totalShares) * 100;
             var percentageDisplay = `${shares} shares (${percentageOwnership.toFixed(2)}%)`;
             var sharesPercentageDisplay = document.createElement('div');
@@ -204,6 +191,7 @@
           }
         });
 
+        // Calculate percentages and prepare result text
         var resultText = '';
         if (entityName && !isNaN(totalShares) && totalShares > 0) {
           resultText += `${entityName} (${totalShares} total shares)<br>`;
@@ -270,31 +258,34 @@
       newShareholderDiv.appendChild(sharesInput);
 
       shareholdersDiv.appendChild(newShareholderDiv);
-    }
-
-    function removeShareholder(button) {
-      button.parentNode.remove();
       calculateOwnership();
     }
 
     function getShareholderColor(index) {
-      var colors = ['#ffadad', '#ffd6a5', '#ffffea', '#caffbf', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#d7f9f8', '#ffffea','#fff0d4', '#fbe0e0','#e5d4ef'];
+      var colors = [
+        '#ffecb3', // Light Yellow
+        '#ffab91', // Light Red
+        '#80deea', // Light Blue
+        '#c5e1a5', // Light Green
+        '#e1bee7'  // Light Purple
+      ];
       return colors[index % colors.length];
     }
 
     function copyToClipboard() {
       var resultText = document.getElementById("resultText").innerText;
-      navigator.clipboard.writeText(resultText)
-        .then(function() {
-          var copyIndicator = document.getElementById("copyIndicator");
-          copyIndicator.classList.add("show");
-          setTimeout(function() {
-            copyIndicator.classList.remove("show");
-          }, 1500);
-        })
-        .catch(function(err) {
-          console.error('Failed to copy: ', err);
-        });
+      var textarea = document.createElement('textarea');
+      textarea.value = resultText;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      var copyIndicator = document.getElementById("copyIndicator");
+      copyIndicator.classList.add('show');
+      setTimeout(function() {
+        copyIndicator.classList.remove('show');
+      }, 2000);
     }
   </script>
 </body>
