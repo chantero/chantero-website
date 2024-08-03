@@ -134,3 +134,9 @@ button {
     font-size: x-large;
 }
 
+.footer-links, a {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: xxx-large;
+    text-decoration: none;
+}
