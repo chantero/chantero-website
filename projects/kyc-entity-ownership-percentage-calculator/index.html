@@ -6,260 +6,296 @@
 <title>Entity Ownership Percentage Calculator</title>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    padding: 2.5em;
-    margin: 0;
-  }
-
-  .calculator {
-    background-color: #c5d0e6;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .calculator h1 {
-    margin-top: 0;
-  }
-
-  .entity {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: left;
-  }
-
-  .entity input[type="text"],
-  .entity input[type="number"],
-  .shareholder input[type="text"],
-  .shareholder input[type="number"] {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-
-  .shareholder {
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    position: relative;
-    text-align: left;
-  }
-
-  .shareholder .shareholder-header {
-    padding: 8px;
-    border-radius: 4px 4px 0 0;
-    margin: -10px -10px 10px -10px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .add-shareholder {
-    margin-top: 10px;
-    background-color: #34dffb;
-    color: black;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 8px 16px;
-  }
-
-  .add-shareholder:hover {
-    background-color: #45a049;
-  }
-
-  .result {
-    margin-top: 20px;
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: left;
-    cursor: pointer;
-    user-select: text;
-  }
-
-  .result h2 {
-    margin-top: 0;
-  }
-
-  .result-text {
-    color: #333;
-  }
-
-  .copy-indicator {
-    display: none;
-    color: green;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-
-  .copy-indicator.show {
-    display: block;
-  }
-
-  @media screen and (min-width: 768px) {
-    .calculator {
-      max-width: 60%;
+    body {
+        padding: 2.5em;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #bfe9ff, #ff6e7f);
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
     }
-  }
+
+    .calculator-container {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 2em;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        color: #343a40;
+        margin-bottom: 0.5em;
+        text-align: center;
+    }
+
+    input[type="text"], input[type="number"] {
+        font-size: 1em;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 1em;
+        display: block;
+        text-align: center;
+    }
+
+    .calculator-container > div {
+        margin-bottom: 1em;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5em;
+        color: #212529;
+        text-align: center;
+        font-size: large;
+    }
+
+    /* Ensure the same width for labels and inputs */
+    div > label,
+    div > input {
+        width: 100%;
+    }
+
+    button {
+        background-color: #6495ED;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        padding: 10px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: background-color 0.3s;
+        margin: 20px 0;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #40B5AD;
+    }
+
+    .export-button {
+        background-color: #B47CC7;
+    }
+
+    .export-button:hover {
+        background-color: #90af76;
+    }
+
+    .result {
+        background-color: #fdfddc;
+        border: 2px solid black;
+        border-radius: 4px;
+        padding: 1em;
+        margin-top: 1em;
+    }
+
+    .result .bold {
+        font-weight: bold;
+    }
+
+    .result .upper {
+        text-transform: uppercase;
+    }
+
+    .entity-main-box {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1em;
+        margin-bottom: 1em;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f1ffe8;
+    }
+
+    .entity-box {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 2em;
+        margin-bottom: 1em;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: auto;
+
+    }
+
+    .copy-indicator {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+        font-size: 14px;
+        text-align: center;
+        margin: 10px;
+    }
+
+    .arrow-down {
+        font-size: 1.5em;
+        font-weight: bold;
+        padding: 0;
+        margin-top: 0;
+    }
+
+    #totalShares {
+        width: 300px;
+    }
+
+    #entityName {
+        width: 300px;
+    }
+
+
 </style>
 
 </head>
 <body>
-  <div class="calculator">
-    <h1>Entity Ownership Percentage Calculator</h1>
 
-    <div class="entity">
-      <label for="entityName">Entity Name:</label>
-      <input type="text" class="entityName">
-      <div class="total-shares">
-        <label for="totalShares">Total Shares:</label>
-        <input type="number" class="totalShares" onchange="calculateOwnership()">
-      </div>
+<div class="calculator-container">
+  <h1>Entity Ownership Percentage Calculator</h1>
 
-      <div class="shareholders">
-        <div class="shareholder" style="background-color: #ffcccb;">
-          <div class="shareholder-header">Shareholder 1</div>
-          <div>
-            <label for="shareholderName">Name:</label>
-            <input type="text" class="shareholderName" placeholder="Optional" oninput="calculateOwnership()">
-          </div>
-          <div>
-            <label for="shareholderShares">Shares:</label>
-            <input type="number" class="shareholderShares" onchange="calculateOwnership()">
-          </div>
-        </div>
-      </div>
 
-      <button class="add-shareholder" onclick="addShareholder(this)">Add Shareholder</button>
+  <div class="entity-main-box">
+    <label for="entityName">Entity Name:</label>
+    <input type="text" class="entityName" id="entityName" oninput="calculateOwnership()">
+    <div>
+      <label for="totalShares">Total Shares:</label>
+      <input type="number" class="totalShares" id="totalShares" onchange="calculateOwnership()">
     </div>
 
-    <div class="result" onclick="copyToClipboard()">
-      <h2>Calculation Result:</h2>
-      <div class="result-text" id="resultText"></div>
-      <div class="copy-indicator" id="copyIndicator">Copied!</div>
+    <center><p class="arrow-down">↓</p></center>
+
+    <div id="shareholders">
+      <div class="entity-box">
+        <label for="shareholderName">Shareholder 1 Name:</label>
+        <input type="text" class="shareholderName" id="shareholderName" oninput="calculateOwnership()">
+        <label for="shareholderShares">Shares:</label>
+        <input type="number" class="shareholderShares" id="shareholderShares" onchange="calculateOwnership()">
+      </div>
     </div>
+
+    <button type="button" onclick="addShareholder()">Add Shareholder</button>
   </div>
 
-  <script>
-    function calculateOwnership() {
-      var entities = document.querySelectorAll('.entity');
-      var results = [];
+  <div id="result" class="result" onclick="copyResults()"></div>
 
-      entities.forEach(function(entity) {
-        var entityName = entity.querySelector('.entityName').value;
-        var totalShares = parseFloat(entity.querySelector('.totalShares').value);
-        var shareholders = entity.querySelectorAll('.shareholder');
-        var totalSharesOwned = 0;
+  <div id="copy-indicator" class="copy-indicator">Copied to clipboard</div>
 
-        shareholders.forEach(function(shareholder, index) {
-          var sharesInput = shareholder.querySelector('.shareholderShares');
-          var shares = parseFloat(sharesInput.value);
-          if (!isNaN(shares)) {
-            totalSharesOwned += shares;
+  <button class="export-button" type="button" onclick="exportToHTML()">Export Form</button>
+</div>
 
-            var shareholderName = shareholder.querySelector('.shareholderName').value;
-            var header = shareholder.querySelector('.shareholder-header');
-            header.textContent = shareholderName ? shareholderName : `Shareholder ${index + 1}`;
+<script>
+    let shareholderCounter = 1;
+    const colors = ['#ffebee', '#e3f2fd', '#e8f5e9', '#f3e5f5', '#fffde7', '#fbe9e7', '#e0f2f1', '#e8eaf6', '#f3e5f5', '#fff9c4'];
 
-            var percentageOwnership = (shares / totalShares) * 100;
-            var percentageDisplay = `${shares} shares (${percentageOwnership.toFixed(2)}%)`;
-            var sharesPercentageDisplay = document.createElement('div');
-            sharesPercentageDisplay.textContent = percentageDisplay;
-            header.appendChild(sharesPercentageDisplay);
-          }
+    function addShareholder() {
+        shareholderCounter++;
+        let newShareholderDiv = document.createElement('div');
+        newShareholderDiv.classList.add('entity-box');
+        
+        // Set a unique pastel color for new shareholder boxes
+        newShareholderDiv.style.backgroundColor = colors[shareholderCounter % colors.length];
+
+        newShareholderDiv.innerHTML = `
+            <label for="shareholderName${shareholderCounter}">Shareholder ${shareholderCounter} Name:</label>
+            <input type="text" class="shareholderName" id="shareholderName${shareholderCounter}" oninput="calculateOwnership()">
+            <label for="shareholderShares${shareholderCounter}">Shares:</label>
+            <input type="number" class="shareholderShares" id="shareholderShares${shareholderCounter}" onchange="calculateOwnership()">
+        `;
+        
+        document.getElementById('shareholders').appendChild(newShareholderDiv);
+        updateShareholderBoxColors();
+    }
+
+    function updateShareholderBoxColors() {
+        const boxes = document.querySelectorAll('#shareholders .entity-box');
+        boxes.forEach((box, index) => {
+            box.style.backgroundColor = colors[index % colors.length];
         });
+    }
 
-        var resultText = '';
-        if (entityName && !isNaN(totalShares) && totalShares > 0) {
-          resultText += `${entityName} (${totalShares} total shares)<br>`;
-          shareholders.forEach(function(shareholder, index) {
-            var shareholderName = shareholder.querySelector('.shareholderName').value || `Shareholder ${index + 1}`;
-            var shares = parseFloat(shareholder.querySelector('.shareholderShares').value);
-            if (!isNaN(shares)) {
-              var percentageOwnership = (shares / totalShares) * 100;
-              resultText += `${shareholderName}: ${shares} shares (${percentageOwnership.toFixed(2)}%)<br>`;
-            }
-          });
+    // Ensure initial color is set for the first shareholder box
+    updateShareholderBoxColors();
+
+
+
+    function calculateOwnership() {
+      let totalShares = document.getElementById('totalShares').value || 0;
+      let shareholders = document.getElementsByClassName('shareholderShares');
+      let shareholderNames = document.getElementsByClassName('shareholderName');
+      let entityName = document.getElementById('entityName').value || 'Entity';
+
+      let resultText = '';
+
+      if (totalShares > 0) {
+        resultText += `<p><span class="bold upper">${entityName}</span>'s ownership:</p>`;
+        resultText += `<ul>`;
+        for (let i = 0; i < shareholders.length; i++) {
+          let shareholderName = shareholderNames[i].value.trim() || `Shareholder ${i + 1}`;
+          let shareholderShares = parseFloat(shareholders[i].value);
+          let ownershipPercentage = (shareholderShares / totalShares) * 100;
+          resultText += `<li><span class="bold upper">${shareholderName}</span>: <span class="bold">${ownershipPercentage.toFixed(2)}% </span>(${shareholderShares} / ${totalShares} shares)</li>`;
         }
+        resultText += `</ul>`;
+      } else {
+        resultText = '<p>Please enter the total shares.</p>';
+      }
 
-        results.push(resultText);
+      document.getElementById('result').innerHTML = resultText;
+    }
+
+    function exportToHTML() {
+      let entityName = document.getElementById('entityName').value.trim();
+      let filename = entityName ? `ownership - ${entityName}.html` : 'ownership.html';
+
+      let inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+      inputs.forEach(function(input) {
+        input.setAttribute('value', input.value);
       });
 
-      document.getElementById("resultText").innerHTML = results.join('<hr>');
+      let htmlContent = document.documentElement.outerHTML;
+      let encodedHTML = encodeURIComponent(htmlContent);
+      let link = document.createElement('a');
+      link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
-    function addShareholder(button) {
-      var shareholdersDiv = button.parentNode.querySelector('.shareholders');
-      var newShareholderDiv = document.createElement('div');
-      newShareholderDiv.classList.add('shareholder');
-
-      var index = shareholdersDiv.children.length + 1;
-      var shareColor = getShareholderColor(index - 1);
-      newShareholderDiv.style.backgroundColor = shareColor;
-
-      var header = document.createElement('div');
-      header.classList.add('shareholder-header');
-      header.textContent = `Shareholder ${index}`;
-      newShareholderDiv.appendChild(header);
-
-      var nameInput = document.createElement('div');
-      var nameLabel = document.createElement('label');
-      nameLabel.textContent = 'Name:';
-      var nameInputField = document.createElement('input');
-      nameInputField.type = 'text';
-      nameInputField.classList.add('shareholderName');
-      nameInputField.placeholder = 'Optional';
-      nameInputField.addEventListener('input', calculateOwnership);
-      nameInput.appendChild(nameLabel);
-      nameInput.appendChild(nameInputField);
-      newShareholderDiv.appendChild(nameInput);
-
-      var sharesInput = document.createElement('div');
-      var sharesLabel = document.createElement('label');
-      sharesLabel.textContent = 'Shares:';
-      var sharesInputField = document.createElement('input');
-      sharesInputField.type = 'number';
-      sharesInputField.classList.add('shareholderShares');
-      sharesInputField.addEventListener('input', calculateOwnership);
-      sharesInput.appendChild(sharesLabel);
-      sharesInput.appendChild(sharesInputField);
-      newShareholderDiv.appendChild(sharesInput);
-
-      shareholdersDiv.appendChild(newShareholderDiv);
+    function copyResults() {
+      const resultText = document.getElementById('result').innerText;
+      navigator.clipboard.writeText(resultText).then(() => {
+        showCopyIndicator();
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
     }
 
-    function getShareholderColor(index) {
-      var colors = ['#ffadad', '#ffd6a5', '#ffffea', '#caffbf', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#d7f9f8', '#ffffea','#fff0d4', '#fbe0e0','#e5d4ef'];
-      return colors[index % colors.length];
+    function showCopyIndicator() {
+      const indicator = document.getElementById('copy-indicator');
+      indicator.style.display = 'block';
+      setTimeout(() => {
+        indicator.style.display = 'none';
+      }, 800);
     }
 
-    function copyToClipboard() {
-      var resultText = document.getElementById("resultText").innerText;
-      navigator.clipboard.writeText(resultText)
-        .then(function() {
-          var copyIndicator = document.getElementById("copyIndicator");
-          copyIndicator.classList.add("show");
-          setTimeout(function() {
-            copyIndicator.classList.remove("show");
-          }, 1500);
-        })
-        .catch(function(err) {
-          console.error('Failed to copy: ', err);
-        });
-    }
-  </script>
+</script>
+
 </body>
 </html>
+
+
+

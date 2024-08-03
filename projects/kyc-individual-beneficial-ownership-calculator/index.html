@@ -9,10 +9,7 @@
     body {
         padding: 2.5em;
         font-family: Arial, sans-serif;
-        background: #EECDA3;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to top, #EF629F, #EECDA3);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to top, #EF629F, #EECDA3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+        background: linear-gradient(to top, #EF629F, #EECDA3);
         margin: 0;
         display: flex;
         justify-content: center;
@@ -90,7 +87,6 @@
         text-transform: uppercase;
         transition: background-color 0.3s, box-shadow 0.3s;
         margin: 20px 0;
-        width: 50%;
         width: 100%;
 
     }
@@ -194,6 +190,10 @@
  
     }
 
+    .arrow-down {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
 
 
 </style>
@@ -221,7 +221,8 @@
         <input type="text" id="ultimateOwner" oninput="calculateUltimateOwnership()" placeholder="Ultimate Owner">
     </div>
 
-    <p><center>↓</center></p>
+    <center><p class="arrow-down">↓</p></center>
+
     <form>
         <div id="entities">
             <div class="entity-box">
