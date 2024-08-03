@@ -6,137 +6,213 @@
 <title>Individual Beneficial Ownership Calculator</title>
 
 <style>
-
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
         padding: 2.5em;
-        font-size: larger;
+        font-family: Arial, sans-serif;
+        background: #EECDA3;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to top, #EF629F, #EECDA3);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to top, #EF629F, #EECDA3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-      }
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-    input {
-        font-size: larger;
-        font-weight: bold;
+    .calculator-container {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 2em;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        color: #343a40;
+        margin-bottom: 0.5em;
+        text-align: center;
+    }
+
+    subtitle {
+        display: block;
+        color: #495057;
+        margin: 0 0 1.5em;
+
+    }
+
+    p {
+        margin: 0 0 1em;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 1.5em;
+        color: #495057;
+    }
+
+    input[type="text"], input[type="number"] {
+        font-size: 1em;
         padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+        width: calc(100% - 22px);
+        margin-bottom: 1em;
+        display: block;
+        text-align: center;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5em;
+        color: #212529;
+        text-align: center;
+        font-size: large;
+    }
+
+    button {
+        appearance: button;
+        background-color: #6495ED;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 1em;
+        font-weight: bold;
+        padding: 10px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        margin: 20px 0;
+        width: 50%;
+        width: 100%;
+
+    }
+
+    button:hover {
+        background-color: #40B5AD;
+    }
+
+
+    .result {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 1em;
+        margin-top: 1em;
+    }
+
+    .entity-box {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1em;
+        margin-bottom: 1em;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .entity-box:nth-child(1) {
+        background-color: #ffebee; /* Pastel Pink */
+    }
+
+    .entity-box:nth-child(2) {
+        background-color: #e3f2fd; /* Pastel Blue */
+    }
+
+    .entity-box:nth-child(3) {
+        background-color: #e8f5e9; /* Pastel Green */
+    }
+
+    .entity-box:nth-child(4) {
+        background-color: #f3e5f5; /* Pastel Purple */
+    }
+
+    .entity-box:nth-child(5) {
+        background-color: #fffde7; /* Pastel Yellow */
+    }
+
+    .entity-box label {
+        display: block;
+        margin-bottom: 0.5em;
+        color: #343a40;
+    }
+
+    .entity-box input[type="text"], .entity-box input[type="number"] {
+        width: 100%;
+        max-width: 280px;
     }
 
     .bold {
         font-weight: bold;
     }
+
     .upper {
         text-transform: uppercase;
     }
 
+    @media (max-width: 600px) {
+        .calculator-container {
+            padding: 1em;
+        }
 
-    /* CSS */
-    .button-19 {
-      appearance: button;
-      background-color: #1899D6;
-      border: solid transparent;
-      border-radius: 16px;
-      border-width: 0 0 4px;
-      box-sizing: border-box;
-      color: #FFFFFF;
-      cursor: pointer;
-      display: inline-block;
-      font-family: din-round,sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: .8px;
-      line-height: 20px;
-      margin: 20px;
-      outline: none;
-      overflow: visible;
-      padding: 13px 16px;
-      text-align: center;
-      text-transform: uppercase;
-      touch-action: manipulation;
-      transform: translateZ(0);
-      transition: filter .2s;
-      user-select: none;
-      -webkit-user-select: none;
-      vertical-align: middle;
-      white-space: nowrap;
-      width: 30%;
+        button {
+            width: 100%;
+        }
+
+        input[type="text"], input[type="number"] {
+            max-width: 100%;
+        }
     }
-
-    .button-19:after {
-      background-clip: padding-box;
-      background-color: #1CB0F6;
-      border: solid transparent;
-      border-radius: 16px;
-      border-width: 0 0 4px;
-      bottom: -4px;
-      content: "";
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: -1;
-    }
-
-    .button-19:main,
-    .button-19:focus {
-      user-select: auto;
-    }
-
-    .button-19:hover:not(:disabled) {
-      filter: brightness(1.1);
-      -webkit-filter: brightness(1.1);
-    }
-
-    .button-19:disabled {
-      cursor: auto;
-    }
-
-    .button-19:active {
-      border-width: 4px 0 0;
-      background: none;
-    }
-
 </style>
 
 </head>
 
 <body>
 
-<h1>Individual Beneficial Ownership Calculator</h1>
+<div class="calculator-container">
+    <h1>Individual Beneficial Ownership Calculator</h1>
 
-<subtitle>
-    <p>A mini-tool to calculate an individual's ultimate ownership percentage in an entity, including subsidiary entities.</p> 
-    <ul>
-        <li>"Ultimate Owner" is the individual shareholder of "Entity 1"</li> 
-        <li>"Entity 1" is the shareholder of "Entity 2"</li> 
-        <li>"Entity 2" is the shareholder of "Entity 3", and so on.</li>
-    </ul>
-</subtitle>
+    <subtitle>
+        <p>Calculate an individual's ultimate beneficial ownership percentage in an entity (through multiple layers of entities)</p> 
+        <ul>
+            <li>"Ultimate Owner" is the individual shareholder of "Entity 1"</li> 
+            <li>"Entity 1" is the shareholder of "Entity 2".</li>
+            <li>"Entity 2" is the shareholder of "Entity 3".</li>
+        </ul>
+    </subtitle>
 
-<hr><br>
+    <hr><br>
 
-<div>
-    <label for="ultimateOwner">Insert the name of the Ultimate Individual Owner:</label>
-    <input type="text" id="ultimateOwner" oninput="calculateUltimateOwnership()" placeholder="Ultimate Owner">
-</div>
-
-
-<p>Insert the name and ownership percentage of each entity:</p>
-
-<form>
-    <div id="entities">
-        <div>
-            <label for="entityName1">Entity 1 Name:</label>
-            <input type="text" class="entityName" id="entityName1" placeholder="Entity 1" oninput="calculateUltimateOwnership()">
-            <label for="entity1"> Entity 1 Ownership (%):</label>
-            <input type="number" class="entity" id="entity1" min="0" max="100" step="any" required oninput="calculateUltimateOwnership()">
-        </div>
+    <div>
+        <label for="ultimateOwner">Name of Ultimate Owner:</label>
+        <input type="text" id="ultimateOwner" oninput="calculateUltimateOwnership()" placeholder="Ultimate Owner">
     </div>
 
-    <button class="button-19" type="button" onclick="addEntity()">Add a Subsidiary Entity</button>
+    <p><center>↓</center></p>
+    <form>
+        <div id="entities">
+            <div class="entity-box">
+                <label for="entityName1">Entity 1 Name:</label>
+                <input type="text" class="entityName" id="entityName1" placeholder="Entity 1" oninput="calculateUltimateOwnership()">
+                <label for="entity1">Entity 1 Ownership (%):</label>
+                <input type="number" class="entity" id="entity1" min="0" max="100" step="any" required oninput="calculateUltimateOwnership()">
+            </div>
+        </div>
 
-</form>
+        <button type="button" onclick="addEntity()">Add a Subsidiary Entity</button>
+    </form>
 
-<div id="result"></div>
+    <div id="result" class="result"></div>
+</div>
 
 <script>
 let entityCounter = 1;
@@ -144,6 +220,7 @@ let entityCounter = 1;
 function addEntity() {
     entityCounter++;
     let newEntityDiv = document.createElement('div');
+    newEntityDiv.classList.add('entity-box');
     newEntityDiv.innerHTML = `
         <label for="entityName${entityCounter}">Entity ${entityCounter} Name:</label>
         <input type="text" class="entityName" id="entityName${entityCounter}" placeholder="Entity ${entityCounter}" oninput="calculateUltimateOwnership()">
@@ -151,6 +228,15 @@ function addEntity() {
         <input type="number" class="entity" id="entity${entityCounter}" min="0" max="100" step="any" required oninput="calculateUltimateOwnership()">
     `;
     document.getElementById('entities').appendChild(newEntityDiv);
+    updateEntityBoxColors();
+}
+
+function updateEntityBoxColors() {
+    const boxes = document.querySelectorAll('.entity-box');
+    const colors = ['#ffebee', '#e3f2fd', '#e8f5e9', '#f3e5f5', '#fffde7'];
+    boxes.forEach((box, index) => {
+        box.style.backgroundColor = colors[index % colors.length];
+    });
 }
 
 function calculateUltimateOwnership() {
@@ -175,7 +261,7 @@ function calculateUltimateOwnership() {
     }
 
     // Display ownership breakdown
-    resultText += `<p><span class="bold upper">${ultimateOwner}</span>'s ownership/beneficial ownership (percentage):</p>`;
+    resultText += `<p><span class="bold upper">${ultimateOwner}</span>'s beneficial ownership (BO) percentage:</p>`;
     resultText += `<ul>`;
     ownershipBreakdown.forEach(line => {
         resultText += `<li>${line}</li>`;
@@ -184,9 +270,6 @@ function calculateUltimateOwnership() {
 
     document.getElementById('result').innerHTML = resultText;
 }
-
-
-
 </script>
 
 </body>
