@@ -209,8 +209,8 @@
         <p>Calculate an individual's ultimate beneficial ownership percentage in an entity (through multiple layers of entities)</p> 
         <ul>
             <li>"Ultimate Owner" is the individual shareholder of "Entity 1"</li> 
-            <li>"Entity 1" is the shareholder of "Entity 2".</li>
-            <li>"Entity 2" is the shareholder of "Entity 3".</li>
+            <li>"Entity 1" is the shareholder of "Entity 2"</li>
+            <li>"Entity 2" is the shareholder of "Entity 3"</li>
         </ul>
     </subtitle>
 
@@ -302,6 +302,11 @@ function calculateUltimateOwnership() {
 
     // Function to handle form export
     function exportToHTML() {
+
+        // Get the name of the ultimate owner
+        var ultimateOwnerName = document.getElementById('ultimateOwner').value.trim();
+        var filename = ultimateOwnerName ? `ownership - ${ultimateOwnerName}.html` : 'ownership.html';
+
         // Get all input elements (text and number types)
         var inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
 
@@ -315,7 +320,7 @@ function calculateUltimateOwnership() {
         var encodedHTML = encodeURIComponent(htmlContent);
         var link = document.createElement('a');
         link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
-        link.setAttribute('download', 'ownership.html');
+        link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
