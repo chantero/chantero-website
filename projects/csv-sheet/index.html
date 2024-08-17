@@ -95,6 +95,7 @@ h1 {
     justify-content: center; 
     align-items: center;
     padding-top: 3em;
+    flex-wrap: wrap;
 }
 
 table {
@@ -183,7 +184,8 @@ table input[type="text"] {
 
 <section class="all-buttons">
     <button class="my-button" type="button" onclick="addRow()">Add Row</button>
-    <button class="my-button" type="button" onclick="exportTableToCSV('websheet')">Export CSV</button>
+    <button class="my-button" type="button" onclick="exportTableToCSV('variables')">Export CSV</button>
+    <button class="my-button" type="button" onclick="exportTableToCSV('variables_bulk')">Bulk CSV</button>
     <button class="my-button" type="button" onclick="exportToHTML()">Export HTML</button>
 </section>
 
@@ -376,7 +378,7 @@ function exportTableToCSV(filename) {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'variables.csv';
+    link.download = filename + '.csv';
     link.click();
 }
 
