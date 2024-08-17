@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CSV Sheet</title>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 2em;
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+h1 {
+    color: black;
+    margin: 20px;
+}
+
+.my-button {
+  padding: 20px;
+  width: 170px;
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 10px;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.my-button:after {
+  background-clip: padding-box;
+  background-color: #1CB0F6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.my-button:main,
+.my-button:focus {
+  user-select: auto;
+}
+
+.my-button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.my-button:disabled {
+  cursor: auto;
+}
+
+.my-button:active {
+  border-width: 4px 0 0;
+  background: none;
+}
+
+.all-buttons {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center;
+    padding-top: 3em;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.outer-table {
+    padding: 20px;
+    background: #fbfffb;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+/* Zebra striping */
+tr:nth-of-type(even) { 
+    background: #f5f5f5; 
+}
+
+th, td {
+    padding: 10px; /* Adjust padding for spacing */
+    text-align: left;
+    border: 1px solid #a3a3a3; /* grey border */
+}
+
+th {
+    text-align: center;
+    background-color: #cff5ff; /* Light blue background for headers */
+    font-weight: bold; /* Bold font for headers */
+    width: 100px; /* Initial fixed width */
+    min-width: 70px; /* Minimum width */
+    max-width: 100%; /* Allow to expand based on content */
+}
+
+table td {
+  min-width: 200px; /* Adjust the value as needed */
+}
+
+/* Input style for cells */
+table input[type="text"] {
+    border: none; /* No visible border */
+    padding: 0; /* No padding */
+    background: none; /* No background */
+    font-family: inherit; 
+    font-size: inherit; 
+    text-align: inherit; 
+    box-shadow: none; 
+    outline: none; 
+    resize: none; /* No resize handle */
+    overflow: visible; /* Show overflow text */
+    white-space: pre-wrap; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words */
+}
+
+/* Selection styles */
+.selected {
+    background-color: #d1e7dd; /* Light green background for selected cells */
+    border: 1px solid #1899D6; /* Blue border for selected cells */
+}
+
+#drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+    color: #ccc;
+}
+
+#drop-area.drag-over {
+    border-color: #1899D6;
+    color: #1899D6;
+}
+</style>
+</head>
+<body onload="setup()">
+<h1>CSV Sheet</h1>
+
+<div id="drop-area">Drop CSV file here</div>
+
+<div id="table-container" class="outer-table" style="overflow-x:auto;">
+    <!-- Table will be inserted here by JavaScript -->
+</div>
+
+<section class="all-buttons">
+    <button class="my-button" type="button" onclick="addRow()">Add Row</button>
+    <button class="my-button" type="button" onclick="exportTableToCSV('websheet')">Export to CSV</button>
+    <button class="my-button" type="button" onclick="exportToHTML()">Export To HTML</button>
+</section>
+
+<script>
+let selectedCells = [];
+let copiedData = [];
+let history = [];
+let redoStack = [];
+let isSelecting = false;
+
+function setup() {
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+            e.preventDefault();
+            copySelection();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+            e.preventDefault();
+            pasteSelection();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+            e.preventDefault();
+            undo();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+            e.preventDefault();
+            redo();
+        }
+    });
+
+    document.addEventListener('contextmenu', (e) => {
+        const targetCell = e.target.closest('td');
+        if (targetCell && selectedCells.includes(targetCell)) {
+            e.preventDefault();
+            showContextMenu(e.pageX, e.pageY);
+        }
+    });
+
+    const dropArea = document.getElementById('drop-area');
+    dropArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        dropArea.classList.add('drag-over');
+    });
+
+    dropArea.addEventListener('dragleave', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        dropArea.classList.remove('drag-over');
+    });
+
+    dropArea.addEventListener('drop', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        dropArea.classList.remove('drag-over');
+        const file = event.dataTransfer.files[0];
+        if (file && file.type === 'text/csv') {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const csvData = e.target.result;
+                generateTableFromCSV(csvData);
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    const tableContainer = document.getElementById('table-container');
+    tableContainer.addEventListener('mousedown', (e) => {
+        if (e.button === 0) { // Left mouse button
+            const td = e.target.closest('td');
+            if (td) {
+                if (e.shiftKey) {
+                    selectRange(td);
+                } else if (e.ctrlKey || e.metaKey) {
+                    toggleSelectCell(td);
+                } else {
+                    clearSelection();
+                    selectCell(td);
+                }
+                isSelecting = true;
+            }
+        }
+    });
+
+    tableContainer.addEventListener('mousemove', (e) => {
+        if (isSelecting) {
+            const td = e.target.closest('td');
+            if (td) {
+                continueCellSelection(e, td);
+            }
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isSelecting = false;
+    });
+}
+
+function parseCSV(csvText) {
+    const rows = [];
+    let currentRow = [];
+    let currentField = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < csvText.length; i++) {
+        const char = csvText[i];
+
+        if (char === '"') {
+            if (inQuotes && csvText[i + 1] === '"') {
+                // Handle escaped double quote
+                currentField += '"';
+                i++; // Skip the next quote
+            } else {
+                // Toggle inQuotes state
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            // End of a field
+            currentRow.push(currentField);
+            currentField = '';
+        } else if (char === '\n' && !inQuotes) {
+            // End of a row
+            currentRow.push(currentField);
+            rows.push(currentRow);
+            currentRow = [];
+            currentField = '';
+        } else {
+            // Add character to the current field
+            currentField += char;
+        }
+    }
+
+    // Add the last field and row
+    if (currentField || currentRow.length > 0) {
+        currentRow.push(currentField);
+        rows.push(currentRow);
+    }
+
+    return rows;
+}
+
+function generateTableFromCSV(csvText) {
+    const rows = parseCSV(csvText);
+    const table = document.createElement('table');
+
+    rows.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+            const td = document.createElement('td');
+            td.contentEditable = true;
+            td.textContent = cell.trim();
+            td.addEventListener('mousedown', (event) => startCellSelection(event, td));
+            td.addEventListener('mouseenter', (event) => continueCellSelection(event, td));
+            td.addEventListener('input', (event) => saveHistory(td)); // Track changes
+            tr.appendChild(td);
+        });
+        table.appendChild(tr);
+    });
+
+    const container = document.getElementById('table-container');
+    container.innerHTML = '';
+    container.appendChild(table);
+}
+
+
+function saveHistory(cell) {
+    // Save current table state for undo/redo functionality
+    const tableHtml = document.querySelector('#table-container table').outerHTML;
+    history.push(tableHtml);
+    redoStack = []; // Clear redo stack on new action
+}
+
+function exportTableToCSV(filename) {
+    const rows = document.querySelectorAll('#table-container table tr');
+    let csvContent = '';
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const rowArray = [];
+        cells.forEach(cell => {
+            let cellText = cell.textContent.replace(/"/g, '""'); // Escape double quotes
+            if (cellText.includes(',') || cellText.includes('\n') || cellText.includes('"')) {
+                cellText = `"${cellText}"`; // Wrap in quotes
+            }
+            rowArray.push(cellText);
+        });
+        csvContent += rowArray.join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename + '.csv';
+    link.click();
+}
+
+
+
+function exportToHTML() {
+  // Get all input elements in the table
+  var inputs = document.querySelectorAll('input[type="text"]');
+
+  // Update the value attribute of text input elements with the user's input
+  inputs.forEach(function(input) {
+    input.setAttribute('value', input.value);
+  });
+
+  // Export the HTML with updated values
+  var htmlContent = document.documentElement.outerHTML;
+  var encodedHTML = encodeURIComponent(htmlContent);
+  var link = document.createElement('a');
+  link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
+  link.setAttribute('download', 'websheet.html');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+
+function addRow() {
+    const table = document.querySelector('#table-container table');
+    if (table) {
+        const newRow = table.insertRow();
+        for (let i = 0; i < table.rows[0].cells.length; i++) {
+            const newCell = newRow.insertCell();
+            newCell.contentEditable = true;
+        }
+        saveHistory(); // Save the table state for undo/redo
+    }
+}
+
+function selectCell(td) {
+    td.classList.add('selected');
+    selectedCells = [td];
+}
+
+function toggleSelectCell(td) {
+    if (selectedCells.includes(td)) {
+        td.classList.remove('selected');
+        selectedCells = selectedCells.filter(cell => cell !== td);
+    } else {
+        td.classList.add('selected');
+        selectedCells.push(td);
+    }
+}
+
+function clearSelection() {
+    selectedCells.forEach(cell => cell.classList.remove('selected'));
+    selectedCells = [];
+}
+
+function selectRange(td) {
+    clearSelection();
+    const startCell = selectedCells[0];
+    const endCell = td;
+    const cells = [];
+    let row = startCell.parentElement.rowIndex;
+    let col = startCell.cellIndex;
+
+    while (row <= endCell.parentElement.rowIndex) {
+        while (col <= endCell.cellIndex) {
+            cells.push(document.querySelectorAll('table tr')[row].cells[col]);
+            col++;
+        }
+        row++;
+        col = startCell.cellIndex;
+    }
+
+    cells.forEach(cell => cell.classList.add('selected'));
+    selectedCells = cells;
+}
+
+function continueCellSelection(e, td) {
+    if (isSelecting) {
+        selectRange(td);
+    }
+}
+
+function copySelection() {
+    if (selectedCells.length > 0) {
+        copiedData = selectedCells.map(cell => cell.textContent);
+    }
+}
+
+function pasteSelection() {
+    if (copiedData.length > 0) {
+        selectedCells.forEach((cell, index) => {
+            if (index < copiedData.length) {
+                cell.textContent = copiedData[index];
+            }
+        });
+    }
+}
+
+function undo() {
+    if (history.length > 0) {
+        const tableHtml = history.pop();
+        redoStack.push(document.querySelector('#table-container table').outerHTML);
+        document.querySelector('#table-container').innerHTML = `<table>${tableHtml}</table>`;
+    }
+}
+
+function redo() {
+    if (redoStack.length > 0) {
+        const tableHtml = redoStack.pop();
+        history.push(document.querySelector('#table-container table').outerHTML);
+        document.querySelector('#table-container').innerHTML = `<table>${tableHtml}</table>`;
+    }
+}
+
+function showContextMenu(x, y) {
+    // Implement context menu logic here
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const table = document.getElementById('table-container');
+  let focusedCell = null;
+
+  table.addEventListener('keydown', (event) => {
+    if (!focusedCell) {
+      focusedCell = table.querySelector('td');
+      focusedCell.focus();
+    }
+
+    const cells = Array.from(table.querySelectorAll('td'));
+    const index = cells.indexOf(focusedCell);
+
+    switch (event.key) {
+      case 'ArrowRight':
+        if (index < cells.length - 1) {
+          focusedCell = cells[index + 1];
+          focusedCell.focus();
+        }
+        break;
+      case 'ArrowLeft':
+        if (index > 0) {
+          focusedCell = cells[index - 1];
+          focusedCell.focus();
+        }
+        break;
+      case 'ArrowDown':
+        const nextRowStart = cells.findIndex(cell => cell.parentElement.rowIndex > focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
+        if (nextRowStart !== -1) {
+          focusedCell = cells[nextRowStart];
+          focusedCell.focus();
+        }
+        break;
+      case 'ArrowUp':
+        const prevRowStart = cells.findIndex(cell => cell.parentElement.rowIndex < focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
+        if (prevRowStart !== -1) {
+          focusedCell = cells[prevRowStart];
+          focusedCell.focus();
+        }
+        break;
+    }
+  });
+
+  table.addEventListener('click', (event) => {
+    if (event.target.tagName === 'TD') {
+      focusedCell = event.target;
+      focusedCell.focus();
+    }
+  });
+});
+
+
+
+</script>
+</body>
+</html>
