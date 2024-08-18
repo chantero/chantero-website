@@ -188,8 +188,8 @@ table input[type="text"] {
 
 /* Selection styles */
 .selected {
-    background-color: #feffcd; /* yellow background for selected cells */
-    border: 2px solid #1899D6; /* Blue border for selected cells */
+    background-color: #ddf2ff; /* light blue background for selected cells */
+    border: 1px solid #4bb7fb; /* Blue border for selected cells */
 }
 
 #drop-area {
@@ -425,6 +425,7 @@ function parseCSV(csvText) {
 // Generate HTML Table from the CSV file
 function generateTableFromCSV(csvText) {
     // Parse the csv text - (eg. got ",") in the CSV file
+    
     const rows = parseCSV(csvText);
 
     const table = document.createElement('table');
@@ -536,6 +537,8 @@ function addColumn() {
 
 
 // Cell selection functionalities
+
+
 function selectCell(td) {
     td.classList.add('selected');
     selectedCells = [td];
