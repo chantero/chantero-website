@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CSV Sheet</title>
+<title>CSV Variables Web Sheet</title>
 <style>
 * {
     box-sizing: border-box;
@@ -79,6 +79,16 @@ button:disabled {
 button:active {
   border-width: 4px 0 0;
   background: none;
+}
+
+
+.button-amber {
+    background-color: #a28c42;
+    color: black;
+}
+
+.button-amber:after {
+    background-color: #fdde76;
 }
 
 
@@ -178,8 +188,8 @@ table input[type="text"] {
 
 /* Selection styles */
 .selected {
-    background-color: #d1e7dd; /* Light green background for selected cells */
-    border: 1px solid #1899D6; /* Blue border for selected cells */
+    background-color: #feffcd; /* yellow background for selected cells */
+    border: 2px solid #1899D6; /* Blue border for selected cells */
 }
 
 #drop-area {
@@ -202,7 +212,6 @@ table input[type="text"] {
 
 
 
-
 </style>
 </head>
 
@@ -210,7 +219,7 @@ table input[type="text"] {
 
 
 
-<h1>CSV Sheet</h1>
+<h1>CSV Variables Web Sheet</h1>
 
 <section id="drop-area">
     <input type="file" id="file-input" name="file-input" accept=".csv
@@ -229,6 +238,9 @@ table input[type="text"] {
 
 <section class="all-buttons">
 
+    <button type="button" class="button-amber" onclick="generateTableFromCSV('{{variable}}', 'value')">New Table</button>
+
+
     <button type="button" class="button-green" onclick="addRow()">Add Row</button>
     <button type="button" class= "button-green" onclick="addColumn()">Add Column</button>
 
@@ -238,13 +250,6 @@ table input[type="text"] {
     <button type="button" class="button-purple" onclick="exportToHTML()">Export HTML</button>
 
 </section>
-
-
-
-
-
-
-
 
 
 
@@ -276,6 +281,13 @@ function setup() {
             e.preventDefault();
             redo();
         }
+
+        // Shift + Click to select cells from first to last selected
+        if (e.shiftKey && e.key === 'Shift') {
+            e.preventDefault();
+            selectWithShift();
+        }
+
     });
 
 
@@ -529,6 +541,7 @@ function selectCell(td) {
     selectedCells = [td];
 }
 
+
 function toggleSelectCell(td) {
     if (selectedCells.includes(td)) {
         td.classList.remove('selected');
@@ -539,10 +552,12 @@ function toggleSelectCell(td) {
     }
 }
 
+
 function clearSelection() {
     selectedCells.forEach(cell => cell.classList.remove('selected'));
     selectedCells = [];
 }
+
 
 function selectRange(td) {
     clearSelection();
@@ -565,11 +580,13 @@ function selectRange(td) {
     selectedCells = cells;
 }
 
+
 function continueCellSelection(e, td) {
     if (isSelecting) {
         selectRange(td);
     }
 }
+
 
 
 // Copy & Paste - from the selection
@@ -657,6 +674,9 @@ document.addEventListener('DOMContentLoaded', () => {
       focusedCell.focus();
     }
   });
+
+
+
 });
 
 
