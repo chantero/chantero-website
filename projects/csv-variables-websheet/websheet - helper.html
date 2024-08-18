@@ -23,6 +23,16 @@ h1 {
     margin: 20px;
 }
 
+
+subtitle {
+    margin: 1em;
+    padding: 1em;
+    font-size: large;
+    color: slategray;
+
+}
+
+
 button {
   padding: 20px;
   width: 170px;
@@ -192,6 +202,14 @@ table input[type="text"] {
     border: 1px solid #4bb7fb; /* Blue border for selected cells */
 }
 
+
+  /* Edit mode style */
+.edit-mode {
+    background-color: yellow; /* Light blue background */
+    outline: 2px solid #00796b; /* Darker border for active cell */
+  }
+
+
 #drop-area {
     border: 2px dashed #ccc;
     padding: 20px;
@@ -220,6 +238,11 @@ table input[type="text"] {
 
 
 <h1>CSV Variables Web Sheet</h1>
+
+<subtitle>
+    Click "ALT" to toggle "Edit Mode" to move the cursor within the cell
+</subtitle>
+
 
 <section id="drop-area">
     <input type="file" id="file-input" name="file-input" accept=".csv
@@ -260,6 +283,9 @@ let history = [];
 let redoStack = [];
 let isSelecting = false;
 
+// Click "ALT" to enter "edit mode"
+let isEditMode = false;
+
 
 function setup() {
 
@@ -282,11 +308,6 @@ function setup() {
             redo();
         }
 
-        // Shift + Click to select cells from first to last selected
-        if (e.shiftKey && e.key === 'Shift') {
-            e.preventDefault();
-            selectWithShift();
-        }
 
     });
 
@@ -435,6 +456,12 @@ function generateTableFromCSV(csvText) {
         row.forEach(cell => {
             const td = document.createElement('td');
             td.contentEditable = true;
+
+            // Assign the toggleEditMode function to the onclick event
+            td.addEventListener('click', function() {
+                toggleEditMode(td);
+            });
+
             td.textContent = cell.trim();
             td.addEventListener('mousedown', (event) => startCellSelection(event, td));
             td.addEventListener('mouseenter', (event) => continueCellSelection(event, td));
@@ -450,6 +477,8 @@ function generateTableFromCSV(csvText) {
     const container = document.getElementById('table-container');
     container.innerHTML = '';
     container.appendChild(table);
+
+    initializeTableNavigation(); 
 }
 
 
@@ -627,12 +656,32 @@ function redo() {
 }
 
 
-// This allows for up, down, left, right keys to move between table cells
-document.addEventListener('DOMContentLoaded', () => {
+
+// Up Down Left Right arrow keys ---> and Toggling "Edit Mode"
+function initializeTableNavigation() {
   const table = document.getElementById('table-container');
   let focusedCell = null;
+  let isEditMode = false;
 
-  table.addEventListener('keydown', (event) => {
+  function toggleEditMode(cell) {
+    isEditMode = !isEditMode;
+    if (isEditMode) {
+      cell.classList.add('edit-mode');
+      cell.classList.remove('normal-mode');
+      cell.focus();
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(cell);
+      range.collapse(false); // Move to the end of the text
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } else {
+      cell.classList.remove('edit-mode');
+      cell.classList.add('normal-mode');
+    }
+  }
+
+  function handleKeyNavigation(event) {
     if (!focusedCell) {
       focusedCell = table.querySelector('td');
       focusedCell.focus();
@@ -641,46 +690,119 @@ document.addEventListener('DOMContentLoaded', () => {
     const cells = Array.from(table.querySelectorAll('td'));
     const index = cells.indexOf(focusedCell);
 
-    switch (event.key) {
-      case 'ArrowRight':
-        if (index < cells.length - 1) {
-          focusedCell = cells[index + 1];
-          focusedCell.focus();
-        }
-        break;
-      case 'ArrowLeft':
-        if (index > 0) {
-          focusedCell = cells[index - 1];
-          focusedCell.focus();
-        }
-        break;
-      case 'ArrowDown':
-        const nextRowStart = cells.findIndex(cell => cell.parentElement.rowIndex > focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
-        if (nextRowStart !== -1) {
-          focusedCell = cells[nextRowStart];
-          focusedCell.focus();
-        }
-        break;
-      case 'ArrowUp':
-        const prevRowStart = cells.findIndex(cell => cell.parentElement.rowIndex < focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
-        if (prevRowStart !== -1) {
-          focusedCell = cells[prevRowStart];
-          focusedCell.focus();
-        }
-        break;
+    if (isEditMode) {
+      const selection = window.getSelection();
+      const range = selection.getRangeAt(0);
+
+      switch (event.key) {
+        case 'ArrowRight':
+          event.preventDefault();
+          if (range.startOffset < focusedCell.textContent.length) {
+            range.setStart(focusedCell.firstChild, range.startOffset + 1);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+          break;
+        case 'ArrowLeft':
+          event.preventDefault();
+          if (range.startOffset > 0) {
+            range.setStart(focusedCell.firstChild, range.startOffset - 1);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          // Move to the end of the text
+          range.collapse(false);
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          // Move to the start of the text
+          range.collapse(true);
+          break;
+        default:
+          // Allow other keys to work normally
+          break;
+      }
+    } else {
+      switch (event.key) {
+        case 'ArrowRight':
+          if (index < cells.length - 1) {
+            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
+            focusedCell = cells[index + 1];
+            focusedCell.classList.add('normal-mode'); // Add shading to new cell
+            focusedCell.focus();
+          }
+          break;
+        case 'ArrowLeft':
+          if (index > 0) {
+            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
+            focusedCell = cells[index - 1];
+            focusedCell.classList.add('normal-mode'); // Add shading to new cell
+            focusedCell.focus();
+          }
+          break;
+        case 'ArrowDown':
+          const nextRowStart = cells.findIndex(cell => cell.parentElement.rowIndex > focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
+          if (nextRowStart !== -1) {
+            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
+            focusedCell = cells[nextRowStart];
+            focusedCell.classList.add('normal-mode'); // Add shading to new cell
+            focusedCell.focus();
+          }
+          break;
+        case 'ArrowUp':
+          const prevRowStart = cells.findIndex(cell => cell.parentElement.rowIndex < focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
+          if (prevRowStart !== -1) {
+            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
+            focusedCell = cells[prevRowStart];
+            focusedCell.classList.add('normal-mode'); // Add shading to new cell
+            focusedCell.focus();
+          }
+          break;
+      }
+    }
+  }
+
+  table.addEventListener('keydown', (event) => {
+    if (event.key === 'Alt') {
+      if (focusedCell) {
+        toggleEditMode(focusedCell);
+      }
+      event.preventDefault(); // Prevent default Alt behavior
+    } else {
+      handleKeyNavigation(event);
     }
   });
 
   table.addEventListener('click', (event) => {
     if (event.target.tagName === 'TD') {
+      if (focusedCell) {
+        focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
+      }
       focusedCell = event.target;
+      focusedCell.classList.add('normal-mode'); // Add shading to new cell
       focusedCell.focus();
     }
   });
 
+  // Optionally, make sure to remove shading when clicking outside of the table
+  document.addEventListener('click', (event) => {
+    if (!table.contains(event.target)) {
+      if (focusedCell && !isEditMode) {
+        focusedCell.classList.remove('normal-mode');
+      }
+    }
+  });
+}
 
 
-});
+
+
+
 
 
 
