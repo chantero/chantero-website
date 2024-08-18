@@ -23,16 +23,17 @@ h1 {
     margin: 20px;
 }
 
-.my-button {
+button {
   padding: 20px;
   width: 170px;
   appearance: button;
-  background-color: #1899D6;
+/*  background-color: #1899D6;
+  color: black;
+*/  
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
   box-sizing: border-box;
-  color: #FFFFFF;
   cursor: pointer;
   display: inline-block;
   font-family: din-round,sans-serif;
@@ -55,9 +56,9 @@ h1 {
   white-space: nowrap;
 }
 
-.my-button:after {
+button:after {
   background-clip: padding-box;
-  background-color: #1CB0F6;
+/*  background-color: #1CB0F6;*/
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
@@ -70,24 +71,46 @@ h1 {
   z-index: -1;
 }
 
-.my-button:main,
-.my-button:focus {
-  user-select: auto;
-}
 
-.my-button:hover:not(:disabled) {
-  filter: brightness(1.1);
-  -webkit-filter: brightness(1.1);
-}
-
-.my-button:disabled {
+button:disabled {
   cursor: auto;
 }
 
-.my-button:active {
+button:active {
   border-width: 4px 0 0;
   background: none;
 }
+
+
+.button-green {
+    background-color: #49af81;
+    color: black;
+}
+
+.button-green:after {
+    background-color: #7ae095;
+}
+
+.button-blue {
+    background-color: #1899D6;
+    color: black;
+}
+
+.button-blue:after {
+    background-color: #68e4ff;
+}
+
+.button-purple {
+    background-color: #72219c;
+    color: black;
+}
+
+.button-purple:after {
+    background-color: #d3aaea;
+}
+
+
+
 
 .all-buttons {
     display: flex;
@@ -102,6 +125,7 @@ table {
     border-collapse: collapse;
     table-layout: fixed;
     margin: 20px auto;
+    padding: 10px;
     background-color: #fff;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
@@ -165,29 +189,64 @@ table input[type="text"] {
     width: 80%;
     text-align: center;
     color: #ccc;
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 #drop-area.drag-over {
     border-color: #1899D6;
     color: #1899D6;
+    background-color: rgba(203, 253, 255, 0.3);
 }
+
+
+
+
+
+
 </style>
 </head>
+
 <body onload="setup()">
+
+
+
 <h1>CSV Sheet</h1>
 
-<div id="drop-area">Drop CSV file here</div>
+<section id="drop-area">
+    <input type="file" id="file-input" name="file-input" accept=".csv
+    " style="display:none">
+    <p>Drop a CSV file here (or) Click to select CSV file</p>
+</section>
 
-<div id="table-container" class="outer-table" style="overflow-x:auto;">
+
+
+<section id="table-container" class="outer-table" style="overflow-x:auto;">
     <!-- Table will be inserted here by JavaScript -->
-</div>
+        <!-- See: GenerateTableFromCSV() below -->
+</section>
+
+
 
 <section class="all-buttons">
-    <button class="my-button" type="button" onclick="addRow()">Add Row</button>
-    <button class="my-button" type="button" onclick="exportTableToCSV('variables')">Export CSV</button>
-    <button class="my-button" type="button" onclick="exportTableToCSV('variables_bulk')">Bulk CSV</button>
-    <button class="my-button" type="button" onclick="exportToHTML()">Export HTML</button>
+
+    <button type="button" class="button-green" onclick="addRow()">Add Row</button>
+    <button type="button" class= "button-green" onclick="addColumn()">Add Column</button>
+
+    <button type="button" class="button-blue" onclick="exportTableToCSV('variables')">Export CSV</button>
+    <button type="button" class="button-blue" onclick="exportTableToCSV('variables_bulk')">Bulk CSV</button>
+    
+    <button type="button" class="button-purple" onclick="exportToHTML()">Export HTML</button>
+
 </section>
+
+
+
+
+
+
+
+
+
 
 <script>
 let selectedCells = [];
@@ -196,7 +255,10 @@ let history = [];
 let redoStack = [];
 let isSelecting = false;
 
+
 function setup() {
+
+    // For copy / paste / undo / redo shortcuts
     document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
             e.preventDefault();
@@ -216,15 +278,32 @@ function setup() {
         }
     });
 
-    document.addEventListener('contextmenu', (e) => {
-        const targetCell = e.target.closest('td');
-        if (targetCell && selectedCells.includes(targetCell)) {
-            e.preventDefault();
-            showContextMenu(e.pageX, e.pageY);
+
+    // For CSV file input 
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+
+
+        // Handle file selection through input
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === 'text/csv') {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const csvData = e.target.result;
+                generateTableFromCSV(csvData);
+            };
+            reader.readAsText(file);
         }
     });
 
-    const dropArea = document.getElementById('drop-area');
+        // Trigger file input when drop area is clicked
+    dropArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+
+        // For drag drop of the CSV file
     dropArea.addEventListener('dragover', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -284,6 +363,9 @@ function setup() {
     });
 }
 
+
+// To parse the CSV, esp. when you have comma (,) in text
+    // used in generateTableFromCSV() below
 function parseCSV(csvText) {
     const rows = [];
     let currentRow = [];
@@ -327,8 +409,12 @@ function parseCSV(csvText) {
     return rows;
 }
 
+
+// Generate HTML Table from the CSV file
 function generateTableFromCSV(csvText) {
+    // Parse the csv text - (eg. got ",") in the CSV file
     const rows = parseCSV(csvText);
+
     const table = document.createElement('table');
 
     rows.forEach(row => {
@@ -339,9 +425,12 @@ function generateTableFromCSV(csvText) {
             td.textContent = cell.trim();
             td.addEventListener('mousedown', (event) => startCellSelection(event, td));
             td.addEventListener('mouseenter', (event) => continueCellSelection(event, td));
-            td.addEventListener('input', (event) => saveHistory(td)); // Track changes
+
+            td.addEventListener('input', (event) => saveHistory(td)); // Track changes (for undo/redo)
+            
             tr.appendChild(td);
         });
+        
         table.appendChild(tr);
     });
 
@@ -351,13 +440,16 @@ function generateTableFromCSV(csvText) {
 }
 
 
+// Save current table state for undo/redo functionality
+    // Used in generateTableFromCSV() above
 function saveHistory(cell) {
-    // Save current table state for undo/redo functionality
     const tableHtml = document.querySelector('#table-container table').outerHTML;
     history.push(tableHtml);
     redoStack = []; // Clear redo stack on new action
 }
 
+
+// Export to CSV
 function exportTableToCSV(filename) {
     const rows = document.querySelectorAll('#table-container table tr');
     let csvContent = '';
@@ -383,7 +475,7 @@ function exportTableToCSV(filename) {
 }
 
 
-
+// Export to HTML
 function exportToHTML() {
   // Get all input elements in the table
   var inputs = document.querySelectorAll('input[type="text"]');
@@ -405,6 +497,7 @@ function exportToHTML() {
 }
 
 
+// Add Row & Columns to Table
 function addRow() {
     const table = document.querySelector('#table-container table');
     if (table) {
@@ -417,6 +510,20 @@ function addRow() {
     }
 }
 
+function addColumn() {
+    const table = document.querySelector('#table-container table');
+    if (table) {
+        // Iterate through each row and add a new cell
+        for (let row of table.rows) {
+            const newCell = row.insertCell();
+            newCell.contentEditable = true;
+        }
+        saveHistory(); // Save the table state for undo/redo
+    }
+}
+
+
+// Cell selection functionalities
 function selectCell(td) {
     td.classList.add('selected');
     selectedCells = [td];
@@ -464,6 +571,8 @@ function continueCellSelection(e, td) {
     }
 }
 
+
+// Copy & Paste - from the selection
 function copySelection() {
     if (selectedCells.length > 0) {
         copiedData = selectedCells.map(cell => cell.textContent);
@@ -480,6 +589,7 @@ function pasteSelection() {
     }
 }
 
+// Undo and Redo
 function undo() {
     if (history.length > 0) {
         const tableHtml = history.pop();
@@ -496,11 +606,8 @@ function redo() {
     }
 }
 
-function showContextMenu(x, y) {
-    // Implement context menu logic here
-}
 
-
+// This allows for up, down, left, right keys to move between table cells
 document.addEventListener('DOMContentLoaded', () => {
   const table = document.getElementById('table-container');
   let focusedCell = null;
