@@ -18,6 +18,21 @@ body {
     min-height: 100vh;
 }
 
+
+body.default-background {
+   background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+ }
+
+body.changed-background {
+    background-color: background: rgb(220,228,109);
+background: -moz-linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
+background: -webkit-linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
+background: linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#dce46d",endColorstr="#f4acff",GradientType=1);
+}
+
+
+
 h1 {
     color: black;
     margin: 20px;
@@ -229,6 +244,42 @@ table input[type="text"] {
 
 
 
+#copyIndicator {
+    position: fixed;
+    transform: translate(-70%, 50%);
+    background-color: rgba(20, 20, 20, 0.75);
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+    display: none;;
+}
+
+
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 30px; /* Increased size */
+    height: 30px; /* Increased size */
+    margin-right: 10px;
+    border-radius: 15px;
+}
+
+.checkbox-container label {
+    font-size: large; /* Increased font size */
+    padding: 10px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+
+
+
 
 </style>
 </head>
@@ -239,9 +290,6 @@ table input[type="text"] {
 
 <h1>CSV Variables Web Sheet</h1>
 
-<subtitle>
-    Click "ALT" to toggle "Edit Mode" to move the cursor within the cell
-</subtitle>
 
 
 <section id="drop-area">
@@ -252,10 +300,35 @@ table input[type="text"] {
 
 
 
+
+<subtitle>
+    Click "ALT" to enable Arrow Keys movement within each table cell <br><br>
+    · · ─────── ·𖥸· ─────── · · <br>
+</subtitle>
+
+<br>
+
+
+<!-- lock form and enable copyboard -->
+<section class='checkbox-container'>
+    <label for="copyboard-checkbox">Select to turn on Read Mode & Copyboard</label>
+    <input type="checkbox" id="copyboard-checkbox" name="copyboard-checkbox">
+    <div id="copyIndicator";></div>
+</section>
+
+<subtitle>
+    (Note: You have to re-check this box when you load a new csv form)
+</subtitle>
+
+<br><br><br>
+
+
+
 <section id="table-container" class="outer-table" style="overflow-x:auto;">
     <!-- Table will be inserted here by JavaScript -->
         <!-- See: GenerateTableFromCSV() below -->
 </section>
+
 
 
 
@@ -797,8 +870,149 @@ function initializeTableNavigation() {
       }
     }
   });
+
+
+
+
+// // Lock Table and Enable Copyboard
+function startEditMode() {
+    isLocked = document.getElementById('copyboard-checkbox').checked;
+    const cells = document.querySelectorAll('#table-container td');
+    
+    cells.forEach(cell => {
+        cell.contentEditable = !isLocked; // Lock or unlock cells based on checkbox
+        if (isLocked) {
+            cell.classList.remove('edit-mode');
+        }
+    });
 }
 
+// Toggle Edit Mode
+function toggleEditMode(cell) {
+    if (isLocked) return; // Do nothing if the table is locked
+    
+    isEditMode = !isEditMode;
+    if (isEditMode) {
+        cell.classList.add('edit-mode');
+        cell.classList.remove('normal-mode');
+        cell.focus();
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(cell);
+        range.collapse(false); // Move to the end of the text
+        selection.removeAllRanges();
+        selection.addRange(range);
+    } else {
+        cell.classList.remove('edit-mode');
+        cell.classList.add('normal-mode');
+    }
+}
+
+function initializeTableNavigation() {
+    const table = document.getElementById('table-container');
+    let focusedCell = null;
+
+    function handleKeyNavigation(event) {
+        if (!focusedCell) {
+            focusedCell = table.querySelector('td');
+            focusedCell.focus();
+        }
+
+        const cells = Array.from(table.querySelectorAll('td'));
+        const index = cells.indexOf(focusedCell);
+
+        if (isEditMode) {
+            // Handle edit mode key navigation (similar to the provided code)
+        } else {
+            // Handle normal mode key navigation
+        }
+    }
+
+    document.addEventListener('keydown', handleKeyNavigation);
+}
+
+document.getElementById('copyboard-checkbox').addEventListener('change', startEditMode);
+
+// Call this function on setup to initialize the table navigation and other settings
+setup();
+initializeTableNavigation();
+
+
+
+// let isSelecting = true; // Assuming selecting mode is on by default
+const copyIndicator = document.getElementById('copy-indicator');
+const dataTable = document.getElementById('data-table');
+
+// Function to toggle lock based on checkbox
+function toggleLock() {
+    const isLocked = document.getElementById('copyboard-checkbox').checked;
+    dataTable.className = isLocked ? 'locked-mode' : 'normal-mode';
+}
+
+// Function to handle cell click
+function handleCellClick(event) {
+    if (!isSelecting) return; // Skip if not selecting
+
+    const cell = event.target;
+    if (cell.tagName === 'TD') {
+        cell.classList.toggle('selected');
+    }
+}
+
+
+
+// COPYBOARD
+function setupClipboardCopy(tableId) {
+    const table = document.getElementById('table-container');
+    const copyIndicator = document.getElementById('copyIndicator');
+    let isEnabled = false;
+
+    table.addEventListener('click', function(event) {
+        if (!isEnabled) return;
+
+        const target = event.target;
+
+        if (target.tagName === 'TD') {
+            const text = target.innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            // Show copy indicator
+            copyIndicator.innerText = 'copied:\n' + text;
+            copyIndicator.style.display = 'block';
+            copyIndicator.style.top = `${event.pageY + 5}px`;
+            copyIndicator.style.left = `${event.pageX + 5}px`;
+
+            // Hide the indicator after 1 second
+            setTimeout(() => {
+                copyIndicator.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    document.getElementById('copyboard-checkbox').addEventListener('change', function() {
+        isEnabled = this.checked;
+    });
+}
+
+setupClipboardCopy('table-container');
+
+}
+
+
+document.getElementById('copyboard-checkbox').addEventListener('change', function() {
+    if (this.checked) {
+        document.body.classList.remove('default-background');
+        document.body.classList.add('changed-background');
+    } else {
+        document.body.classList.remove('changed-background');
+        document.body.classList.add('default-background');
+    }
+});
 
 
 
