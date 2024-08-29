@@ -1,9 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-<meta charset="UTF-8">
-<title>CSV Variables Web Sheet</title>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+
+<title>Doxtero Websheet</title>
+
+<meta name='description' content='A csv variables websheet for Doxtero'>
+<meta name='author' content='Chantero'>
+<meta property='og:title' content='Doxtero Websheet'>
+<meta property='og:type' content='website'>
+<meta property='og:description' content='A csv variables websheet for Doxtero'>
+
+
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -18,19 +29,17 @@ body {
     min-height: 100vh;
 }
 
-
-body.default-background {
-   background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
- }
-
-body.changed-background {
-    background-color: background: rgb(220,228,109);
-background: -moz-linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
-background: -webkit-linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
-background: linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#dce46d",endColorstr="#f4acff",GradientType=1);
+.default-background {
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+}
+.copyboard-background {
+    background: linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
 }
 
+/* transition for smooth background change */
+body {
+    transition: background 0.3s;
+}
 
 
 h1 {
@@ -38,15 +47,135 @@ h1 {
     margin: 20px;
 }
 
-
 subtitle {
     margin: 1em;
     padding: 1em;
     font-size: large;
     color: slategray;
+}
+
+
+
+/* -- DROP ZONE */
+#drop-zone {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+    color: #ccc;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+}
+
+#drop-zone.drag-over {
+    border-color: #1899D6;
+    color: #1899D6;
+    background-color: rgba(203, 253, 255, 0.3);
+}
+
+
+/* COPYBOARD CHECKBOX */
+.checkbox-container {
+    font-size: large;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 30px; /* Increased size */
+    height: 30px; /* Increased size */
+    margin: 30px;
+}
+
+
+
+/* -- COPY INDICATOR */
+.copy-indicator {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 1em;
+    border-radius: 15px;
+    position: fixed; /* Position fixed relative to the viewport */
+    top: 50%; /* Move down 50% from the top */
+    left: 50%; /* Move right 50% from the left */
+    transform: translate(-50%, -50%); /* Offset the position to center the element */
+    z-index: 9999; /* Ensure it is on top of other elements */
+}
+
+.copied-cell {
+    background-color: #fcffb5; 
+    border: 1px solid red;    /* Example border */
+}
+
+/* -- TABLE STYLE */
+
+#table-container {
+    border-radius: 7px;
 
 }
 
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.outer-table {
+    padding: 20px;
+    background: #fbfffb;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+/* Zebra striping */
+tr:nth-of-type(even) { 
+    background: #f5f5f5; 
+}
+
+th, td {
+    padding: 10px; /* Adjust padding for spacing */
+    text-align: left;
+    border: 1px solid #a3a3a3; /* grey border */
+}
+
+th {
+    text-align: center;
+    background-color: #cff5ff; 
+    width: 100px; 
+    min-width: 70px; 
+    max-width: 100%; /* Allow to expand based on content */
+}
+
+table td {
+    min-width: 200px;
+}
+
+/* Input style for cells */
+table input[type="text"] {
+    border: none; /* No visible border */
+    padding: 0; /* No padding */
+    background: none; /* No background */
+    font-family: inherit; 
+    font-size: inherit; 
+    text-align: inherit; 
+    box-shadow: none; 
+    outline: none; 
+    resize: none; /* No resize handle */
+    overflow: visible; /* Show overflow text */
+    white-space: pre-wrap; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words */
+}
+
+
+
+/* BUTTONS */
 
 button {
   padding: 20px;
@@ -144,10 +273,7 @@ button:active {
     background-color: #d3aaea;
 }
 
-
-
-
-.all-buttons {
+.buttons-container {
     display: flex;
     flex-direction: row; 
     justify-content: center; 
@@ -156,870 +282,415 @@ button:active {
     flex-wrap: wrap;
 }
 
-table {
-    border-collapse: collapse;
-    table-layout: fixed;
-    margin: 20px auto;
-    padding: 10px;
-    background-color: #fff;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-}
-
-.outer-table {
-    padding: 20px;
-    background: #fbfffb;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-}
-
-/* Zebra striping */
-tr:nth-of-type(even) { 
-    background: #f5f5f5; 
-}
-
-th, td {
-    padding: 10px; /* Adjust padding for spacing */
-    text-align: left;
-    border: 1px solid #a3a3a3; /* grey border */
-}
-
-th {
-    text-align: center;
-    background-color: #cff5ff; /* Light blue background for headers */
-    font-weight: bold; /* Bold font for headers */
-    width: 100px; /* Initial fixed width */
-    min-width: 70px; /* Minimum width */
-    max-width: 100%; /* Allow to expand based on content */
-}
-
-table td {
-  min-width: 200px; /* Adjust the value as needed */
-}
-
-/* Input style for cells */
-table input[type="text"] {
-    border: none; /* No visible border */
-    padding: 0; /* No padding */
-    background: none; /* No background */
-    font-family: inherit; 
-    font-size: inherit; 
-    text-align: inherit; 
-    box-shadow: none; 
-    outline: none; 
-    resize: none; /* No resize handle */
-    overflow: visible; /* Show overflow text */
-    white-space: pre-wrap; /* Allow text to wrap */
-    word-wrap: break-word; /* Break long words */
-}
-
-/* Selection styles */
-.selected {
-    background-color: #ddf2ff; /* light blue background for selected cells */
-    border: 1px solid #4bb7fb; /* Blue border for selected cells */
-}
-
-
-  /* Edit mode style */
-.edit-mode {
-    background-color: yellow; /* Light blue background */
-    outline: 2px solid #00796b; /* Darker border for active cell */
-  }
-
-
-#drop-area {
-    border: 2px dashed #ccc;
-    padding: 20px;
-    margin: 20px auto;
-    width: 80%;
-    text-align: center;
-    color: #ccc;
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-#drop-area.drag-over {
-    border-color: #1899D6;
-    color: #1899D6;
-    background-color: rgba(203, 253, 255, 0.3);
-}
-
-
-
-
-#copyIndicator {
-    position: fixed;
-    transform: translate(-70%, 50%);
-    background-color: rgba(20, 20, 20, 0.75);
-    color: white;
-    padding: 10px;
-    border-radius: 15px;
-    display: none;;
-}
-
-
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    justify-content: center;
-}
-
-.checkbox-container input[type="checkbox"] {
-    width: 30px; /* Increased size */
-    height: 30px; /* Increased size */
-    margin-right: 10px;
-    border-radius: 15px;
-}
-
-.checkbox-container label {
-    font-size: large; /* Increased font size */
-    padding: 10px;
-    margin: 10px;
-    font-weight: bold;
-}
-
-
 
 
 
 </style>
 </head>
 
-<body onload="setup()">
+
+<body onload='setup()'>
+<!-- Note: run the setup() [javascript below] when the website loads up -->
+
+<h1>Doxtero Websheet</h1>
 
 
+<!-- CSV FILE DROP CONTAINER -->
+<section id='file-drop-container'>
 
-<h1>CSV Variables Web Sheet</h1>
+    <article id='drop-zone'>
+        <input type='file' id='csv-input' name='csv-input' accept='.csv' style='display:none'>
+        <p>Drop a CSV file here (or) Click to select CSV file</p> 
+    </article>
 
+    <subtitle> ─────── 𖥸 ─────── </subtitle>
 
-
-<section id="drop-area">
-    <input type="file" id="file-input" name="file-input" accept=".csv
-    " style="display:none">
-    <p>Drop a CSV file here (or) Click to select CSV file</p>
 </section>
 
 
+<!-- CHECKBOX (Switch between Edit Mode and Copyboard Mode) -->
+<section id='checkbox-container'>
 
+    <article class='checkbox-container'>
+        <label for='copyboard-checkbox'>Switch to Copyboard</label>
+        <input type='checkbox' id='copyboard-checkbox' name='copyboard-checkbox'>
+        <div id='copy-indicator';></div><br>
+    </article>
 
-<subtitle>
-    Click "ALT" to enable Arrow Keys movement within each table cell <br><br>
-    · · ─────── ·𖥸· ─────── · · <br>
-</subtitle>
-
-<br>
-
-
-<!-- lock form and enable copyboard -->
-<section class='checkbox-container'>
-    <label for="copyboard-checkbox">Switch to Copyboard</label>
-    <input type="checkbox" id="copyboard-checkbox" name="copyboard-checkbox">
-    <div id="copyIndicator";></div>
-</section>
-
-<subtitle>
-    (Note: You have to re-check this box when you load a new csv form)
-</subtitle>
-
-<br><br><br>
-
-
-
-<section id="table-container" class="outer-table" style="overflow-x:auto;">
-    <!-- Table will be inserted here by JavaScript -->
-        <!-- See: GenerateTableFromCSV() below -->
-</section>
-
-
-
-
-<section class="all-buttons">
-
-    <button type="button" class="button-amber" onclick="generateTableFromCSV('{{variable}}', 'value')">New Table</button>
-
-
-    <button type="button" class="button-green" onclick="addRow()">Add Row</button>
-    <button type="button" class= "button-green" onclick="addColumn()">Add Column</button>
-
-    <button type="button" class="button-blue" onclick="exportTableToCSV('variables')">Export CSV</button>
-    <button type="button" class="button-blue" onclick="exportTableToCSV('variables_bulk')">Bulk CSV</button>
-    
-    <button type="button" class="button-purple" onclick="exportToHTML()">Export HTML</button>
 
 </section>
 
 
 
+<!-- TABLE -->
+<section id='table-container' class='outer-table' style='overflow-x:auto;'>
+    <!-- Table will be generated automatically via generate_html_table_from_csv() below -->
+</section>
+
+
+<!-- BUTTONS -->
+<section class='buttons-container'>
+    <button type="button" class="button-amber" id="button-new-table">New Table</button>
+    <button type="button" class="button-green" id="button-add-row">Add Row</button>
+    <button type="button" class= "button-green" id="button-add-column">Add Column</button>
+    <button type="button" class="button-blue" id="button-export-to-csv">Export CSV</button>
+    <button type="button" class="button-blue" id="button-export-to-bulk-csv">Bulk CSV</button>
+    <button type="button" class="button-purple" id="button-export-to-html">Export HTML</button>
+</section>
+
+
+<!-- JAVASCRIPT-->
 <script>
-let selectedCells = [];
-let copiedData = [];
-let history = [];
-let redoStack = [];
-let isSelecting = false;
-
-// Click "ALT" to enter "edit mode"
-let isEditMode = false;
-
-
+// all javascript packed in setup()
 function setup() {
+    // these are just variables to point to the elements in the html
+    const drop_zone = document.getElementById('drop-zone');
+    const csv_input = document.getElementById('csv-input');
+    const table_container = document.getElementById('table-container');
 
-    // For copy / paste / undo / redo shortcuts
-    document.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
-            e.preventDefault();
-            copySelection();
-        }
-        if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-            e.preventDefault();
-            pasteSelection();
-        }
-        if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
-            e.preventDefault();
-            undo();
-        }
-        if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
-            e.preventDefault();
-            redo();
-        }
+    const copyboard_checkbox = document.getElementById('copyboard-checkbox');
+    const copy_indicator = document.getElementById('copy-indicator');
+
+    const button_new_table = document.getElementById('button-new-table');
+    const button_add_row = document.getElementById('button-add-row');
+    const button_add_column = document.getElementById('button-add-column');
+    const button_export_to_csv = document.getElementById('button-export-to-csv');
+    const button_export_to_bulk_csv = document.getElementById('button-export-to-bulk-csv');
+    const button_export_to_html = document.getElementById('button-export-to-html');
 
 
-    });
+// -- CSV FILE INPUT IN DROP AREA
+
+    // (1) csv input: "click" [#csv-input] when user clicks [#drop-zone]
+    drop_zone.addEventListener('click', () => {
+        csv_input.click();
+    });    // drop area click input close bracket
 
 
-    // For CSV file input 
-    const dropArea = document.getElementById('drop-area');
-    const fileInput = document.getElementById('file-input');
+    // (2) csv input: drag & drop of the csv file to [#drop-zone]
+    ['dragover', 'dragleave', 'drop'].forEach(eventName => {
+        drop_zone.addEventListener(eventName, (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            if (eventName === 'dragover') {
+                drop_zone.classList.add('drag-over');
+            } else if (eventName === 'dragleave' || eventName === 'drop') {
+                drop_zone.classList.remove('drag-over');
+            }
+
+            // Handle file drop
+            if (eventName === 'drop') {
+                const file = event.dataTransfer.files[0];
+                if (file && file.type === 'text/csv') {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        // Efficient DOM update after CSV processing
+                        generate_html_table_from_csv(e.target.result);
+                    };
+                    reader.readAsText(file);
+                }
+            }
+        });
+    });    // end - drag & drop file drop area
 
 
-        // Handle file selection through input
-    fileInput.addEventListener('change', (event) => {
+    // (3) csv input: load csv file and [generate_html_table_from_csv()]
+    csv_input.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file && file.type === 'text/csv') {
             const reader = new FileReader();
             reader.onload = (e) => {
-                const csvData = e.target.result;
-                generateTableFromCSV(csvData);
+                const csv_data = e.target.result;
+                generate_html_table_from_csv(csv_data);
             };
-            reader.readAsText(file);
+            reader.readAsText(file)
         }
-    });
-
-        // Trigger file input when drop area is clicked
-    dropArea.addEventListener('click', () => {
-        fileInput.click();
-    });
+    });  // end - handle csv file selection
 
 
-        // For drag drop of the CSV file
-    dropArea.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        dropArea.classList.add('drag-over');
-    });
+// // PARSE CSV FILE FUNCTION 
+    // used in [generate_html_table_from_csv()]
+    function parse_csv(csv_text) {
 
-    dropArea.addEventListener('dragleave', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        dropArea.classList.remove('drag-over');
-    });
-
-    dropArea.addEventListener('drop', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        dropArea.classList.remove('drag-over');
-        const file = event.dataTransfer.files[0];
-        if (file && file.type === 'text/csv') {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const csvData = e.target.result;
-                generateTableFromCSV(csvData);
-            };
-            reader.readAsText(file);
-        }
-    });
-
-    const tableContainer = document.getElementById('table-container');
-    tableContainer.addEventListener('mousedown', (e) => {
-        if (e.button === 0) { // Left mouse button
-            const td = e.target.closest('td');
-            if (td) {
-                if (e.shiftKey) {
-                    selectRange(td);
-                } else if (e.ctrlKey || e.metaKey) {
-                    toggleSelectCell(td);
-                } else {
-                    clearSelection();
-                    selectCell(td);
-                }
-                isSelecting = true;
-            }
-        }
-    });
-
-    tableContainer.addEventListener('mousemove', (e) => {
-        if (isSelecting) {
-            const td = e.target.closest('td');
-            if (td) {
-                continueCellSelection(e, td);
-            }
-        }
-    });
-
-    document.addEventListener('mouseup', () => {
-        isSelecting = false;
-    });
-}
-
-
-// To parse the CSV, esp. when you have comma (,) in text
-    // used in generateTableFromCSV() below
-function parseCSV(csvText) {
-    const rows = [];
-    let currentRow = [];
-    let currentField = '';
-    let inQuotes = false;
-
-    for (let i = 0; i < csvText.length; i++) {
-        const char = csvText[i];
-
-        if (char === '"') {
-            if (inQuotes && csvText[i + 1] === '"') {
-                // Handle escaped double quote
-                currentField += '"';
-                i++; // Skip the next quote
-            } else {
-                // Toggle inQuotes state
-                inQuotes = !inQuotes;
-            }
-        } else if (char === ',' && !inQuotes) {
-            // End of a field
-            currentRow.push(currentField);
-            currentField = '';
-        } else if (char === '\n' && !inQuotes) {
-            // End of a row
-            currentRow.push(currentField);
-            rows.push(currentRow);
-            currentRow = [];
-            currentField = '';
-        } else {
-            // Add character to the current field
-            currentField += char;
-        }
-    }
-
-    // Add the last field and row
-    if (currentField || currentRow.length > 0) {
-        currentRow.push(currentField);
-        rows.push(currentRow);
-    }
-
-    return rows;
-}
-
-
-// Generate HTML Table from the CSV file
-function generateTableFromCSV(csvText) {
-    // Parse the csv text - (eg. got ",") in the CSV file
-    
-    const rows = parseCSV(csvText);
-
-    const table = document.createElement('table');
-
-    rows.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(cell => {
-            const td = document.createElement('td');
-            td.contentEditable = true;
-
-            // Assign the toggleEditMode function to the onclick event
-            td.addEventListener('click', function() {
-                toggleEditMode(td);
-            });
-
-            td.textContent = cell.trim();
-            td.addEventListener('mousedown', (event) => startCellSelection(event, td));
-            td.addEventListener('mouseenter', (event) => continueCellSelection(event, td));
-
-            td.addEventListener('input', (event) => saveHistory(td)); // Track changes (for undo/redo)
-            
-            tr.appendChild(td);
-        });
+        // normalise quotes from "curly" to "straight" quotes -- is this necessary?
+        const normalized_csv_text = csv_text.replace(/‘|’|‛|`|´|‵|′/g, "'")
+                                            .replace(/“|”|〝|〞|‶|″|‟/g, '"');
         
-        table.appendChild(tr);
-    });
+        const rows = [];
+        let current_row = [];
+        let current_field = '';
+        let in_quotes = false;
 
-    const container = document.getElementById('table-container');
-    container.innerHTML = '';
-    container.appendChild(table);
+        // Iterate over each character in the normalized CSV text
+        for (let i = 0; i < normalized_csv_text.length; i++) {
+            const char = normalized_csv_text[i];
 
-    initializeTableNavigation(); 
-}
-
-
-// Save current table state for undo/redo functionality
-    // Used in generateTableFromCSV() above
-function saveHistory(cell) {
-    const tableHtml = document.querySelector('#table-container table').outerHTML;
-    history.push(tableHtml);
-    redoStack = []; // Clear redo stack on new action
-}
-
-
-// Export to CSV
-function exportTableToCSV(filename) {
-    const rows = document.querySelectorAll('#table-container table tr');
-    let csvContent = '';
-
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        const rowArray = [];
-        cells.forEach(cell => {
-            let cellText = cell.textContent.replace(/"/g, '""'); // Escape double quotes
-            if (cellText.includes(',') || cellText.includes('\n') || cellText.includes('"')) {
-                cellText = `"${cellText}"`; // Wrap in quotes
+            if (char === '"') {
+                // Toggle in_quotes or add escaped quotes
+                if (in_quotes && normalized_csv_text[i + 1] === '"') {
+                    current_field += '"';
+                    i++; // Skip the next quote
+                } else {
+                    in_quotes = !in_quotes;
+                }
+            } else if (char === ',' && !in_quotes) {
+                // Add field to current row
+                current_row.push(current_field.trim());
+                current_field = '';
+            } else if ((char === '\n' || char === '\r') && !in_quotes) {
+                // Add row to rows, ensuring not to add empty rows on consecutive newlines
+                if (current_field !== '' || current_row.length > 0) {
+                    current_row.push(current_field.trim());
+                    rows.push(current_row);
+                    current_row = [];
+                    current_field = '';
+                }
+            } else {
+                current_field += char;
             }
-            rowArray.push(cellText);
+        }
+
+        // Handle last row/field if the file doesn't end with a newline
+        if (current_field !== '' || current_row.length > 0) {
+            current_row.push(current_field.trim());
+            rows.push(current_row);
+        }
+
+        return rows;
+    }  // end - parse csv
+
+
+// // GENERATE HTML TABLE FROM CSV FILE
+    // this is the main part, to load the csv as html table
+    function generate_html_table_from_csv(csv_text) {
+        const rows = parse_csv(csv_text);  // parse the csv file -- got "," in the text
+        const table = document.createElement('table');
+
+        rows.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(cell => {
+                const td = document.createElement('td');
+
+                // insert the contents of the csv to the table
+                td.textContent = cell.trim();   
+                td.contentEditable = true;  // default content editable
+
+                // [edit mode] vs [locked mode - for copyboard]
+                copyboard_checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                       // when checkbox is checked - not editable / copyboard on
+                        td.contentEditable = false;
+                        td.addEventListener('click', copyboard_function);
+
+                    
+                    } else {
+                        // when checkbox not check - editable / copyboard off
+                        td.contentEditable = true;
+                        td.removeEventListener('click', copyboard_function);
+                    }
+
+                });    // edit mode vs lock mode close bracket
+
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
         });
-        csvContent += rowArray.join(',') + '\n';
-    });
+        table_container.innerHTML = '';
+        table_container.appendChild(table);
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = filename + '.csv';
-    link.click();
-}
+    }    // end - generate html table from csv
 
 
-// Export to HTML
-function exportToHTML() {
-  // Get all input elements in the table
-  var inputs = document.querySelectorAll('input[type="text"]');
 
-  // Update the value attribute of text input elements with the user's input
-  inputs.forEach(function(input) {
-    input.setAttribute('value', input.value);
-  });
+//  COPYBOARD - used in generate html table from csv
+    function copy_to_clipboard(text) {
+        const temporary_input = document.createElement('input');
+        document.body.appendChild(temporary_input);
+        temporary_input.value = text;
+        temporary_input.select();
+        document.execCommand('copy');
+        document.body.removeChild(temporary_input);
+    } // end - copy to clipboard
 
-  // Export the HTML with updated values
-  var htmlContent = document.documentElement.outerHTML;
-  var encodedHTML = encodeURIComponent(htmlContent);
-  var link = document.createElement('a');
-  link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
-  link.setAttribute('download', 'websheet.html');
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
+    // Function to show copy indicator
+    function show_copy_indicator(copied_text) {
+        const indicator = document.createElement('div');
+        indicator.textContent = `copied: ${copied_text}`;
+        indicator.className = 'copy-indicator'
+        document.body.appendChild(indicator);
+        // Auto-hide the indicator after 0.5 seconds
+        setTimeout(() => {
+            document.body.removeChild(indicator);
+        }, 600);
+    } // end - copy indicator
 
 
-// Add Row & Columns to Table
-function addRow() {
-    const table = document.querySelector('#table-container table');
-    if (table) {
-        const newRow = table.insertRow();
-        for (let i = 0; i < table.rows[0].cells.length; i++) {
-            const newCell = newRow.insertCell();
-            newCell.contentEditable = true;
+
+    // Final Combined Copyboard Function
+        // using the above: copy_to_clipboard(), show_copy_indicator()
+    function copyboard_function(event) {
+        const td = event.target;
+        const copied_text = td.textContent;
+        copy_to_clipboard(copied_text);
+        show_copy_indicator(copied_text);
+
+        // change colour of the cell to .copied-cell class
+        td.classList.add('copied-cell');
+        // remove the colour class automatically after a delay
+        setTimeout(() => {
+            td.classList.remove('copied-cell');
+        }, 500);
+
+    }; // end - copyboard function
+
+
+
+    copyboard_checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            document.body.classList.add('copyboard-background');
+            document.body.classList.remove('default-background');
         }
-        saveHistory(); // Save the table state for undo/redo
-    }
-}
-
-function addColumn() {
-    const table = document.querySelector('#table-container table');
-    if (table) {
-        // Iterate through each row and add a new cell
-        for (let row of table.rows) {
-            const newCell = row.insertCell();
-            newCell.contentEditable = true;
+        else {
+            document.body.classList.add('default-background');
+            document.body.classList.remove('copyboard-background');
         }
-        saveHistory(); // Save the table state for undo/redo
-    }
-}
-
-
-// Cell selection functionalities
-
-
-function selectCell(td) {
-    td.classList.add('selected');
-    selectedCells = [td];
-}
-
-
-function toggleSelectCell(td) {
-    if (selectedCells.includes(td)) {
-        td.classList.remove('selected');
-        selectedCells = selectedCells.filter(cell => cell !== td);
-    } else {
-        td.classList.add('selected');
-        selectedCells.push(td);
-    }
-}
-
-
-function clearSelection() {
-    selectedCells.forEach(cell => cell.classList.remove('selected'));
-    selectedCells = [];
-}
-
-
-function selectRange(td) {
-    clearSelection();
-    const startCell = selectedCells[0];
-    const endCell = td;
-    const cells = [];
-    let row = startCell.parentElement.rowIndex;
-    let col = startCell.cellIndex;
-
-    while (row <= endCell.parentElement.rowIndex) {
-        while (col <= endCell.cellIndex) {
-            cells.push(document.querySelectorAll('table tr')[row].cells[col]);
-            col++;
-        }
-        row++;
-        col = startCell.cellIndex;
-    }
-
-    cells.forEach(cell => cell.classList.add('selected'));
-    selectedCells = cells;
-}
-
-
-function continueCellSelection(e, td) {
-    if (isSelecting) {
-        selectRange(td);
-    }
-}
+    }); // end - change copyboard background color
 
 
 
-// Copy & Paste - from the selection
-function copySelection() {
-    if (selectedCells.length > 0) {
-        copiedData = selectedCells.map(cell => cell.textContent);
-    }
-}
 
-function pasteSelection() {
-    if (copiedData.length > 0) {
-        selectedCells.forEach((cell, index) => {
-            if (index < copiedData.length) {
-                cell.textContent = copiedData[index];
+// BUTTONS
+
+    // (1) Button - Generate New Table
+    const new_table_text = "{{variable}},";
+    button_new_table.addEventListener('click', function() {
+        generate_html_table_from_csv(new_table_text);
+    });   // end - new table
+
+    // (2) Button Add Row
+    function add_row() {
+        const table = document.querySelector('#table-container table');
+        if (table) {
+            const new_row = table.insertRow();
+            for (let i = 0; i < table.rows[0].cells.length; i++) {
+                const new_cell = new_row.insertCell();
+                new_cell.contentEditable = true;
+                
+                copyboard_checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        // when checkbox is checked - not editable / copyboard on
+                        new_cell.contentEditable = false;
+                        new_cell.addEventListener('click', copyboard_function);
+                    } else {
+                        // when checkbox not checked - editable / copyboard off
+                        new_cell.contentEditable = true;
+                        new_cell.removeEventListener('click', copyboard_function);
+                    }
+                });
             }
+        }
+    }
+    button_add_row.addEventListener('click', function() {
+        add_row();
+    }); // end - add row
+
+    // (3) Button Add Column
+    function add_column() {
+        const table = document.querySelector('#table-container table');
+        if (table) {
+            // Iterate through each row and add a new cell
+            for (let row of table.rows) {
+                const new_cell = row.insertCell();
+                new_cell.contentEditable = true;
+
+                copyboard_checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        // when checkbox is checked - not editable / copyboard on
+                        new_cell.contentEditable = false;
+                        new_cell.addEventListener('click', copyboard_function);
+                    } else {
+                        // when checkbox not checked - editable / copyboard off
+                        new_cell.contentEditable = true;
+                        new_cell.removeEventListener('click', copyboard_function);
+                    }
+                });
+            }
+        }
+    }
+    button_add_column.addEventListener('click', function() {
+        add_column();
+    }); // end - add column
+
+
+    // (4) Export to CSV
+
+    function export_to_csv(filename) {
+        const rows = document.querySelectorAll('#table-container table tr');
+        let csvContent = '';
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const rowArray = [];
+            cells.forEach(cell => {
+                let cellText = cell.textContent.replace(/"/g, '""'); // Escape double quotes
+                if (cellText.includes(',') || cellText.includes('\n') || cellText.includes('"')) {
+                    cellText = `"${cellText}"`; // Wrap in quotes
+                }
+                rowArray.push(cellText);
+            });
+            csvContent += rowArray.join(',') + '\n';
         });
-    }
-}
 
-// Undo and Redo
-function undo() {
-    if (history.length > 0) {
-        const tableHtml = history.pop();
-        redoStack.push(document.querySelector('#table-container table').outerHTML);
-        document.querySelector('#table-container').innerHTML = `<table>${tableHtml}</table>`;
-    }
-}
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    };
 
-function redo() {
-    if (redoStack.length > 0) {
-        const tableHtml = redoStack.pop();
-        history.push(document.querySelector('#table-container table').outerHTML);
-        document.querySelector('#table-container').innerHTML = `<table>${tableHtml}</table>`;
-    }
-}
+    // --- export variables.csv
+    button_export_to_csv.addEventListener('click', function() {
+        export_to_csv('variables.csv');
+    }); 
 
+    // --- export variables_bulk.csv
+    button_export_to_bulk_csv.addEventListener('click', function() {
+            export_to_csv('variables_bulk.csv');
+    }); 
+    //---- end - export to csv
 
 
-// Up Down Left Right arrow keys ---> and Toggling "Edit Mode"
-function initializeTableNavigation() {
-  const table = document.getElementById('table-container');
-  let focusedCell = null;
-  let isEditMode = false;
+    // (5) Export HTML
 
-  function toggleEditMode(cell) {
-    isEditMode = !isEditMode;
-    if (isEditMode) {
-      cell.classList.add('edit-mode');
-      cell.classList.remove('normal-mode');
-      cell.focus();
-      const range = document.createRange();
-      const selection = window.getSelection();
-      range.selectNodeContents(cell);
-      range.collapse(false); // Move to the end of the text
-      selection.removeAllRanges();
-      selection.addRange(range);
-    } else {
-      cell.classList.remove('edit-mode');
-      cell.classList.add('normal-mode');
-    }
-  }
+    function export_to_html(filename) {
+      // Get all input elements in the table
+      var inputs = document.querySelectorAll('input[type="text"]');
 
-  function handleKeyNavigation(event) {
-    if (!focusedCell) {
-      focusedCell = table.querySelector('td');
-      focusedCell.focus();
-    }
+      // Update the value attribute of text input elements with the user's input
+      inputs.forEach(function(input) {
+        input.setAttribute('value', input.value);
+      });
 
-    const cells = Array.from(table.querySelectorAll('td'));
-    const index = cells.indexOf(focusedCell);
+      // Export the HTML with updated values
+      var htmlContent = document.documentElement.outerHTML;
+      var encodedHTML = encodeURIComponent(htmlContent);
+      var link = document.createElement('a');
+      link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
 
-    if (isEditMode) {
-      const selection = window.getSelection();
-      const range = selection.getRangeAt(0);
-
-      switch (event.key) {
-        case 'ArrowRight':
-          event.preventDefault();
-          if (range.startOffset < focusedCell.textContent.length) {
-            range.setStart(focusedCell.firstChild, range.startOffset + 1);
-            range.collapse(true);
-            selection.removeAllRanges();
-            selection.addRange(range);
-          }
-          break;
-        case 'ArrowLeft':
-          event.preventDefault();
-          if (range.startOffset > 0) {
-            range.setStart(focusedCell.firstChild, range.startOffset - 1);
-            range.collapse(true);
-            selection.removeAllRanges();
-            selection.addRange(range);
-          }
-          break;
-        case 'ArrowDown':
-          event.preventDefault();
-          // Move to the end of the text
-          range.collapse(false);
-          break;
-        case 'ArrowUp':
-          event.preventDefault();
-          // Move to the start of the text
-          range.collapse(true);
-          break;
-        default:
-          // Allow other keys to work normally
-          break;
-      }
-    } else {
-      switch (event.key) {
-        case 'ArrowRight':
-          if (index < cells.length - 1) {
-            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
-            focusedCell = cells[index + 1];
-            focusedCell.classList.add('normal-mode'); // Add shading to new cell
-            focusedCell.focus();
-          }
-          break;
-        case 'ArrowLeft':
-          if (index > 0) {
-            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
-            focusedCell = cells[index - 1];
-            focusedCell.classList.add('normal-mode'); // Add shading to new cell
-            focusedCell.focus();
-          }
-          break;
-        case 'ArrowDown':
-          const nextRowStart = cells.findIndex(cell => cell.parentElement.rowIndex > focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
-          if (nextRowStart !== -1) {
-            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
-            focusedCell = cells[nextRowStart];
-            focusedCell.classList.add('normal-mode'); // Add shading to new cell
-            focusedCell.focus();
-          }
-          break;
-        case 'ArrowUp':
-          const prevRowStart = cells.findIndex(cell => cell.parentElement.rowIndex < focusedCell.parentElement.rowIndex && cell.cellIndex === focusedCell.cellIndex);
-          if (prevRowStart !== -1) {
-            focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
-            focusedCell = cells[prevRowStart];
-            focusedCell.classList.add('normal-mode'); // Add shading to new cell
-            focusedCell.focus();
-          }
-          break;
-      }
-    }
-  }
-
-  table.addEventListener('keydown', (event) => {
-    if (event.key === 'Alt') {
-      if (focusedCell) {
-        toggleEditMode(focusedCell);
-      }
-      event.preventDefault(); // Prevent default Alt behavior
-    } else {
-      handleKeyNavigation(event);
-    }
-  });
-
-  table.addEventListener('click', (event) => {
-    if (event.target.tagName === 'TD') {
-      if (focusedCell) {
-        focusedCell.classList.remove('normal-mode'); // Remove shading from old cell
-      }
-      focusedCell = event.target;
-      focusedCell.classList.add('normal-mode'); // Add shading to new cell
-      focusedCell.focus();
-    }
-  });
-
-  // Optionally, make sure to remove shading when clicking outside of the table
-  document.addEventListener('click', (event) => {
-    if (!table.contains(event.target)) {
-      if (focusedCell && !isEditMode) {
-        focusedCell.classList.remove('normal-mode');
-      }
-    }
-  });
+     button_export_to_html.addEventListener('click', function() {
+            export_to_html('websheet.html');
+    });    // end - export to html
 
 
 
 
-// // Lock Table and Enable Copyboard
-function startEditMode() {
-    isLocked = document.getElementById('copyboard-checkbox').checked;
-    const cells = document.querySelectorAll('#table-container td');
-    
-    cells.forEach(cell => {
-        cell.contentEditable = !isLocked; // Lock or unlock cells based on checkbox
-        if (isLocked) {
-            cell.classList.remove('edit-mode');
-        }
-    });
-}
-
-// Toggle Edit Mode
-function toggleEditMode(cell) {
-    if (isLocked) return; // Do nothing if the table is locked
-    
-    isEditMode = !isEditMode;
-    if (isEditMode) {
-        cell.classList.add('edit-mode');
-        cell.classList.remove('normal-mode');
-        cell.focus();
-        const range = document.createRange();
-        const selection = window.getSelection();
-        range.selectNodeContents(cell);
-        range.collapse(false); // Move to the end of the text
-        selection.removeAllRanges();
-        selection.addRange(range);
-    } else {
-        cell.classList.remove('edit-mode');
-        cell.classList.add('normal-mode');
-    }
-}
-
-function initializeTableNavigation() {
-    const table = document.getElementById('table-container');
-    let focusedCell = null;
-
-    function handleKeyNavigation(event) {
-        if (!focusedCell) {
-            focusedCell = table.querySelector('td');
-            focusedCell.focus();
-        }
-
-        const cells = Array.from(table.querySelectorAll('td'));
-        const index = cells.indexOf(focusedCell);
-
-        if (isEditMode) {
-            // Handle edit mode key navigation (similar to the provided code)
-        } else {
-            // Handle normal mode key navigation
-        }
-    }
-
-    document.addEventListener('keydown', handleKeyNavigation);
-}
-
-document.getElementById('copyboard-checkbox').addEventListener('change', startEditMode);
-
-// Call this function on setup to initialize the table navigation and other settings
-setup();
-initializeTableNavigation();
-
-
-
-// let isSelecting = true; // Assuming selecting mode is on by default
-const copyIndicator = document.getElementById('copy-indicator');
-const dataTable = document.getElementById('data-table');
-
-// Function to toggle lock based on checkbox
-function toggleLock() {
-    const isLocked = document.getElementById('copyboard-checkbox').checked;
-    dataTable.className = isLocked ? 'locked-mode' : 'normal-mode';
-}
-
-// Function to handle cell click
-function handleCellClick(event) {
-    if (!isSelecting) return; // Skip if not selecting
-
-    const cell = event.target;
-    if (cell.tagName === 'TD') {
-        cell.classList.toggle('selected');
-    }
-}
-
-
-
-// COPYBOARD
-function setupClipboardCopy(tableId) {
-    const table = document.getElementById('table-container');
-    const copyIndicator = document.getElementById('copyIndicator');
-    let isEnabled = false;
-
-    table.addEventListener('click', function(event) {
-        if (!isEnabled) return;
-
-        const target = event.target;
-
-        if (target.tagName === 'TD') {
-            const text = target.innerText;
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-
-            // Show copy indicator
-            copyIndicator.innerText = 'copied:\n' + text;
-            copyIndicator.style.display = 'block';
-            copyIndicator.style.top = `${event.pageY + 5}px`;
-            copyIndicator.style.left = `${event.pageX + 5}px`;
-
-            // Hide the indicator after 1 second
-            setTimeout(() => {
-                copyIndicator.style.display = 'none';
-            }, 500);
-        }
-    });
-
-    document.getElementById('copyboard-checkbox').addEventListener('change', function() {
-        isEnabled = this.checked;
-    });
-}
-
-setupClipboardCopy('table-container');
-
-}
-
-
-document.getElementById('copyboard-checkbox').addEventListener('change', function() {
-    if (this.checked) {
-        document.body.classList.remove('default-background');
-        document.body.classList.add('changed-background');
-    } else {
-        document.body.classList.remove('changed-background');
-        document.body.classList.add('default-background');
-    }
-});
-
-
-
-
-
-
-
+}   // setup() close bracket
 </script>
 </body>
 </html>
