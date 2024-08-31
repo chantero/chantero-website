@@ -22,7 +22,7 @@
 body {
     font-family: Arial, sans-serif;
     padding: 2em;
-    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%); /* default background colour */
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%); /* default bg */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -35,7 +35,6 @@ body {
 .copyboard-background {
     background: linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
 }
-
 
 
 h1 {
@@ -108,8 +107,134 @@ subtitle {
 }
 
 
-/* -- TABLE STYLE */
 
+
+
+/* TABLE TOOLS */
+#table-tool-container {
+    flex-direction: column; /* Ensure the container uses a column layout */
+    align-items: center;    /* Center items horizontally */    
+    background-color: powderblue;
+    width: 90%;
+    margin: 1em;
+    padding: 0.5em;
+    border-radius: 16px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+}
+
+
+#radio-selection {
+    display: flex;
+    flex-wrap: wrap;        /* Allow wrapping to a new line */
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+    width: 90%           /* Use full width of the container */
+    gap: 3em;             
+}
+
+#radio-selection > label {
+    padding: 10px;
+    width: 170px;
+}
+
+
+/* Optional: Customize the appearance of the radio buttons */
+input[type="radio"] {
+    -webkit-appearance: none;  /* Remove default styling */
+    -moz-appearance: none;
+    appearance: none;
+    margin-right: 0.7em;  /* space between radio and label text */
+    border-radius: 20%;
+    border: 3px solid #555;  
+    width: 30px;   
+    height: 30px; 
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+input[id="radio-default"]:checked {
+    background-color: deepskyblue;  /* Adjust fill color when selected */
+}
+
+
+input[id="radio-select-row"]:checked {
+    background-color: yellow;  /* Adjust fill color when selected */
+}
+
+input[id="radio-select-column"]:checked {
+    background-color: pink;  /* Adjust fill color when selected */
+}
+
+
+
+
+.table-tool-button {
+  background-color: #FFFFFF;
+  border: 2px solid #222222;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  margin: 5px;
+  margin-inline: 15px;
+  outline: none;
+  padding: 13px 23px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+/*  user-select: none;
+  -webkit-user-select: none;*/
+  width: auto;
+}
+
+.table-tool-button:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+.table-tool-button:active {
+  background-color: #F7F7F7;
+  border-color: #000000;
+  transform: scale(.96);
+}
+
+.table-tool-button:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.table-tool-button.button-black {
+    background-color: #444848;
+    color: white;
+}
+
+.table-tool-button.button-black:after {
+    background-color: black;
+}
+
+
+.highlight_row {
+    background-color: yellow !important;
+}
+
+.highlight_column {
+    background-color: pink !important;
+}
+
+
+
+
+
+/* -- TABLE STYLE */
 #table-container {
     border-radius: 7px;
     margin-top: 30px;
@@ -179,10 +304,7 @@ table input[type="text"] {
 
 
 
-
-
-/* BUTTONS */
-
+/* BUTTONS at the bottom of the page*/
 .buttons-container {
     display: flex;
     flex-direction: row; 
@@ -191,7 +313,6 @@ table input[type="text"] {
     padding-top: 3em;
     flex-wrap: wrap;
 }
-
 
 
 .bottom-button {
@@ -270,7 +391,6 @@ table input[type="text"] {
 }
 
 
-
 .button-amber {
     background-color: #a28c42;
     color: black;
@@ -308,129 +428,6 @@ table input[type="text"] {
     background-color: #d3aaea;
 }
 
-
-
-
-/* TABLE TOOLS */
-
-#table-tool-container {
-    flex-direction: column; /* Ensure the container uses a column layout */
-    align-items: center;    /* Center items horizontally */    
-    background-color: powderblue;
-    width: 90%;
-    margin: 1em;
-    padding: 0.5em;
-    border-radius: 16px;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-
-}
-
-
-#radio-selection {
-    display: flex;
-    flex-wrap: wrap;        /* Allow wrapping to a new line */
-    justify-content: center;
-    margin: 1em;
-    width: 100%;            /* Use full width of the container */
-    font-size: larger;
-    gap: 1em;               /* Space between items */
-}
-
-
-/* Optional: Customize the appearance of the radio buttons */
-input[type="radio"] {
-    -webkit-appearance: none;  /* Remove default styling */
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 50%;
-    border: 2px solid #555;  /* Adjust border color */
-    width: 20px;   /* Adjust width */
-    height: 20px;  /* Adjust height */
-    background-color: white;
-    outline: none;
-    cursor: pointer;
-}
-
-input[id="radio-default"]:checked {
-    background-color: deepskyblue;  /* Adjust fill color when selected */
-    border: 2px solid #555;  /* Adjust border color when selected */
-}
-
-
-input[id="radio-select-row"]:checked,
-input[id="radio-multi-select-row"]:checked {
-    background-color: yellow;  /* Adjust fill color when selected */
-    border: 2px solid #555;  /* Adjust border color when selected */
-}
-
-input[id="radio-select-column"]:checked,
-input[id="radio-multi-select-column"]:checked {
-    background-color: pink;  /* Adjust fill color when selected */
-    border: 2px solid #555;  /* Adjust border color when selected */
-}
-
-
-
-
-.table-tool-button {
-  background-color: #FFFFFF;
-  border: 2px solid #222222;
-  border-radius: 8px;
-  box-sizing: border-box;
-  color: #222222;
-  cursor: pointer;
-  display: inline-block;
-  margin: 5px;
-  margin-inline: 15px;
-  outline: none;
-  padding: 13px 23px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  touch-action: manipulation;
-  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
-/*  user-select: none;
-  -webkit-user-select: none;*/
-  width: auto;
-}
-
-.table-tool-button:focus-visible {
-  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
-  transition: box-shadow .2s;
-}
-
-.table-tool-button:active {
-  background-color: #F7F7F7;
-  border-color: #000000;
-  transform: scale(.96);
-}
-
-.table-tool-button:disabled {
-  border-color: #DDDDDD;
-  color: #DDDDDD;
-  cursor: not-allowed;
-  opacity: 1;
-}
-
-.table-tool-button.button-black {
-    background-color: #444848;
-    color: white;
-}
-
-.table-tool-button.button-black:after {
-    background-color: black;
-}
-
-
-
-
-.highlight_row {
-    background-color: yellow !important;
-}
-
-.highlight_column {
-    background-color: pink !important;
-}
 
 
 
@@ -478,10 +475,8 @@ input[id="radio-multi-select-column"]:checked {
 
     <form id="radio-selection">
         <label><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
-        <label><input type="radio" name="selection" value="select-row" id="radio-select-row"> Select Row</label>
-        <label><input type="radio" name="selection" id="radio-multi-select-row"> Multi-Select Row</label>
-        <label><input type="radio" name="selection" value="select-column" id="radio-select-column"> Select Column</label>
-        <label><input type="radio" name="selection" id="radio-multi-select-column"> Multi-Select Column</label>
+        <label><input type="radio" name="selection" id="radio-select-row">Select Row</label>
+        <label><input type="radio" name="selection" id="radio-select-column">Select Column</label>
     </form>
     
     <button id="clear-button" class='table-tool-button'>Clear Selected</button>
@@ -896,20 +891,6 @@ function table_row_click(event) {
         const row = clicked_cell.closest('tr');
         
         if (document.querySelector('#radio-select-row').checked) {
-            // Remove the highlight class from the previously highlighted row
-            if (highlighted_row) {
-                highlighted_row.classList.remove('highlight_row');
-            }
-            
-            // Add the highlight class to the current row
-            row.classList.add('highlight_row');
-            
-            // Update the highlighted_row reference
-            highlighted_row = row;
-            
-            // Clear column highlight when switching to row selection
-            clear_column_highlight();
-        } else if (document.querySelector('#radio-multi-select-row').checked) {
             if (highlighted_rows.has(row)) {
                 row.classList.remove('highlight_row');
                 highlighted_rows.delete(row);
@@ -934,30 +915,6 @@ function table_column_click(event) {
         const rows = table.querySelectorAll('tr');
         
         if (document.querySelector('#radio-select-column').checked) {
-            // Remove the highlight class from the previously highlighted column
-            if (highlighted_column !== null) {
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll('td');
-                    if (cells[highlighted_column]) {
-                        cells[highlighted_column].classList.remove('highlight_column');
-                    }
-                });
-            }
-            
-            // Add the highlight class to the current column
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells[columnIndex]) {
-                    cells[columnIndex].classList.add('highlight_column');
-                }
-            });
-            
-            // Update the highlighted_column reference
-            highlighted_column = columnIndex;
-            
-            // Clear row highlight when switching to column selection
-            clear_row_highlight();
-        } else if (document.querySelector('#radio-multi-select-column').checked) {
             if (highlighted_columns.has(columnIndex)) {
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
@@ -1022,9 +979,9 @@ function clear_column_highlight() {
 // LINK Row and Column Selection TO RADIO BUTTONS
 // Function to handle table clicks based on selected radio button
 function handle_table_click(event) {
-    if (document.querySelector('#radio-select-row').checked || document.querySelector('#radio-multi-select-row').checked) {
+    if (document.querySelector('#radio-select-row').checked) {
         table_row_click(event);
-    } else if (document.querySelector('#radio-select-column').checked || document.querySelector('#radio-multi-select-column').checked) {
+    } else if (document.querySelector('#radio-select-column').checked) {
         table_column_click(event);
     }
 }
@@ -1089,12 +1046,8 @@ function delete_selected() {
 function update_delete_button_text() {
     const deleteButton = document.getElementById('delete-button');
     if (document.querySelector('#radio-select-row').checked) {
-        deleteButton.textContent = 'Delete Selected Row';
-    } else if (document.querySelector('#radio-select-column').checked) {
-        deleteButton.textContent = 'Delete Selected Column';
-    } else if (document.querySelector('#radio-multi-select-row').checked) {
         deleteButton.textContent = 'Delete Selected Rows';
-    } else if (document.querySelector('#radio-multi-select-column').checked) {
+    } else if (document.querySelector('#radio-select-column').checked) {
         deleteButton.textContent = 'Delete Selected Columns';
     } else {
        deleteButton.textContent = 'Nothing Selected';
@@ -1143,12 +1096,8 @@ function clear_selected() {
 function update_clear_button_text() {
     const clearButton = document.getElementById('clear-button');
     if (document.querySelector('#radio-select-row').checked) {
-        clearButton.textContent = 'Clear Selected Row';
-    } else if (document.querySelector('#radio-select-column').checked) {
-        clearButton.textContent = 'Clear Selected Column';
-    } else if (document.querySelector('#radio-multi-select-row').checked) {
         clearButton.textContent = 'Clear Selected Rows';
-    } else if (document.querySelector('#radio-multi-select-column').checked) {
+    } else if (document.querySelector('#radio-select-column').checked) {
         clearButton.textContent = 'Clear Selected Columns';
     } else {
        clearButton.textContent = 'Nothing Selected';
