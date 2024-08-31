@@ -183,6 +183,17 @@ table input[type="text"] {
 
 /* BUTTONS */
 
+.buttons-container {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center;
+    padding-top: 3em;
+    flex-wrap: wrap;
+}
+
+
+
 .bottom-button {
   padding: 20px;
   width: 170px;
@@ -297,28 +308,32 @@ table input[type="text"] {
     background-color: #d3aaea;
 }
 
-.buttons-container {
-    display: flex;
-    flex-direction: row; 
-    justify-content: center; 
-    align-items: center;
-    padding-top: 3em;
-    flex-wrap: wrap;
-}
-
 
 
 
 /* TABLE TOOLS */
 
+#table-tool-container {
+    flex-direction: column; /* Ensure the container uses a column layout */
+    align-items: center;    /* Center items horizontally */    
+    background-color: powderblue;
+    width: 90%;
+    margin: 1em;
+    padding: 0.5em;
+    border-radius: 16px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+}
+
+
 #radio-selection {
-    display: flex;        /* Align items horizontally */
-/*    align-items: center;  */
+    display: flex;
+    flex-wrap: wrap;        /* Allow wrapping to a new line */
     justify-content: center;
     margin: 1em;
-    width: auto;
+    width: 100%;            /* Use full width of the container */
     font-size: larger;
-    gap: 1em;             /* Add space between items (radio buttons and labels) */
+    gap: 1em;               /* Space between items */
 }
 
 
@@ -447,7 +462,6 @@ input[id="radio-multi-select-column"]:checked {
 
 <!-- CHECKBOX (Switch between Edit Mode and Copyboard Mode) -->
 <section id='checkbox-container'>
-
     <article class='checkbox-container'>
         <label for='copyboard-checkbox'>Switch to Copyboard</label>
         <input type='checkbox' id='copyboard-checkbox' name='copyboard-checkbox'>
@@ -457,21 +471,24 @@ input[id="radio-multi-select-column"]:checked {
     <subtitle>
         (Note: You have to re-check this box when you load a new csv form)
     </subtitle>
+</section>
 
+<section id='table-tool-container'>
+    <button id="transpose-button" title="Transpose Table">
+        TRANSPOSE
+    </button>
 
     <form id="radio-selection">
         <label><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
         <label><input type="radio" name="selection" value="select-row" id="radio-select-row"> Select Row</label>
-        <label><input type="radio" name="selection" value="select-column" id="radio-select-column"> Select Column</label>
         <label><input type="radio" name="selection" id="radio-multi-select-row"> Multi-Select Row</label>
+        <label><input type="radio" name="selection" value="select-column" id="radio-select-column"> Select Column</label>
         <label><input type="radio" name="selection" id="radio-multi-select-column"> Multi-Select Column</label>
-    
     </form>
     
     <button id="clear-button" class='table-tool-button'>Clear Selected</button>
     <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
 </section>
-
 
 
 
@@ -1149,15 +1166,6 @@ document.getElementById('clear-button').addEventListener('click', clear_selected
 // Initial update of the button text
 update_delete_button_text();
 update_clear_button_text();
-
-
-
-
-
-
-
-
-
 
 
 
