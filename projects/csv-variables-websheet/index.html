@@ -22,7 +22,7 @@
 body {
     font-family: Arial, sans-serif;
     padding: 2em;
-    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%); /* default background colour */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -36,10 +36,6 @@ body {
     background: linear-gradient(17deg, rgba(220,228,109,1) 16%, rgba(244,172,255,1) 100%);
 }
 
-/* transition for smooth background change */
-body {
-    transition: background 0.3s;
-}
 
 
 h1 {
@@ -111,13 +107,13 @@ subtitle {
     border: 1px solid red;    /* Example border */
 }
 
+
 /* -- TABLE STYLE */
 
 #table-container {
     border-radius: 7px;
-
+    margin-top: 30px;
 }
-
 
 table {
     border-collapse: collapse;
@@ -140,9 +136,9 @@ tr:nth-of-type(even) {
 }
 
 th, td {
-    padding: 10px; /* Adjust padding for spacing */
+    padding: 10px;
     text-align: left;
-    border: 1px solid #a3a3a3; /* grey border */
+    border: 1px solid #a3a3a3;
 }
 
 th {
@@ -150,12 +146,20 @@ th {
     background-color: #cff5ff; 
     width: 100px; 
     min-width: 70px; 
-    max-width: 100%; /* Allow to expand based on content */
+    max-width: 100%; /* expand based on content */
 }
 
+
+/* table cell */
 table td {
     min-width: 200px;
+    max-width: 300px;
+    height: 40px;  /* height of cell */
+    white-space: normal; /* allow text wrap */
+    word-wrap: break-word; /* breaks long words to fit in the cell */
+    word-break: break-word; /* ensures long words wrap to the next line */
 }
+
 
 /* Input style for cells */
 table input[type="text"] {
@@ -175,15 +179,14 @@ table input[type="text"] {
 
 
 
+
+
 /* BUTTONS */
 
-button {
+.bottom-button {
   padding: 20px;
   width: 170px;
-  appearance: button;
-/*  background-color: #1899D6;
-  color: black;
-*/  
+  appearance: button; 
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
@@ -210,7 +213,7 @@ button {
   white-space: nowrap;
 }
 
-button:after {
+.bottom-button:after {
   background-clip: padding-box;
 /*  background-color: #1CB0F6;*/
   border: solid transparent;
@@ -226,14 +229,35 @@ button:after {
 }
 
 
-button:disabled {
+.bottom-button:disabled {
   cursor: auto;
 }
 
-button:active {
+.bottom-button:active {
   border-width: 4px 0 0;
   background: none;
 }
+
+
+.button-yellow {
+    background-color: #e6e18d;
+    color: black;
+}
+
+.button-yellow:after {
+    background-color: #cbfdff;
+}
+
+
+.button-pink {
+    background-color: #8e3954;
+    color: black;
+}
+
+.button-pink:after {
+    background-color: #ffa0bd;
+}
+
 
 
 .button-amber {
@@ -285,11 +309,124 @@ button:active {
 
 
 
+/* TABLE TOOLS */
+
+#radio-selection {
+    display: flex;        /* Align items horizontally */
+/*    align-items: center;  */
+    justify-content: center;
+    margin: 1em;
+    width: auto;
+    font-size: larger;
+    gap: 1em;             /* Add space between items (radio buttons and labels) */
+}
+
+
+/* Optional: Customize the appearance of the radio buttons */
+input[type="radio"] {
+    -webkit-appearance: none;  /* Remove default styling */
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    border: 2px solid #555;  /* Adjust border color */
+    width: 20px;   /* Adjust width */
+    height: 20px;  /* Adjust height */
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+}
+
+input[id="radio-default"]:checked {
+    background-color: deepskyblue;  /* Adjust fill color when selected */
+    border: 2px solid #555;  /* Adjust border color when selected */
+}
+
+
+input[id="radio-select-row"]:checked,
+input[id="radio-multi-select-row"]:checked {
+    background-color: yellow;  /* Adjust fill color when selected */
+    border: 2px solid #555;  /* Adjust border color when selected */
+}
+
+input[id="radio-select-column"]:checked,
+input[id="radio-multi-select-column"]:checked {
+    background-color: pink;  /* Adjust fill color when selected */
+    border: 2px solid #555;  /* Adjust border color when selected */
+}
+
+
+
+
+.table-tool-button {
+  background-color: #FFFFFF;
+  border: 2px solid #222222;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  margin: 5px;
+  margin-inline: 15px;
+  outline: none;
+  padding: 13px 23px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+/*  user-select: none;
+  -webkit-user-select: none;*/
+  width: auto;
+}
+
+.table-tool-button:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+.table-tool-button:active {
+  background-color: #F7F7F7;
+  border-color: #000000;
+  transform: scale(.96);
+}
+
+.table-tool-button:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.table-tool-button.button-black {
+    background-color: #444848;
+    color: white;
+}
+
+.table-tool-button.button-black:after {
+    background-color: black;
+}
+
+
+
+
+.highlight_row {
+    background-color: yellow !important;
+}
+
+.highlight_column {
+    background-color: pink !important;
+}
+
+
+
+
+
 </style>
 </head>
 
 
 <body onload='setup()'>
+
 <!-- Note: run the setup() [javascript below] when the website loads up -->
 
 <h1>Doxtero Websheet</h1>
@@ -314,11 +451,27 @@ button:active {
     <article class='checkbox-container'>
         <label for='copyboard-checkbox'>Switch to Copyboard</label>
         <input type='checkbox' id='copyboard-checkbox' name='copyboard-checkbox'>
-        <div id='copy-indicator';></div><br>
+        <div id='copy-indicator';></div>
     </article>
 
+    <subtitle>
+        (Note: You have to re-check this box when you load a new csv form)
+    </subtitle>
 
+
+    <form id="radio-selection">
+        <label><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
+        <label><input type="radio" name="selection" value="select-row" id="radio-select-row"> Select Row</label>
+        <label><input type="radio" name="selection" value="select-column" id="radio-select-column"> Select Column</label>
+        <label><input type="radio" name="selection" id="radio-multi-select-row"> Multi-Select Row</label>
+        <label><input type="radio" name="selection" id="radio-multi-select-column"> Multi-Select Column</label>
+    
+    </form>
+    
+    <button id="clear-button" class='table-tool-button'>Clear Selected</button>
+    <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
 </section>
+
 
 
 
@@ -330,20 +483,27 @@ button:active {
 
 <!-- BUTTONS -->
 <section class='buttons-container'>
-    <button type="button" class="button-amber" id="button-new-table">New Table</button>
-    <button type="button" class="button-green" id="button-add-row">Add Row</button>
-    <button type="button" class= "button-green" id="button-add-column">Add Column</button>
-    <button type="button" class="button-blue" id="button-export-to-csv">Export CSV</button>
-    <button type="button" class="button-blue" id="button-export-to-bulk-csv">Bulk CSV</button>
-    <button type="button" class="button-purple" id="button-export-to-html">Export HTML</button>
+    <button type="button" class="bottom-button button-amber" id="button-new-table">New Table</button>
+    
+    <button type="button" class="bottom-button button-green" id="button-add-row">Add Row</button>
+    <button type="button" class= "bottom-button button-green" id="button-add-column">Add Column</button>
+    <button type="button" class="bottom-button button-blue" id="button-export-to-csv">Export CSV</button>
+    <button type="button" class="bottom-button button-blue" id="button-export-to-bulk-csv">Bulk CSV</button>
+    <button type="button" class="bottom-button button-purple" id="button-export-to-html">Export HTML</button>
+
+
 </section>
 
 
 <!-- JAVASCRIPT-->
 <script>
-// all javascript packed in setup()
+
+
+// main javascript packed in setup()
 function setup() {
     // these are just variables to point to the elements in the html
+
+
     const drop_zone = document.getElementById('drop-zone');
     const csv_input = document.getElementById('csv-input');
     const table_container = document.getElementById('table-container');
@@ -466,6 +626,7 @@ function setup() {
     function generate_html_table_from_csv(csv_text) {
         const rows = parse_csv(csv_text);  // parse the csv file -- got "," in the text
         const table = document.createElement('table');
+ 
 
         rows.forEach(row => {
             const tr = document.createElement('tr');
@@ -495,9 +656,20 @@ function setup() {
                 tr.appendChild(td);
             });
             table.appendChild(tr);
+
+
+            // Insert the Table Tools here:
+                // select and highlight rows and columns
+            table.addEventListener('click', table_row_click);
+            table.addEventListener('click', table_column_click);
+
+
+
         });
         table_container.innerHTML = '';
         table_container.appendChild(table);
+ 
+
 
     }    // end - generate html table from csv
 
@@ -688,9 +860,309 @@ function setup() {
     });    // end - export to html
 
 
-
-
 }   // setup() close bracket
+
+
+
+
+
+//  TABLE TOOLS
+
+let highlighted_row = null;
+let highlighted_column = null;
+let highlighted_rows = new Set();
+let highlighted_columns = new Set();
+
+// Function to handle row click
+function table_row_click(event) {
+    const clicked_cell = event.target.closest('td');
+    
+    if (clicked_cell) {
+        const row = clicked_cell.closest('tr');
+        
+        if (document.querySelector('#radio-select-row').checked) {
+            // Remove the highlight class from the previously highlighted row
+            if (highlighted_row) {
+                highlighted_row.classList.remove('highlight_row');
+            }
+            
+            // Add the highlight class to the current row
+            row.classList.add('highlight_row');
+            
+            // Update the highlighted_row reference
+            highlighted_row = row;
+            
+            // Clear column highlight when switching to row selection
+            clear_column_highlight();
+        } else if (document.querySelector('#radio-multi-select-row').checked) {
+            if (highlighted_rows.has(row)) {
+                row.classList.remove('highlight_row');
+                highlighted_rows.delete(row);
+            } else {
+                row.classList.add('highlight_row');
+                highlighted_rows.add(row);
+            }
+            
+            // Clear column highlight when switching to multi-select row
+            clear_column_highlight();
+        }
+    }
+}
+
+// Function to handle column click
+function table_column_click(event) {
+    const clicked_cell = event.target.closest('td');
+    
+    if (clicked_cell) {
+        const columnIndex = Array.from(clicked_cell.parentElement.children).indexOf(clicked_cell);
+        const table = document.querySelector('#table-container table');
+        const rows = table.querySelectorAll('tr');
+        
+        if (document.querySelector('#radio-select-column').checked) {
+            // Remove the highlight class from the previously highlighted column
+            if (highlighted_column !== null) {
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[highlighted_column]) {
+                        cells[highlighted_column].classList.remove('highlight_column');
+                    }
+                });
+            }
+            
+            // Add the highlight class to the current column
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells[columnIndex]) {
+                    cells[columnIndex].classList.add('highlight_column');
+                }
+            });
+            
+            // Update the highlighted_column reference
+            highlighted_column = columnIndex;
+            
+            // Clear row highlight when switching to column selection
+            clear_row_highlight();
+        } else if (document.querySelector('#radio-multi-select-column').checked) {
+            if (highlighted_columns.has(columnIndex)) {
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[columnIndex]) {
+                        cells[columnIndex].classList.remove('highlight_column');
+                    }
+                });
+                highlighted_columns.delete(columnIndex);
+            } else {
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[columnIndex]) {
+                        cells[columnIndex].classList.add('highlight_column');
+                    }
+                });
+                highlighted_columns.add(columnIndex);
+            }
+        }
+    }
+}
+
+// Function to clear row highlight
+function clear_row_highlight() {
+    if (highlighted_row) {
+        highlighted_row.classList.remove('highlight_row');
+        highlighted_row = null;
+    }
+    highlighted_rows.forEach(row => row.classList.remove('highlight_row'));
+    highlighted_rows.clear();
+}
+
+// Function to clear column highlight
+function clear_column_highlight() {
+    if (highlighted_column !== null) {
+        const table = document.querySelector('#table-container table');
+        if (table) {
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells[highlighted_column]) {
+                    cells[highlighted_column].classList.remove('highlight_column');
+                }
+            });
+        }
+        highlighted_column = null;
+    }
+    highlighted_columns.forEach(colIndex => {
+        const table = document.querySelector('#table-container table');
+        if (table) {
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells[colIndex]) {
+                    cells[colIndex].classList.remove('highlight_column');
+                }
+            });
+        }
+    });
+    highlighted_columns.clear();
+}
+
+// LINK Row and Column Selection TO RADIO BUTTONS
+// Function to handle table clicks based on selected radio button
+function handle_table_click(event) {
+    if (document.querySelector('#radio-select-row').checked || document.querySelector('#radio-multi-select-row').checked) {
+        table_row_click(event);
+    } else if (document.querySelector('#radio-select-column').checked || document.querySelector('#radio-multi-select-column').checked) {
+        table_column_click(event);
+    }
+}
+
+// Attach event listener to the table and radio buttons
+const table = document.querySelector('#table-container table');
+if (table) {
+    table.addEventListener('click', handle_table_click);
+}
+
+// Attach event listener to radio buttons to reset highlights
+document.querySelectorAll('input[name="selection"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        clear_row_highlight();
+        clear_column_highlight();
+        update_delete_button_text();
+        update_clear_button_text();
+    });
+});
+
+// DELETE ROW or COLUMN
+
+// Function to delete selected row or column
+function delete_selected() {
+    const table = document.querySelector('#table-container table');
+    
+    if (table) {
+        if (highlighted_row) {
+            highlighted_row.remove();
+            clear_row_highlight();
+            clear_column_highlight();
+        } else if (highlighted_column !== null) {
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells[highlighted_column]) {
+                    cells[highlighted_column].remove();
+                }
+            });
+            clear_column_highlight();
+        } else if (highlighted_rows.size > 0) {
+            highlighted_rows.forEach(row => row.remove());
+            clear_row_highlight();
+            clear_column_highlight();
+        } else if (highlighted_columns.size > 0) {
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                highlighted_columns.forEach(colIndex => {
+                    if (cells[colIndex]) {
+                        cells[colIndex].remove();
+                    }
+                });
+            });
+            clear_column_highlight();
+        }
+        update_delete_button_text();  // Update button text after deletion
+    }
+}
+
+// Function to update the text of the delete button
+function update_delete_button_text() {
+    const deleteButton = document.getElementById('delete-button');
+    if (document.querySelector('#radio-select-row').checked) {
+        deleteButton.textContent = 'Delete Selected Row';
+    } else if (document.querySelector('#radio-select-column').checked) {
+        deleteButton.textContent = 'Delete Selected Column';
+    } else if (document.querySelector('#radio-multi-select-row').checked) {
+        deleteButton.textContent = 'Delete Selected Rows';
+    } else if (document.querySelector('#radio-multi-select-column').checked) {
+        deleteButton.textContent = 'Delete Selected Columns';
+    } else {
+       deleteButton.textContent = 'Nothing Selected';
+    }
+}
+
+// Function to clear selected row or column
+function clear_selected() {
+    const table = document.querySelector('#table-container table');
+    
+    if (table) {
+        if (highlighted_row) {
+            highlighted_row.querySelectorAll('td').forEach(cell => cell.textContent = '');
+            clear_row_highlight();
+            clear_column_highlight();
+        } else if (highlighted_column !== null) {
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells[highlighted_column]) {
+                    cells[highlighted_column].textContent = '';
+                }
+            });
+            clear_column_highlight();
+        } else if (highlighted_rows.size > 0) {
+            highlighted_rows.forEach(row => row.querySelectorAll('td').forEach(cell => cell.textContent = ''));
+            clear_row_highlight();
+            clear_column_highlight();
+        } else if (highlighted_columns.size > 0) {
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                highlighted_columns.forEach(colIndex => {
+                    if (cells[colIndex]) {
+                        cells[colIndex].textContent = '';
+                    }
+                });
+            });
+            clear_column_highlight();
+        }
+        update_clear_button_text();  // Update button text after clearing
+    }
+}
+
+// Function to update the text of the clear button
+function update_clear_button_text() {
+    const clearButton = document.getElementById('clear-button');
+    if (document.querySelector('#radio-select-row').checked) {
+        clearButton.textContent = 'Clear Selected Row';
+    } else if (document.querySelector('#radio-select-column').checked) {
+        clearButton.textContent = 'Clear Selected Column';
+    } else if (document.querySelector('#radio-multi-select-row').checked) {
+        clearButton.textContent = 'Clear Selected Rows';
+    } else if (document.querySelector('#radio-multi-select-column').checked) {
+        clearButton.textContent = 'Clear Selected Columns';
+    } else {
+       clearButton.textContent = 'Nothing Selected';
+    }
+}
+
+// Attach event listener to the delete button
+document.getElementById('delete-button').addEventListener('click', delete_selected);
+
+// Attach event listener to the clear button
+document.getElementById('clear-button').addEventListener('click', clear_selected);
+
+// Initial update of the button text
+update_delete_button_text();
+update_clear_button_text();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
