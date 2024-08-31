@@ -42,6 +42,10 @@ h1 {
     margin: 20px;
 }
 
+h4 {
+    color: #39414d;
+}
+
 subtitle {
     margin: 1em;
     padding: 1em;
@@ -105,11 +109,10 @@ subtitle {
 }
 
 .copied-cell {
-    background-color: #fcffb5; 
-    border: 1px solid red;    /* Example border */
+    background-color: rgba(220, 245, 245, 0.5);
+    outline: 2px solid #5BC1D7;
+    transition: all 0.1s ease-in-out 0s; 
 }
-
-
 
 
 
@@ -322,6 +325,7 @@ table td {
 
 /* the individual selected cell css */
 table td:focus {
+    background-color: rgba(220, 245, 245, 0.5);
     outline: 2px solid #5BC1D7;
     transition: all 0.1s ease-in-out 0s; 
 }
@@ -517,6 +521,7 @@ table input[type="text"] {
 
 <section id='table-tool-container'>
 
+    <h4>TABLE TOOLS</h4>
 
     <form id="radio-selection">
         <label><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
@@ -1174,55 +1179,54 @@ update_clear_button_text();
 
 //  COPY and PASTE
 
-let copiedData = []; // Variable to store copied data
+let copied_data = []; // Variable to store copied data
 
 // Function to copy selected row or column data
 function copy_selected() {
     const table = document.querySelector('#table-container table');
-    copiedData = [];
+    copied_data = [];
     const rows = table.querySelectorAll('tr');
-    let copiedMessage = ''; // Variable to hold the copy message
+    let copied_message = ''; // Variable to hold the copy message
 
     if (table) {
         if (highlighted_row) {
             // Copy data from a single highlighted row
             const cells = highlighted_row.querySelectorAll('td');
-            cells.forEach(cell => copiedData.push(cell.textContent));
-            copiedMessage = 'Copied 1 row';
+            cells.forEach(cell => copied_data.push(cell.textContent));
+            copied_message = 'Copied 1 row';
         } else if (highlighted_column !== null) {
             // Copy data from a single highlighted column
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 if (cells[highlighted_column]) {
-                    copiedData.push(cells[highlighted_column].textContent || ''); // Handle blank values
+                    copied_data.push(cells[highlighted_column].textContent || ''); // Handle blank values
                 }
             });
-            copiedMessage = 'Copied 1 column';
+            copied_message = 'Copied 1 column';
         } else if (highlighted_rows.size > 0) {
             // Copy data from multiple highlighted rows
             highlighted_rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
-                cells.forEach(cell => copiedData.push(cell.textContent || '')); // Handle blank values
+                cells.forEach(cell => copied_data.push(cell.textContent || '')); // Handle blank values
             });
-            copiedMessage = `Copied ${highlighted_rows.size} rows`;
+            copied_message = `Copied ${highlighted_rows.size} rows`;
         } else if (highlighted_columns.size > 0) {
             // Copy data from multiple highlighted columns
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 highlighted_columns.forEach(colIndex => {
                     if (cells[colIndex]) {
-                        copiedData.push(cells[colIndex].textContent || ''); // Handle blank values
+                        copied_data.push(cells[colIndex].textContent || ''); // Handle blank values
                     }
                 });
             });
-            copiedMessage = `Copied ${highlighted_columns.size} columns`;
+            copied_message = `Copied ${highlighted_columns.size} columns`;
         }
-
     }
 
     // Display the copy message if any data was copied
-    if (copiedMessage) {
-        showCopyIndicator(copiedMessage);
+    if (copied_message) {
+        showCopyIndicator(copied_message);
     }
 }
 
@@ -1255,36 +1259,36 @@ function showCopyIndicator(message) {
 function paste_selected() {
     const table = document.querySelector('#table-container table');
     
-    if (table && copiedData.length > 0) {
+    if (table && copied_data.length > 0) {
         const rows = table.querySelectorAll('tr');
-        const numRows = rows.length;
+        // const numRows = rows.length;
         let dataIndex = 0;
 
         if (highlighted_rows.size > 0) {
             // Paste data into multiple rows
-            const selectedRows = Array.from(highlighted_rows);
-            selectedRows.forEach(row => {
+            const selected_rows = Array.from(highlighted_rows);
+            selected_rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 cells.forEach((cell, cellIndex) => {
-                    if (dataIndex < copiedData.length) {
-                        cell.textContent = copiedData[dataIndex++] || ''; // Handle blank values
+                    if (dataIndex < copied_data.length) {
+                        cell.textContent = copied_data[dataIndex++] || ''; // Handle blank values
                     }
                 });
-                if (dataIndex >= copiedData.length) {
+                if (dataIndex >= copied_data.length) {
                     dataIndex = 0; // Restart if needed
                 }
             });
         } else if (highlighted_columns.size > 0) {
             // Paste data into multiple columns
-            const selectedColumns = Array.from(highlighted_columns);
-            selectedColumns.forEach((colIndex) => {
+            const selected_columns = Array.from(highlighted_columns);
+            selected_columns.forEach((colIndex) => {
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
-                    if (cells[colIndex] && dataIndex < copiedData.length) {
-                        cells[colIndex].textContent = copiedData[dataIndex++] || ''; // Handle blank values
+                    if (cells[colIndex] && dataIndex < copied_data.length) {
+                        cells[colIndex].textContent = copied_data[dataIndex++] || ''; // Handle blank values
                     }
                 });
-                if (dataIndex >= copiedData.length) {
+                if (dataIndex >= copied_data.length) {
                     dataIndex = 0; // Restart if needed
                 }
             });
