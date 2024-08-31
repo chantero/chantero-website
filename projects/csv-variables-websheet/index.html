@@ -57,6 +57,7 @@ subtitle {
     padding: 20px;
     margin: 20px auto;
     width: 80%;
+    min-width: 200px;
     text-align: center;
     color: #ccc;
     background-color: rgba(255, 255, 255, 0.3);
@@ -76,6 +77,8 @@ subtitle {
     font-weight: bold;
     display: flex;
     align-items: center;
+    text-align: center;
+    justify-items: center;
     justify-content: center;
 }
 
@@ -112,16 +115,23 @@ subtitle {
 
 /* TABLE TOOLS */
 #table-tool-container {
-    flex-direction: column; /* Ensure the container uses a column layout */
-    align-items: center;    /* Center items horizontally */    
-    background-color: powderblue;
-    width: 90%;
-    margin: 1em;
-    padding: 0.5em;
+    background-color: rgba(176, 224, 230, 0.9);
+    width: 80%;
+    min-width: 200px;
+    padding-bottom: 1.5em;
     border-radius: 16px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
+    display: inline-block;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+
+    position: -webkit-sticky; /* For Safari */
+    position: sticky; /* For modern browsers */
+    top: 20px; /* Gap between the top of the viewport and the sticky element */
+    z-index: 1000; /* Ensure it stays on top of other content */
 }
+
 
 
 #radio-selection {
@@ -212,14 +222,37 @@ input[id="radio-select-column"]:checked {
   opacity: 1;
 }
 
+
+.table-tool-button.button-apple {
+    background-color: #7ee787;
+}
+
+.table-tool-button.button-apple:active {
+    background-color: #56d364;
+}
+
+.table-tool-button.button-peach {
+    background-color: #ffc1ba;
+}
+
+.table-tool-button.button-peach:active {
+    background-color: #ffa198;
+}
+
+
+
+
 .table-tool-button.button-black {
     background-color: #444848;
     color: white;
 }
 
-.table-tool-button.button-black:after {
+.table-tool-button.button-black:active {
     background-color: black;
 }
+
+
+
 
 
 .highlight_row {
@@ -432,7 +465,6 @@ table input[type="text"] {
 
 
 
-
 </style>
 </head>
 
@@ -465,10 +497,12 @@ table input[type="text"] {
         <div id='copy-indicator';></div>
     </article>
 
-    <subtitle>
+<!--     <subtitle>
         (Note: You have to re-check this box when you load a new csv form)
-    </subtitle>
+    </subtitle> -->
 </section>
+
+
 
 <section id='table-tool-container'>
 
@@ -479,10 +513,18 @@ table input[type="text"] {
         <label><input type="radio" name="selection" id="radio-select-column">Select Column</label>
     </form>
     
+
+    <!-- table tool buttons -->
+    <button id="copy-button" class='table-tool-button button-apple'>Copy</button>
+    <button id="paste-button" class='table-tool-button button-peach'>Paste</button>
+
+
     <button id="clear-button" class='table-tool-button'>Clear Selected</button>
     <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
-</section>
 
+
+
+</section>
 
 
 <!-- TABLE -->
@@ -1113,6 +1155,100 @@ document.getElementById('clear-button').addEventListener('click', clear_selected
 // Initial update of the button text
 update_delete_button_text();
 update_clear_button_text();
+
+
+
+
+
+
+// COPY and PASTE Row or Column
+let copiedData = []; // Variable to store copied data
+
+// Function to copy selected row or column data
+function copy_selected() {
+    const table = document.querySelector('#table-container table');
+    copiedData = [];
+    const rows = table.querySelectorAll('tr');
+
+    if (table) {
+        if (highlighted_row) {
+            // Copy data from a single highlighted row
+            const cells = highlighted_row.querySelectorAll('td');
+            cells.forEach(cell => copiedData.push(cell.textContent));
+        } else if (highlighted_column !== null) {
+            // Copy data from a single highlighted column
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells[highlighted_column]) {
+                    copiedData.push(cells[highlighted_column].textContent || ''); // Handle blank values
+                }
+            });
+        } else if (highlighted_rows.size > 0) {
+            // Copy data from multiple highlighted rows
+            highlighted_rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach(cell => copiedData.push(cell.textContent || '')); // Handle blank values
+            });
+        } else if (highlighted_columns.size > 0) {
+            // Copy data from multiple highlighted columns
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                highlighted_columns.forEach(colIndex => {
+                    if (cells[colIndex]) {
+                        copiedData.push(cells[colIndex].textContent || ''); // Handle blank values
+                    }
+                });
+            });
+        }
+    }
+}
+
+// Function to paste data into the selected rows or columns, handling multiple selections
+// Function to paste data into the selected rows or columns, handling multiple selections
+function paste_selected() {
+    const table = document.querySelector('#table-container table');
+    
+    if (table && copiedData.length > 0) {
+        const rows = table.querySelectorAll('tr');
+        const numRows = rows.length;
+        let dataIndex = 0;
+
+        if (highlighted_rows.size > 0) {
+            // Paste data into multiple rows
+            const selectedRows = Array.from(highlighted_rows);
+            selectedRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach((cell, cellIndex) => {
+                    if (dataIndex < copiedData.length) {
+                        cell.textContent = copiedData[dataIndex++] || ''; // Handle blank values
+                    }
+                });
+                if (dataIndex >= copiedData.length) {
+                    dataIndex = 0; // Restart if needed
+                }
+            });
+        } else if (highlighted_columns.size > 0) {
+            // Paste data into multiple columns
+            const selectedColumns = Array.from(highlighted_columns);
+            selectedColumns.forEach((colIndex) => {
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[colIndex] && dataIndex < copiedData.length) {
+                        cells[colIndex].textContent = copiedData[dataIndex++] || ''; // Handle blank values
+                    }
+                });
+                if (dataIndex >= copiedData.length) {
+                    dataIndex = 0; // Restart if needed
+                }
+            });
+        }
+    }
+}
+
+
+// Attach event listener to the copy button
+document.getElementById('copy-button').addEventListener('click', copy_selected);
+document.getElementById('paste-button').addEventListener('click', paste_selected);
 
 
 
