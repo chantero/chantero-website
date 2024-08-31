@@ -42,9 +42,7 @@ h1 {
     margin: 20px;
 }
 
-h4 {
-    color: #39414d;
-}
+
 
 subtitle {
     margin: 1em;
@@ -60,7 +58,6 @@ subtitle {
     border: 2px dashed #ccc;
     padding: 20px;
     margin: 20px auto;
-    width: 80%;
     min-width: 200px;
     text-align: center;
     color: #ccc;
@@ -118,10 +115,9 @@ subtitle {
 
 /* TABLE TOOLS */
 #table-tool-container {
+    font-size: normal;
     background-color: rgba(176, 224, 230, 0.9);
-    width: 80%;
     min-width: 200px;
-    padding-bottom: 1.5em;
     border-radius: 16px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
@@ -131,7 +127,7 @@ subtitle {
 
     position: -webkit-sticky; /* For Safari */
     position: sticky; /* For modern browsers */
-    top: 20px; /* Gap between the top of the viewport and the sticky element */
+    top: 10px; /* Gap between the top of the viewport and the sticky element */
     z-index: 1000; /* Ensure it stays on top of other content */
 }
 
@@ -144,13 +140,11 @@ subtitle {
     align-items: center;
     margin: 1em;
     width: 90%           /* Use full width of the container */
-    gap: 3em;             
+    gap: 1em;             
 }
 
 #radio-selection > label {
-    padding: 10px;
-    width: 180px;
-    font-size: normal;
+    width: 160px;
 }
 
 
@@ -159,7 +153,7 @@ input[type="radio"] {
     -webkit-appearance: none;  /* Remove default styling */
     -moz-appearance: none;
     appearance: none;
-    margin-right: 0.7em;  /* space between radio and label text */
+    margin-right: 5px;  /* space between radio and label text */
     border-radius: 50%;
     border: 3px solid #555;  
     width: 30px;   
@@ -187,6 +181,7 @@ input[id="radio-select-column"]:checked {
 #table-tool-tip {
     color: #5a7c87;
     font-style: italic;
+    font-size: small;
 
 }
 
@@ -529,8 +524,6 @@ table input[type="text"] {
 
 
 <section id='table-tool-container'>
-
-    <h4>TABLE TOOLS</h4>
 
     <form id="radio-selection">
         <label><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
