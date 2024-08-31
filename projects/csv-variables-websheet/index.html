@@ -970,27 +970,27 @@ function table_column_click(event) {
     const clicked_cell = event.target.closest('td');
     
     if (clicked_cell) {
-        const columnIndex = Array.from(clicked_cell.parentElement.children).indexOf(clicked_cell);
+        const column_index = Array.from(clicked_cell.parentElement.children).indexOf(clicked_cell);
         const table = document.querySelector('#table-container table');
         const rows = table.querySelectorAll('tr');
         
         if (document.querySelector('#radio-select-column').checked) {
-            if (highlighted_columns.has(columnIndex)) {
+            if (highlighted_columns.has(column_index)) {
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
-                    if (cells[columnIndex]) {
-                        cells[columnIndex].classList.remove('highlight_column');
+                    if (cells[column_index]) {
+                        cells[column_index].classList.remove('highlight_column');
                     }
                 });
-                highlighted_columns.delete(columnIndex);
+                highlighted_columns.delete(column_index);
             } else {
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
-                    if (cells[columnIndex]) {
-                        cells[columnIndex].classList.add('highlight_column');
+                    if (cells[column_index]) {
+                        cells[column_index].classList.add('highlight_column');
                     }
                 });
-                highlighted_columns.add(columnIndex);
+                highlighted_columns.add(column_index);
             }
         }
     }
@@ -1059,6 +1059,8 @@ document.querySelectorAll('input[name="selection"]').forEach(radio => {
         clear_column_highlight();
         update_delete_button_text();
         update_clear_button_text();
+        update_copy_button_text();
+        update_paste_button_text();
     });
 });
 
@@ -1104,13 +1106,13 @@ function delete_selected() {
 
 // Function to update the text of the delete button
 function update_delete_button_text() {
-    const deleteButton = document.getElementById('delete-button');
+    const delete_button = document.getElementById('delete-button');
     if (document.querySelector('#radio-select-row').checked) {
-        deleteButton.textContent = 'Delete Rows';
+        delete_button.textContent = 'Delete Rows';
     } else if (document.querySelector('#radio-select-column').checked) {
-        deleteButton.textContent = 'Delete Columns';
+        delete_button.textContent = 'Delete Columns';
     } else {
-       deleteButton.textContent = 'Nothing Selected';
+       delete_button.textContent = 'Nothing Selected';
     }
 }
 
@@ -1154,27 +1156,15 @@ function clear_selected() {
 
 // Function to update the text of the clear button
 function update_clear_button_text() {
-    const clearButton = document.getElementById('clear-button');
+    const clear_button = document.getElementById('clear-button');
     if (document.querySelector('#radio-select-row').checked) {
-        clearButton.textContent = 'Clear Rows';
+        clear_button.textContent = 'Clear Rows';
     } else if (document.querySelector('#radio-select-column').checked) {
-        clearButton.textContent = 'Clear Columns';
+        clear_button.textContent = 'Clear Columns';
     } else {
-       clearButton.textContent = 'Nothing Selected';
+       clear_button.textContent = 'Nothing Selected';
     }
 }
-
-// Attach event listener to the delete button
-document.getElementById('delete-button').addEventListener('click', delete_selected);
-
-// Attach event listener to the clear button
-document.getElementById('clear-button').addEventListener('click', clear_selected);
-
-// Initial update of the button text
-update_delete_button_text();
-update_clear_button_text();
-
-
 
 
 //  COPY and PASTE
@@ -1226,12 +1216,15 @@ function copy_selected() {
 
     // Display the copy message if any data was copied
     if (copied_message) {
-        showCopyIndicator(copied_message);
+        select_row_column_copy_indicator(copied_message);
     }
+    // ---->>> TO CONFIRM
+    update_copy_button_text()
 }
 
+
 // Function to show the copy indicator message
-function showCopyIndicator(message) {
+function select_row_column_copy_indicator(message) {
     const indicator = document.createElement('div');
     indicator.textContent = message;
     indicator.style.position = 'fixed';
@@ -1255,6 +1248,20 @@ function showCopyIndicator(message) {
 
 
 
+// Function to update the text of the copy button
+function update_copy_button_text() {
+    const copy_button = document.getElementById('copy-button');
+    if (document.querySelector('#radio-select-row').checked) {
+        copy_button.textContent = 'Copy Rows';
+    } else if (document.querySelector('#radio-select-column').checked) {
+        copy_button.textContent = 'Copy Columns';
+    } else {
+        copy_button.textContent = 'Nothing Selected';
+    }
+}
+
+
+
 // Function to paste data into the selected rows or columns, handling multiple selections
 function paste_selected() {
     const table = document.querySelector('#table-container table');
@@ -1262,7 +1269,7 @@ function paste_selected() {
     if (table && copied_data.length > 0) {
         const rows = table.querySelectorAll('tr');
         // const numRows = rows.length;
-        let dataIndex = 0;
+        let data_index = 0;
 
         if (highlighted_rows.size > 0) {
             // Paste data into multiple rows
@@ -1270,12 +1277,12 @@ function paste_selected() {
             selected_rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 cells.forEach((cell, cellIndex) => {
-                    if (dataIndex < copied_data.length) {
-                        cell.textContent = copied_data[dataIndex++] || ''; // Handle blank values
+                    if (data_index < copied_data.length) {
+                        cell.textContent = copied_data[data_index++] || ''; // Handle blank values
                     }
                 });
-                if (dataIndex >= copied_data.length) {
-                    dataIndex = 0; // Restart if needed
+                if (data_index >= copied_data.length) {
+                    data_index = 0; // Restart if needed
                 }
             });
         } else if (highlighted_columns.size > 0) {
@@ -1284,25 +1291,48 @@ function paste_selected() {
             selected_columns.forEach((colIndex) => {
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
-                    if (cells[colIndex] && dataIndex < copied_data.length) {
-                        cells[colIndex].textContent = copied_data[dataIndex++] || ''; // Handle blank values
+                    if (cells[colIndex] && data_index < copied_data.length) {
+                        cells[colIndex].textContent = copied_data[data_index++] || ''; // Handle blank values
                     }
                 });
-                if (dataIndex >= copied_data.length) {
-                    dataIndex = 0; // Restart if needed
+                if (data_index >= copied_data.length) {
+                    data_index = 0; // Restart if needed
                 }
             });
+        
         }
+        update_paste_button_text() 
     }
 }
 
 
-// Attach event listener to the copy button
+
+// Function to update the text of the paste button
+function update_paste_button_text() {
+    const paste_button = document.getElementById('paste-button');
+    if (document.querySelector('#radio-select-row').checked) {
+        paste_button.textContent = 'Paste Rows';
+    } else if (document.querySelector('#radio-select-column').checked) {
+        paste_button.textContent = 'Paste Columns';
+    } else {
+        paste_button.textContent = 'Nothing Selected';
+    }
+}
+
+
+
+// Attach event listener to the delete, clear, copy and paste button
+document.getElementById('delete-button').addEventListener('click', delete_selected);
+document.getElementById('clear-button').addEventListener('click', clear_selected);
 document.getElementById('copy-button').addEventListener('click', copy_selected);
 document.getElementById('paste-button').addEventListener('click', paste_selected);
 
 
-
+// Initial update of the button text
+update_delete_button_text();
+update_clear_button_text();
+update_copy_button_text();
+update_paste_button_text();
 
 
 
