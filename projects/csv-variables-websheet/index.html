@@ -176,7 +176,7 @@ input[id="radio-select-row"]:checked {
 }
 
 input[id="radio-select-column"]:checked {
-    background-color: pink;  /* Adjust fill color when selected */
+    background-color: #F472B6;  /* Adjust fill color when selected */
 }
 
 
@@ -256,11 +256,12 @@ input[id="radio-select-column"]:checked {
 
 
 .highlight_row {
-    background-color: yellow !important;
+    background-color: rgba(255, 255, 0, 0.5) !important; 
+
 }
 
 .highlight_column {
-    background-color: pink !important;
+    background-color: rgba(255, 212, 234, 0.5) !important; 
 }
 
 
@@ -296,7 +297,7 @@ tr:nth-of-type(even) {
 th, td {
     padding: 10px;
     text-align: left;
-    border: 1px solid #a3a3a3;
+    border: 1px solid #a3a3a3; 
 }
 
 th {
@@ -319,6 +320,12 @@ table td {
 }
 
 
+/* the individual selected cell css */
+table td:focus {
+    outline: 2px solid #5BC1D7;
+    transition: all 0.1s ease-in-out 0s; 
+}
+
 /* Input style for cells */
 table input[type="text"] {
     border: none; /* No visible border */
@@ -334,6 +341,10 @@ table input[type="text"] {
     white-space: pre-wrap; /* Allow text to wrap */
     word-wrap: break-word; /* Break long words */
 }
+
+
+
+                
 
 
 
@@ -515,8 +526,10 @@ table input[type="text"] {
     
 
     <!-- table tool buttons -->
+
     <button id="copy-button" class='table-tool-button button-apple'>Copy</button>
     <button id="paste-button" class='table-tool-button button-peach'>Paste</button>
+
 
 
     <button id="clear-button" class='table-tool-button'>Clear Selected</button>
@@ -1088,9 +1101,9 @@ function delete_selected() {
 function update_delete_button_text() {
     const deleteButton = document.getElementById('delete-button');
     if (document.querySelector('#radio-select-row').checked) {
-        deleteButton.textContent = 'Delete Selected Rows';
+        deleteButton.textContent = 'Delete Rows';
     } else if (document.querySelector('#radio-select-column').checked) {
-        deleteButton.textContent = 'Delete Selected Columns';
+        deleteButton.textContent = 'Delete Columns';
     } else {
        deleteButton.textContent = 'Nothing Selected';
     }
@@ -1138,9 +1151,9 @@ function clear_selected() {
 function update_clear_button_text() {
     const clearButton = document.getElementById('clear-button');
     if (document.querySelector('#radio-select-row').checked) {
-        clearButton.textContent = 'Clear Selected Rows';
+        clearButton.textContent = 'Clear Rows';
     } else if (document.querySelector('#radio-select-column').checked) {
-        clearButton.textContent = 'Clear Selected Columns';
+        clearButton.textContent = 'Clear Columns';
     } else {
        clearButton.textContent = 'Nothing Selected';
     }
@@ -1159,9 +1172,8 @@ update_clear_button_text();
 
 
 
+//  COPY and PASTE
 
-
-// COPY and PASTE Row or Column
 let copiedData = []; // Variable to store copied data
 
 // Function to copy selected row or column data
@@ -1169,12 +1181,14 @@ function copy_selected() {
     const table = document.querySelector('#table-container table');
     copiedData = [];
     const rows = table.querySelectorAll('tr');
+    let copiedMessage = ''; // Variable to hold the copy message
 
     if (table) {
         if (highlighted_row) {
             // Copy data from a single highlighted row
             const cells = highlighted_row.querySelectorAll('td');
             cells.forEach(cell => copiedData.push(cell.textContent));
+            copiedMessage = 'Copied 1 row';
         } else if (highlighted_column !== null) {
             // Copy data from a single highlighted column
             rows.forEach(row => {
@@ -1183,12 +1197,14 @@ function copy_selected() {
                     copiedData.push(cells[highlighted_column].textContent || ''); // Handle blank values
                 }
             });
+            copiedMessage = 'Copied 1 column';
         } else if (highlighted_rows.size > 0) {
             // Copy data from multiple highlighted rows
             highlighted_rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 cells.forEach(cell => copiedData.push(cell.textContent || '')); // Handle blank values
             });
+            copiedMessage = `Copied ${highlighted_rows.size} rows`;
         } else if (highlighted_columns.size > 0) {
             // Copy data from multiple highlighted columns
             rows.forEach(row => {
@@ -1199,11 +1215,42 @@ function copy_selected() {
                     }
                 });
             });
+            copiedMessage = `Copied ${highlighted_columns.size} columns`;
         }
+
+    }
+
+    // Display the copy message if any data was copied
+    if (copiedMessage) {
+        showCopyIndicator(copiedMessage);
     }
 }
 
-// Function to paste data into the selected rows or columns, handling multiple selections
+// Function to show the copy indicator message
+function showCopyIndicator(message) {
+    const indicator = document.createElement('div');
+    indicator.textContent = message;
+    indicator.style.position = 'fixed';
+    indicator.style.top = '50%';
+    indicator.style.left = '50%';
+    indicator.style.transform = 'translate(-50%, -50%)';
+    indicator.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    indicator.style.color = 'white';
+    indicator.style.padding = '10px 20px';
+    indicator.style.borderRadius = '5px';
+    indicator.style.zIndex = '1000';
+    indicator.style.fontSize = '16px';
+    document.body.appendChild(indicator);
+
+    // Remove the indicator after 1 second
+    setTimeout(() => {
+        document.body.removeChild(indicator);
+    }, 1000);
+}
+
+
+
+
 // Function to paste data into the selected rows or columns, handling multiple selections
 function paste_selected() {
     const table = document.querySelector('#table-container table');
@@ -1249,6 +1296,13 @@ function paste_selected() {
 // Attach event listener to the copy button
 document.getElementById('copy-button').addEventListener('click', copy_selected);
 document.getElementById('paste-button').addEventListener('click', paste_selected);
+
+
+
+
+
+
+
 
 
 
