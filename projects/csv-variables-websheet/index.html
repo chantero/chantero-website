@@ -46,13 +46,12 @@ h1 {
 subtitle {
     margin: 1em;
     padding: 1em;
-    font-size: large;
     color: slategray;
 }
 
 button {
     cursor: pointer;
-    letter-spacing: .25px;
+    font-size: inherit;
 }
 
 
@@ -86,12 +85,13 @@ button {
     justify-content: center;
 }
 
-.checkbox-container input[type="checkbox"] {
-    width: 30px; /* Increased size */
-    height: 30px; /* Increased size */
-    margin: 30px;
-}
 
+.checkbox-container input[type="checkbox"] {
+    width: 30px; 
+    height: 30px; 
+    margin: 30px;
+    outline: solid;
+}
 
 
 /* -- COPY INDICATOR */
@@ -163,7 +163,6 @@ button {
     margin-top: 20px;
     margin-bottom: 10px;
     padding: 5px;
-    font-size: normal;
     background-color: rgba(176, 224, 230, 0.9);
     min-width: 200px;
     width: 100%;
@@ -215,7 +214,7 @@ input[type="radio"] {
     appearance: none;
     margin-right: 5px;  /* space between radio and label text */
     border-radius: 50%;
-    border: 3px solid #555;  
+    border: 1.5px solid #555;  
     width: 30px;   
     height: 30px; 
     background-color: white;
@@ -242,12 +241,11 @@ input[id="radio-select-column"]:checked {
     color: #5a7c87;
     font-style: italic;
     font-size: small;
-
 }
 
 .table-tool-button {
     background-color: #f2f2f2;
-    border: 2px solid #222222;
+    border: 1.5px solid #222222;
     border-radius: 8px;
     box-sizing: border-box;
     color: #222222;
@@ -316,9 +314,15 @@ input[id="radio-select-column"]:checked {
 
 
 /* -- TABLE STYLE */
+
 #table-container {
     border-radius: 7px;
     margin-top: 20px;
+}
+
+
+#generated-table {
+    margin: 1em;
 }
 
 
@@ -380,9 +384,6 @@ table input[type="text"] {
     border: none; /* No visible border */
     padding: 0; /* No padding */
     background: none; /* No background */
-    font-family: inherit; 
-    font-size: inherit; 
-    text-align: inherit; 
     box-shadow: none; 
     outline: none; 
     resize: none; /* No resize handle */
@@ -402,9 +403,7 @@ table input[type="text"] {
   border-width: 0 0 4px;
   box-sizing: border-box;
   display: inline-block;
-  font-family: din-round,sans-serif;
   font-size: normal;
-  letter-spacing: .8px;
   line-height: 20px;
   margin: 10px;
   outline: none;
@@ -754,6 +753,10 @@ function setup() {
                 // select and highlight rows and columns
             table.addEventListener('click', table_row_click);
             table.addEventListener('click', table_column_click);
+
+
+            // set table's id
+            table.id = 'generated-table';
 
 
 
@@ -1274,7 +1277,6 @@ function select_row_column_copy_indicator(message) {
     indicator.style.padding = '10px 20px';
     indicator.style.borderRadius = '5px';
     indicator.style.zIndex = '1000';
-    indicator.style.fontSize = '16px';
     document.body.appendChild(indicator);
 
     // Remove the indicator after 1 second
