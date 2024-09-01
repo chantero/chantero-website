@@ -43,7 +43,6 @@ h1 {
 }
 
 
-
 subtitle {
     margin: 1em;
     padding: 1em;
@@ -51,6 +50,10 @@ subtitle {
     color: slategray;
 }
 
+button {
+    cursor: pointer;
+    letter-spacing: .25px;
+}
 
 
 /* -- DROP ZONE */
@@ -116,71 +119,77 @@ subtitle {
 /* TABLE TOOLS */
 
 /* CSS */
-#toggle-button {
-  margin-bottom: 20px;
-  align-items: center;
-  appearance: none;
-  background-color: #fff;
-  border-radius: 24px;
-  border-style: none;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  box-sizing: border-box;
-  color: #3c4043;
-  cursor: pointer;
-  display: inline-flex;
-  fill: currentcolor;
-  height: 45px;
-  width: 200px;
-  justify-content: center;
-  letter-spacing: .25px;
-  line-height: normal;
-  padding: 2px 24px;
-  text-align: center;
-  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  will-change: transform,opacity;
-  z-index: 0;
+#table-tool-toggle-button {
+    align-items: center;
+    appearance: none;
+    background-color: #fff;
+    border-radius: 24px;
+    border-style: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-sizing: border-box;
+    color: #3c4043;
+    display: inline-flex;
+    fill: currentcolor;
+    height: 45px;
+    width: 200px;
+    justify-content: center;
+    line-height: normal;
+    padding: 2px 24px;
+    text-align: center;
+    border: 2px solid #374151;
+    transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform,opacity;
+    z-index: 0;
+    position: -webkit-sticky; /* For Safari */
+    position: sticky; /* For modern browsers */
+    top: 10px; /* Gap between the top of the viewport and the sticky element */
+    z-index: 1000; /* Ensure it stays on top of other content */
+
+
 }
 
-#toggle-button:hover {
+#table-tool-toggle-button:hover {
   background: #e8f3ff;
   border: 2px solid #70b5f9;
 }
 
 
 
-#toggle-button:focus {
-  outline: none;
-x}
-
-
-
-
-
 
 #table-tool-container {
+    margin-top: 20px;
+    margin-bottom: 10px;
     padding: 5px;
     font-size: normal;
     background-color: rgba(176, 224, 230, 0.9);
     min-width: 200px;
     width: 100%;
     border-radius: 16px;
+    border: 1px solid #374151;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
     display: inline-block;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-
     position: -webkit-sticky; /* For Safari */
     position: sticky; /* For modern browsers */
-    top: 10px; /* Gap between the top of the viewport and the sticky element */
-    z-index: 1000; /* Ensure it stays on top of other content */
+    top: 45px; /* Gap between the top of the viewport and the sticky element */
+    z-index: 999; /* Ensure it stays on top of other content - except the toggle which is 1000 */
 }
 
 
-
+/* table tools all buttons class*/
+.buttons-container {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center;
+    flex-wrap: wrap;
+    cursor: auto;
+}
 
 
 #radio-selection {
@@ -188,12 +197,14 @@ x}
     flex-wrap: wrap;        /* Allow wrapping to a new line */
     justify-content: center;
     align-items: center;
-    margin: 1em;
-    gap: 1em;             
+    margin: 15px;
+    cursor: pointer;
 }
 
 #radio-selection > label {
-    width: 150px;
+    width: 160px;
+    cursor: pointer;
+    padding-bottom: 10x;
 }
 
 
@@ -235,43 +246,33 @@ input[id="radio-select-column"]:checked {
 }
 
 .table-tool-button {
-  background-color: #f2f2f2;
-  border: 2px solid #222222;
-  border-radius: 8px;
-  box-sizing: border-box;
-  color: #222222;
-  cursor: pointer;
-  display: inline-block;
-  margin: 5px;
-  margin-inline: 15px;
-  outline: none;
-  padding: 13px 23px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  touch-action: manipulation;
-  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
-/*  user-select: none;
-  -webkit-user-select: none;*/
-  width: auto;
+    background-color: #f2f2f2;
+    border: 2px solid #222222;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #222222;
+    display: inline-block;
+    margin: 5px;
+    margin-inline: 15px;
+    outline: none;
+    padding: 13px 23px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+    width: auto;
 }
 
 .table-tool-button:focus-visible {
-  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
-  transition: box-shadow .2s;
+    box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+    transition: box-shadow .2s;
 }
 
 .table-tool-button:active {
   background-color: #e5e5e5;
   border-color: #000000;
   transform: scale(.96);
-}
-
-.table-tool-button:disabled {
-  border-color: #DDDDDD;
-  color: #DDDDDD;
-  cursor: not-allowed;
-  opacity: 1;
 }
 
 
@@ -292,8 +293,6 @@ input[id="radio-select-column"]:checked {
 }
 
 
-
-
 .table-tool-button.button-black {
     background-color: #39414d;
     color: white;
@@ -302,9 +301,6 @@ input[id="radio-select-column"]:checked {
 .table-tool-button.button-black:active {
     background-color: #272c34;
 }
-
-
-
 
 
 .highlight_row {
@@ -319,15 +315,11 @@ input[id="radio-select-column"]:checked {
 
 
 
-
 /* -- TABLE STYLE */
 #table-container {
     border-radius: 7px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
-
-
-
 
 
 table {
@@ -401,34 +393,17 @@ table input[type="text"] {
 
 
 
-                
-
-
-
-/* BUTTONS at the bottom of the page*/
-.buttons-container {
-    display: flex;
-    flex-direction: row; 
-    justify-content: center; 
-    align-items: center;
-    padding-top: 3em;
-    flex-wrap: wrap;
-}
-
-
 .bottom-button {
-  padding: 20px;
-  width: 170px;
+  padding: 15px;
+  width: 135px;
   appearance: button; 
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
   box-sizing: border-box;
-  cursor: pointer;
   display: inline-block;
   font-family: din-round,sans-serif;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: normal;
   letter-spacing: .8px;
   line-height: 20px;
   margin: 10px;
@@ -436,7 +411,6 @@ table input[type="text"] {
   overflow: visible;
   padding: 13px 16px;
   text-align: center;
-  text-transform: uppercase;
   touch-action: manipulation;
   transform: translateZ(0);
   transition: filter .2s;
@@ -461,10 +435,6 @@ table input[type="text"] {
   z-index: -1;
 }
 
-
-.bottom-button:disabled {
-  cursor: auto;
-}
 
 .bottom-button:active {
   border-width: 4px 0 0;
@@ -573,30 +543,39 @@ table input[type="text"] {
 
 
  <!-- Toggle icon for table tools -->
-<button id="toggle-button" onclick="toggleSection()">&#9660; Hide Table Tools</button>
+<button id="table-tool-toggle-button" onclick="toggleSection()">&#9660; Hide Table Tools</button>
 <br>
 
 <section id='table-tool-container'>
 
     <form id="radio-selection">
-        <label><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
-        <label><input type="radio" name="selection" id="radio-select-row">Select Row</label>
-        <label><input type="radio" name="selection" id="radio-select-column">Select Column</label>
+        <label for="radio-default"><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
+        <label for="radio-select-row"><input type="radio" name="selection" id="radio-select-row">Select Row</label>
+        <label for="radio-select-column"><input type="radio" name="selection" id="radio-select-column">Select Column</label>
     </form>
     
 
-    <!-- table tool buttons -->
+    <section class='buttons-container'>
+        <!-- table tool buttons -->
+        <button id="copy-button" class='table-tool-button button-apple'>Copy</button>
+        <button id="paste-button" class='table-tool-button button-peach'>Paste</button>
 
-    <button id="copy-button" class='table-tool-button button-apple'>Copy</button>
-    <button id="paste-button" class='table-tool-button button-peach'>Paste</button>
+        <button id="clear-button" class='table-tool-button'>Clear Selected</button>
+        <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
+    </section class='buttons-container'>
 
-
-
-    <button id="clear-button" class='table-tool-button'>Clear Selected</button>
-    <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
-
-    <p id='table-tool-tip'>Important note: You should only copy one [Column] at a time</p>
-
+         <p id='table-tool-tip'>Important note: You should only copy one [Column] at a time</p>
+ 
+        <!-- main buttons -->
+    <section class='buttons-container'>
+        <button type="button" class="bottom-button button-amber" id="button-new-table">New Table</button>
+        
+        <button type="button" class="bottom-button button-green" id="button-add-row">Add Row</button>
+        <button type="button" class= "bottom-button button-green" id="button-add-column">Add Column</button>
+        <button type="button" class="bottom-button button-blue" id="button-export-to-csv">Export CSV</button>
+        <button type="button" class="bottom-button button-blue" id="button-export-to-bulk-csv">Bulk CSV</button>
+        <button type="button" class="bottom-button button-purple" id="button-export-to-html">Export HTML</button>
+    </section>
 
 </section>
 
@@ -606,19 +585,6 @@ table input[type="text"] {
     <!-- Table will be generated automatically via generate_html_table_from_csv() below -->
 </section>
 
-
-<!-- BUTTONS -->
-<section class='buttons-container'>
-    <button type="button" class="bottom-button button-amber" id="button-new-table">New Table</button>
-    
-    <button type="button" class="bottom-button button-green" id="button-add-row">Add Row</button>
-    <button type="button" class= "bottom-button button-green" id="button-add-column">Add Column</button>
-    <button type="button" class="bottom-button button-blue" id="button-export-to-csv">Export CSV</button>
-    <button type="button" class="bottom-button button-blue" id="button-export-to-bulk-csv">Bulk CSV</button>
-    <button type="button" class="bottom-button button-purple" id="button-export-to-html">Export HTML</button>
-
-
-</section>
 
 
 <!-- JAVASCRIPT-->
@@ -998,7 +964,7 @@ function setup() {
 // Function to toggle the section visibility
 function toggleSection() {
     var section = document.getElementById('table-tool-container');
-    var icon = document.getElementById('toggle-button');
+    var icon = document.getElementById('table-tool-toggle-button');
     if (section.style.display === "none") {
         section.style.display = "block";
         icon.innerHTML = "&#9660; Hide Table Tools"; // Change icon and text
