@@ -418,7 +418,6 @@ table input[type="text"] {
 
 .bottom-button:after {
   background-clip: padding-box;
-/*  background-color: #1CB0F6;*/
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
@@ -496,6 +495,153 @@ table input[type="text"] {
 }
 
 
+/* OVERLAY & HINT BOX STYLES */
+
+#overlay {
+    position: fixed;
+    display: none; /* Hidden by default */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 999; /* Ensure it appears on top */
+}
+
+.hint-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #E4EFF7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    width: 90%; /* Responsive width */
+    max-width: 1200px; /* Limit max width */
+    z-index: 1000;
+    display: none; /* Hidden by default */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Close button styles */
+.close-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+}
+
+/* Hint button styles */
+.hint-button {
+    background-color: #378fe9;
+    color: white;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 60px; /* Center text vertically */
+    cursor: pointer;
+    position: fixed;
+    top: 20px; /* Positioned at the top */
+    right: 20px; /* Positioned at the right */
+    z-index: 1001; /* Always on top */
+}
+
+.hint-button:hover {
+    background-color: #0a66c2;
+}
+
+
+.hint-button.dragging {
+    opacity: 0.8;
+    cursor: grabbing;
+}
+
+/* Table styles inside hint box */
+.hint-box table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: auto; /* Allow column widths to adjust based on content */
+}
+
+
+/* Column-specific styles */
+.hint-box th:nth-child(1),
+.hint-box td:nth-child(1) {
+    width: 5%; /* Narrower width for column 1 */
+}
+
+.hint-box th:nth-child(2),
+.hint-box td:nth-child(2) {
+    width: 5%; /* Narrower width for column 2 */
+}
+
+.hint-box th:nth-child(3),
+.hint-box td:nth-child(3) {
+    width: 30%; /* Wider width for column 3 */
+}
+
+.hint-box th:nth-child(4),
+.hint-box td:nth-child(4) {
+    width: 60%; /* Wider width for column 4 */
+}
+
+
+
+
+.hint-box th,
+.hint-box td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #6B7280;
+}
+
+.hint-box th {
+    background-color: #a5d6ff;
+    color: black;
+    font-size: smaller;
+}
+
+.hint-box td {
+    background-color: #fff;
+    color: #333;
+    font-size: smaller;
+    word-wrap: break-word; /* Ensure long words break within cells */
+}
+
+/* Specific styles for // and | in the table notes */
+.table-notes .red {
+    color: #e90a96;
+}
+
+.table-notes .blue {
+    color: #1f6feb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hint-box th,
+    .hint-box td {
+        padding: 8px;
+        font-size: smaller;
+    }
+}
+
+
+
 
 
 
@@ -519,7 +665,6 @@ table input[type="text"] {
     </article>
 
     <p> ─────── 𖥸 ─────── </p>
-
 </section>
 
 
@@ -577,6 +722,95 @@ table input[type="text"] {
 <section id='table-container' class='outer-table' style='overflow-x:auto;'>
     <!-- Table will be generated automatically via generate_html_table_from_csv() below -->
 </section>
+
+
+
+<!-- Overlay / Hint Box -->
+
+<section>
+    <!-- The "hint" button -->
+    <button class="hint-button" id="hint_button">?</button>
+
+    <!-- Overlay and hint box -->
+    <div id="overlay" onclick="hide_hint_box()"></div>
+    <div class="hint-box" id="hint_box">
+        <button class="close-button" onclick="hide_hint_box()">X</button>
+        
+        <h2>Guidelines</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Variable Type</th>
+                    <th>Variable</th>
+                    <th>Example Value</th>
+                    <th>Remarks [Format]</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>General Variable</td>
+                    <td>{{variable}}</td>
+                    <td>This is an example</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Dates</td>
+                    <td> <u>Template</u> <br>{{variable | date}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
+                    <td>19980514</td>
+                    <td class="table-notes">
+                        <strong><span class="blue">YYYYMMDD</span></strong><br>
+                        <strong><span class="blue">YYYYMMDD</span><span class="red">HHMM</span></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Smart Paragraphs</td>
+                    <td><u>variables.csv</u><br> condition - [?]</td>
+                    <td>yes</td>
+                    <td class="table-notes">
+                        Positive indicator:<br>
+                        <strong><span class="blue">yes, y, true, t, male, m</span></strong>
+                        <br><br>
+                        Negative indicator:<br>
+                        <strong><span class="red">no, n, false, f, female, f</span></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lists</td>
+                    <td> <u>Template</u> <br>{{variable | lv}} <br><br> <u>variables.csv</u><br> {{list variable}} - [list]</td>
+                    <td>Adam Smith // (NRIC No. 12345) | Ben Smith // (NRIC No. 54321)</td>
+                    <td class="table-notes">
+                        <span class="blue"> | </span> = Item separator (to separate 2 items)<br>
+                        <span class="red"> // </span> = Newline separator (within each item)
+                        <br><br>
+                        <strong>
+                            anteater
+                            <span class="blue"> | </span>
+                            bear
+                            <span class="blue"> | </span>
+                            cat<br>
+                        </strong>
+                        
+                        <br>
+                        
+                        <strong>
+                            anteater<span class="red"> // </span>
+                            anteaters are cute
+                            <span class="blue"> | </span><br>
+                            bear<span class="red"> // </span>
+                            bears are cute
+                            <span class="blue"> | </span><br>
+                            cat<span class="red"> // </span>
+                            cats are cute
+
+                        </strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
 
 
 <footer>
@@ -1377,6 +1611,58 @@ update_copy_button_text();
 update_paste_button_text();
 
 
+
+// HINT BOX OVERLAY
+
+    function show_hint_box() {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("hint_box").style.display = "block";
+    }
+
+    // Function to hide the hint box and overlay
+    function hide_hint_box() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("hint_box").style.display = "none";
+    }
+
+    // Toggle hint box visibility when clicking the button
+    document.getElementById("hint_button").addEventListener('click', function() {
+        const hintBox = document.getElementById("hint_box");
+        const overlay = document.getElementById("overlay");
+
+        if (hintBox.style.display === "block") {
+            hide_hint_box();
+        } else {
+            show_hint_box();
+        }
+    });
+
+    // Make the button draggable
+    const hint_button = document.getElementById("hint_button");
+
+    let offsetX, offsetY;
+
+    hint_button.addEventListener('mousedown', function (e) {
+        // Add the dragging class and calculate the offset
+        hint_button.classList.add('dragging');
+        offsetX = e.clientX - hint_button.getBoundingClientRect().left;
+        offsetY = e.clientY - hint_button.getBoundingClientRect().top;
+
+        document.addEventListener('mousemove', drag_button);
+        document.addEventListener('mouseup', stop_drag_button);
+    });
+
+    function drag_button(e) {
+        hint_button.style.left = (e.clientX - offsetX) + 'px';
+        hint_button.style.top = (e.clientY - offsetY) + 'px';
+    }
+
+    function stop_drag_button() {
+        // Remove the dragging class and stop the drag
+        hint_button.classList.remove('dragging');
+        document.removeEventListener('mousemove', drag_button);
+        document.removeEventListener('mouseup', stop_drag_button);
+    }
 
 
 
