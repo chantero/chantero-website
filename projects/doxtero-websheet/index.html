@@ -201,7 +201,7 @@ button {
 #radio-selection > label {
     width: 160px;
     cursor: pointer;
-    padding-bottom: 10x;
+    padding-bottom: 10px;
 }
 
 
@@ -401,7 +401,6 @@ table input[type="text"] {
   border-width: 0 0 4px;
   box-sizing: border-box;
   display: inline-block;
-  font-size: normal;
   line-height: 20px;
   margin: 10px;
   outline: none;
@@ -519,7 +518,7 @@ table input[type="text"] {
         <p>Drop a CSV file here (or) Click to select CSV file</p> 
     </article>
 
-    <subtitle> ─────── 𖥸 ─────── </subtitle>
+    <p> ─────── 𖥸 ─────── </p>
 
 </section>
 
@@ -529,12 +528,9 @@ table input[type="text"] {
     <article class='checkbox-container'>
         <label for='copyboard-checkbox'>Switch to Copyboard</label>
         <input type='checkbox' id='copyboard-checkbox' name='copyboard-checkbox'>
-        <div id='copy-indicator';></div>
+        <div id='copy-indicator'></div>
     </article>
 
-<!--     <subtitle>
-        (Note: You have to re-check this box when you load a new csv form)
-    </subtitle> -->
 </section>
 
 
@@ -559,7 +555,7 @@ table input[type="text"] {
 
         <button id="clear-button" class='table-tool-button'>Clear Selected</button>
         <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
-    </section class='buttons-container'>
+    </section>
 
          <p id='table-tool-tip'>Important note: You should only copy one [Column] at a time</p>
  
@@ -666,54 +662,56 @@ function setup() {
 
 // // PARSE CSV FILE FUNCTION 
     // used in [generate_html_table_from_csv()]
-    function parse_csv(csv_text) {
+function parse_csv(csv_text) {
+    // Normalize quotes
+    const normalized_csv_text = csv_text.replace(/‘|’|‛|`|´|‵|′/g, "'")
+                                        .replace(/“|”|〝|〞|‶|″|‟/g, '"');
+    
+    const rows = [];
+    let current_row = [];
+    let current_field = '';
+    let in_quotes = false;
+    let i = 0;
 
-        // normalise quotes from "curly" to "straight" quotes -- is this necessary?
-        const normalized_csv_text = csv_text.replace(/‘|’|‛|`|´|‵|′/g, "'")
-                                            .replace(/“|”|〝|〞|‶|″|‟/g, '"');
-        
-        const rows = [];
-        let current_row = [];
-        let current_field = '';
-        let in_quotes = false;
+    while (i < normalized_csv_text.length) {
+        const char = normalized_csv_text[i];
 
-        // Iterate over each character in the normalized CSV text
-        for (let i = 0; i < normalized_csv_text.length; i++) {
-            const char = normalized_csv_text[i];
-
-            if (char === '"') {
-                // Toggle in_quotes or add escaped quotes
-                if (in_quotes && normalized_csv_text[i + 1] === '"') {
-                    current_field += '"';
-                    i++; // Skip the next quote
-                } else {
-                    in_quotes = !in_quotes;
-                }
-            } else if (char === ',' && !in_quotes) {
-                // Add field to current row
-                current_row.push(current_field.trim());
-                current_field = '';
-            } else if ((char === '\n' || char === '\r') && !in_quotes) {
-                // Add row to rows, ensuring not to add empty rows on consecutive newlines
-                if (current_field !== '' || current_row.length > 0) {
-                    current_row.push(current_field.trim());
-                    rows.push(current_row);
-                    current_row = [];
-                    current_field = '';
-                }
+        if (char === '"') {
+            // Handle quoted fields
+            if (in_quotes && normalized_csv_text[i + 1] === '"') {
+                current_field += '"';
+                i++; // Skip the next quote
             } else {
-                current_field += char;
+                in_quotes = !in_quotes;
             }
-        }
-
-        // Handle last row/field if the file doesn't end with a newline
-        if (current_field !== '' || current_row.length > 0) {
+        } else if (char === ',' && !in_quotes) {
+            // Handle field delimiter
+            current_row.push(current_field.trim());
+            current_field = '';
+        } else if ((char === '\n' || char === '\r') && !in_quotes) {
+            // Handle end of row
+            if (char === '\r' && normalized_csv_text[i + 1] === '\n') {
+                i++; // Skip \n after \r
+            }
             current_row.push(current_field.trim());
             rows.push(current_row);
+            current_row = [];
+            current_field = '';
+        } else {
+            current_field += char;
         }
+        i++;
+    }
 
-        return rows;
-    }  // end - parse csv
+    // Handle the last row/field
+    if (current_field !== '' || current_row.length > 0) {
+        current_row.push(current_field.trim());
+        rows.push(current_row);
+    }
+
+    return rows;
+}   /* end parse csv */
+
 
 
 // // GENERATE HTML TABLE FROM CSV FILE
