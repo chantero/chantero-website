@@ -516,22 +516,21 @@ table input[type="text"] {
     background-color: #E4EFF7;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    width: 90%; /* Responsive width */
-    max-width: 1200px; /* Limit max width */
+    width: 90%; 
+    max-width: 1200px; 
     z-index: 1000;
     display: none; /* Hidden by default */
-    overflow-y: auto; /* Allow scrolling if content overflows */
-    box-sizing: border-box; /* Ensure padding is included in width */
+    overflow-y: auto; 
+    box-sizing: border-box;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
-/* Close button styles */
 .close-button {
-    background-color: #f44336;
+    background-color: #DC2626;
     color: white;
     border: none;
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
     position: absolute;
     top: 10px;
@@ -539,7 +538,10 @@ table input[type="text"] {
     font-size: 16px;
 }
 
-/* Hint button styles */
+.close-button:hover {
+    background-color: #B91C1C;
+}
+
 .hint-button {
     background-color: #378fe9;
     color: white;
@@ -563,13 +565,11 @@ table input[type="text"] {
     background-color: #0a66c2;
 }
 
-
 .hint-button.dragging {
     opacity: 0.8;
     cursor: grabbing;
 }
 
-/* Table styles inside hint box */
 .hint-box table {
     width: 90%;
     border-collapse: collapse;
@@ -577,8 +577,6 @@ table input[type="text"] {
     table-layout: auto; /* Allow column widths to adjust based on content */
 }
 
-
-/* Column-specific styles */
 .hint-box th:nth-child(1),
 .hint-box td:nth-child(1) {
     width: 5%; /* Narrower width for column 1 */
@@ -600,8 +598,6 @@ table input[type="text"] {
 }
 
 
-
-
 .hint-box th,
 .hint-box td {
     padding: 10px;
@@ -610,19 +606,16 @@ table input[type="text"] {
 }
 
 .hint-box th {
-    background-color: #a5d6ff;
+    background-color: #5adaff;
     color: black;
-    font-size: smaller;
 }
 
 .hint-box td {
     background-color: #fff;
     color: #333;
-    font-size: smaller;
     word-wrap: break-word; /* Ensure long words break within cells */
 }
 
-/* Specific styles for // and | in the table notes */
 .table-notes .red {
     color: #e90a96;
 }
@@ -630,17 +623,6 @@ table input[type="text"] {
 .table-notes .blue {
     color: #1f6feb;
 }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .hint-box th,
-    .hint-box td {
-        padding: 8px;
-        font-size: smaller;
-    }
-}
-
-
 
 
 
