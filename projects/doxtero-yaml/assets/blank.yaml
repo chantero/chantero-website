@@ -1,0 +1,62 @@
+party 1:
+
+  - name:
+    id:
+    phone: 
+    email: 
+    address: 
+    address dox: 
+
+  - name:
+    id:
+    phone: 
+    email: 
+    address: 
+    address dox: 
+
+party 2:
+
+  - name:
+    id:
+    phone: 
+    email: 
+    address: 
+    address dox: 
+
+
+property:
+
+  - describe short: 
+    describe full: 
+    purchase price:
+
+
+bank loan:
+
+  - bank name:
+    bank id:
+    bank address:
+    bank phone:
+
+  - description: loan documents
+    date of LO:
+    date of FA:
+    date of DOA:
+    date of PA:
+
+
+
+agreements:
+
+  - description: 1st SPA
+    date: 
+    developer:
+    proprietor:
+    purchaser:
+
+  - description: 2nd SPA
+    date: 
+    vendor: 
+    purchaser: 
+
+

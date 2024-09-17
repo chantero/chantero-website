@@ -1,0 +1,39 @@
+vendor:
+
+  - name: John Watson
+    phone: 020-79460001
+    email: john.watson@221b.com
+    address: 221B Baker Street, London, UK
+    address dox: 221B Baker Street | London, UK | 221B Baker Street | London, UK | 221B Baker Street | London, UK
+
+  - name: Mycroft Holmes
+    phone: 020-79460002
+    email: mycroft.holmes@221b.com
+    address: 221B Baker Street, London, UK
+    address dox: 221B Baker Street | London, UK
+
+purchaser:
+
+  - name: Mary Morstan
+    phone: 020-79460003
+    email: mary.morstan@221b.com
+    address: 17 Lant Street, London, UK
+    address dox: 17 Lant Street | London, UK
+
+property:
+
+  - describe short: The Hound of the Baskervilles Estate
+    describe full: The Hound of the Baskervilles Estate, Dartmoor, Devon, UK
+    purchase price: 1200000
+
+agreements:
+
+  - description: 1st SPA
+    date: 20240301
+    vendor: Sherlock Holmes
+    purchaser: Irene Adler
+
+  - description: 2nd SPA
+    date: 20240607
+    vendor: Sherlock Holmes
+    purchaser: James Moriarty
