@@ -4,7 +4,7 @@ vendor:
     phone: 020-79460001
     email: john.watson@221b.com
     address: 221B Baker Street, London, UK
-    address dox: 221B Baker Street | London, UK | 221B Baker Street | London, UK | 221B Baker Street | London, UK
+    address dox: 221B Baker Street | London, UK
 
   - name: Mycroft Holmes
     phone: 020-79460002
