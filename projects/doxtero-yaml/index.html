@@ -66,6 +66,7 @@
             white-space: normal;
             padding: 8px;
             border: 1px solid slategray;
+            line-height: 2;
         }
 
         td {
@@ -88,6 +89,12 @@
         tr:nth-child(1) > td:nth-child(1) {
             width: 120px;
         }
+
+        /* zebra */
+        table tr:nth-child(even) {
+            background-color: #EAEAEA;
+        }
+
 
         #drop-zone {
             border: 3px dashed #D1D5DB;
@@ -219,83 +226,94 @@
             }
         }
 
-        function populateDataList(data) {
-            dataList.innerHTML = '';
+function populateDataList(data) {
+    dataList.innerHTML = '';
 
-            for (const category in data) {
-                if (data.hasOwnProperty(category)) {
-                    const categoryData = data[category];
+    function generateTableContent(item) {
+        let tableContent = '<table>';
+        let firstKey = null;
 
-                    const categoryElement = document.createElement('li');
-                    categoryElement.className = 'category';
-                    categoryElement.textContent = category.charAt(0) + category.slice(1);
-                    categoryElement.onclick = () => copyToClipboard(categoryElement.textContent);
-                    dataList.appendChild(categoryElement);
+        for (const key in item) {
+            if (item.hasOwnProperty(key)) {
+                if (firstKey === null) {
+                    firstKey = key;
+                }
+                tableContent += `
+                    <tr>
+                        <td>${key.charAt(0) + key.slice(1)}</td>
+                        <td>${item[key]}</td>
+                    </tr>
+                `;
+            }
+        }
+        tableContent += '</table>';
+        return { tableContent, firstKey };
+    }
 
-                    if (Array.isArray(categoryData)) {
-                        categoryData.forEach(item => {
-                            const itemElement = document.createElement('li');
-                            itemElement.className = 'data-item';
+    function addCopyListenersToTableCells(table) {
+        const cells = table.querySelectorAll('td');
+        cells.forEach(cell => {
+            cell.style.cursor = 'pointer'; // Ensure pointer cursor is shown
+            cell.addEventListener('click', () => {
+                copyToClipboard(cell.textContent);
+            });
+        });
+    }
 
-                            // Generate table rows for each key-value pair
-                            let tableContent = '<table>';
-                            let firstKey = null;
+    for (const category in data) {
+        if (data.hasOwnProperty(category)) {
+            const categoryData = data[category];
 
-                            for (const key in item) {
-                                if (item.hasOwnProperty(key)) {
-                                    if (firstKey === null) {
-                                        firstKey = key;
-                                    }
-                                    tableContent += `
-                                        <tr>
-                                            <td onclick="copyToClipboard('${key}')">${key.charAt(0) + key.slice(1)}</td>
-                                            <td onclick="copyToClipboard('${item[key]}')">${item[key]}</td>
-                                        </tr>
-                                    `;
-                                }
-                            }
-                            tableContent += '</table>';
+            const categoryElement = document.createElement('li');
+            categoryElement.className = 'category';
+            categoryElement.textContent = category.charAt(0) + category.slice(1);
+            categoryElement.onclick = () => copyToClipboard(categoryElement.textContent);
+            dataList.appendChild(categoryElement);
 
-                            const mainInfo = firstKey ? item[firstKey] : 'No main item';
-                            itemElement.innerHTML = `
-                                <div class="main-info" onclick="copyToClipboard('${mainInfo}')">${mainInfo}</div>
-                                ${tableContent}
-                            `;
-                            dataList.appendChild(itemElement);
-                        });
-                    } else if (typeof categoryData === 'object') {
-                        const itemElement = document.createElement('li');
-                        itemElement.className = 'data-item';
-                        
-                        // Generate table rows for each key-value pair
-                        let tableContent = '<table>';
-                        let firstKey = null;
+            if (Array.isArray(categoryData)) {
+                categoryData.forEach(item => {
+                    const itemElement = document.createElement('li');
+                    itemElement.className = 'data-item';
 
-                        for (const key in categoryData) {
-                            if (categoryData.hasOwnProperty(key)) {
-                                if (firstKey === null) {
-                                    firstKey = key;
-                                }
-                                tableContent += `
-                                    <tr>
-                                        <td onclick="copyToClipboard('${key}')">${key.charAt(0) + key.slice(1)}</td>
-                                        <td onclick="copyToClipboard('${categoryData[key]}')">${categoryData[key]}</td>
-                                    </tr>
-                                `;
-                            }
-                        }
-                        tableContent += '</table>';
+                    const { tableContent, firstKey } = generateTableContent(item);
+                    const mainInfo = firstKey ? item[firstKey] : 'No main item';
 
-                        const mainInfo = firstKey ? categoryData[firstKey] : 'No main item';
-                        itemElement.innerHTML = `
-                            <div class="main-info" onclick="copyToClipboard('${mainInfo}')">${mainInfo}</div>
-                            ${tableContent}
-                        `;
-                        dataList.appendChild(itemElement);
+                    itemElement.innerHTML = `
+                        <div class="main-info">${mainInfo}</div>
+                        ${tableContent}
+                    `;
+                    dataList.appendChild(itemElement);
+
+                    // Add click listeners to table cells
+                    const table = itemElement.querySelector('table');
+                    if (table) {
+                        addCopyListenersToTableCells(table);
                     }
+                });
+            } else if (typeof categoryData === 'object' && !Array.isArray(categoryData)) {
+                const itemElement = document.createElement('li');
+                itemElement.className = 'data-item';
+
+                const { tableContent, firstKey } = generateTableContent(categoryData);
+                const mainInfo = firstKey ? categoryData[firstKey] : 'No main item';
+
+                itemElement.innerHTML = `
+                    <div class="main-info">${mainInfo}</div>
+                    ${tableContent}
+                `;
+                dataList.appendChild(itemElement);
+
+                // Add click listeners to table cells
+                const table = itemElement.querySelector('table');
+                if (table) {
+                    addCopyListenersToTableCells(table);
                 }
             }
         }
+    }
+}
+
+
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
