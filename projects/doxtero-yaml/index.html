@@ -21,7 +21,6 @@
         }
 
         .category {
-            text-transform: uppercase;
             background-color: #B1371F;
             margin-top: 3em;
             margin-bottom: 1.5em;
@@ -91,35 +90,32 @@
         }
 
         #drop-zone {
-            border: 3px dashed #39414d;
+            border: 3px dashed #D1D5DB;
             padding: 5em;
             text-align: center;
             margin: 20px 0;
             border-radius: 5px;
             background-color: #e8faff;
+            color: #9CA3AF;
+            font-size: large;
         }
 
         #drop-zone:hover {
-            background-color: #ffe6e9;
+            border: 3px dashed #9CA3AF;
+            background-color: #efd6d8;
+            color: #6B7280;
         }
 
         #drop-zone.dragover {
-            border-color: #d4142a;
+            border: 3px dashed #9CA3AF;
             background-color: #efd6d8;
+            color: #6B7280;
         }
 
         #file-input {
             display: none;
         }
 
-        #file-label {
-            display: inline-block;
-            padding: 10px;
-            background-color: #B91C1C;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
 
         .copy-indicator {
             margin-top: 4em;
@@ -154,13 +150,13 @@
     </style>
 </head>
 <body>
-    <div id="drop-zone">
+    <section id="drop-zone">
         Drag and drop (or) Click to select YAML file
         <input type="file" id="file-input" accept=".yaml, .yml">
-    </div>
+    </section>
 
     <section id="download-section">
-        <p>Download a <a href="assets/sample.yaml" class="file-link" download="sample.yaml">SAMPLE YAML</a> (or) <a href="assets/blank.yaml" class="file-link" download="blank.yaml">BLANK YAML</a></p>
+        <p>Download a <a href="assets/sample.yaml" class="file-link" download="sample.yaml">SAMPLE YAML</a> (or) a pre-formatted <a href="assets/blank.yaml" class="file-link" download="blank.yaml">BLANK YAML</a></p>
     </section>
 
     <ul id="data-list"></ul>
@@ -232,7 +228,7 @@
 
                     const categoryElement = document.createElement('li');
                     categoryElement.className = 'category';
-                    categoryElement.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                    categoryElement.textContent = category.charAt(0) + category.slice(1);
                     categoryElement.onclick = () => copyToClipboard(categoryElement.textContent);
                     dataList.appendChild(categoryElement);
 
@@ -252,7 +248,7 @@
                                     }
                                     tableContent += `
                                         <tr>
-                                            <td onclick="copyToClipboard('${key}')">${key.charAt(0).toUpperCase() + key.slice(1)}</td>
+                                            <td onclick="copyToClipboard('${key}')">${key.charAt(0) + key.slice(1)}</td>
                                             <td onclick="copyToClipboard('${item[key]}')">${item[key]}</td>
                                         </tr>
                                     `;
@@ -282,7 +278,7 @@
                                 }
                                 tableContent += `
                                     <tr>
-                                        <td onclick="copyToClipboard('${key}')">${key.charAt(0).toUpperCase() + key.slice(1)}</td>
+                                        <td onclick="copyToClipboard('${key}')">${key.charAt(0) + key.slice(1)}</td>
                                         <td onclick="copyToClipboard('${categoryData[key]}')">${categoryData[key]}</td>
                                     </tr>
                                 `;
@@ -303,7 +299,7 @@
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                copyIndicator.textContent = 'Copied!';
+                copyIndicator.textContent = `Copied: ${text}`;
                 copyIndicator.style.display = 'block';
                 setTimeout(() => {
                     copyIndicator.style.display = 'none';
