@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled List with Drag-and-Drop and File Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #F3F4F6;
+            padding-bottom: 5em;
+        }
+
+        #data-list {
+            width: 100%;
+            padding: 0;
+            font-size: 16px;
+            list-style-type: none;
+        }
+
+        .category {
+            text-transform: uppercase;
+            background-color: #B1371F;
+            margin-top: 3em;
+            margin-bottom: 1.5em;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        }
+
+        .data-item {
+            padding: 30px;
+            border: none;
+            margin-bottom: 2em;
+            border-radius: 5px;
+            position: relative;
+            background-color: #F9FAFB;
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        }
+
+
+        .data-item .main-info {
+            text-align: center;
+            font-size: x-large;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: large;
+            table-layout: fixed; /* Ensures columns behave consistently */
+        }
+
+        table td, table th {
+            word-wrap: break-word;
+            text-wrap: wrap;
+            overflow-wrap: break-word;
+            white-space: normal;
+            padding: 8px;
+            border: 1px solid slategray;
+        }
+
+        td {
+            overflow: hidden;
+        }
+
+
+        td:hover {
+            background-color: #FEF3C7;
+        }
+
+        td {
+            transition: background-color 0.2s ease;
+        }
+        
+        td:active {
+            background-color: pink;
+        }
+
+        /* 1st column of the table */
+        tr:nth-child(1) > td:nth-child(1) {
+            width: 120px;
+        }
+        
+
+
+        #drop-zone {
+            border: 3px dashed #39414d;
+            padding: 5em;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+            background-color: #f7ebeb;
+        }
+
+        #drop-zone.dragover {
+            border-color: #b62324;
+            background-color: #efd6d8;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        #file-label {
+            display: inline-block;
+            padding: 10px;
+            background-color: #B91C1C;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-indicator {
+            margin-top: 4em;
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="drop-zone">
+        Drag and drop (or) Click to select YAML file
+        <input type="file" id="file-input" accept=".yaml, .yml">
+    </div>
+
+    <ul id="data-list"></ul>
+    <div id="copy-indicator" class="copy-indicator"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const dataList = document.getElementById('data-list');
+        const copyIndicator = document.getElementById('copy-indicator');
+
+        // Handle file selection
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        });
+
+        // Handle dragover
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        // Handle dragleave
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        // Handle drop
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                processFile(file);
+            }
+        });
+
+        function processFile(file) {
+            if (file.type === 'text/yaml' || file.type === 'application/x-yaml') {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const yamlText = event.target.result;
+                    try {
+                        const data = jsyaml.load(yamlText);
+                        populateDataList(data);
+                    } catch (error) {
+                        alert('Error parsing YAML file: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Please upload a valid YAML file');
+            }
+        }
+
+        function populateDataList(data) {
+            dataList.innerHTML = '';
+
+            for (const category in data) {
+                if (data.hasOwnProperty(category)) {
+                    const categoryData = data[category];
+
+                    const categoryElement = document.createElement('li');
+                    categoryElement.className = 'category';
+                    categoryElement.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                    categoryElement.onclick = () => copyToClipboard(categoryElement.textContent);
+                    dataList.appendChild(categoryElement);
+
+                    if (Array.isArray(categoryData)) {
+                        categoryData.forEach(item => {
+                            const itemElement = document.createElement('li');
+                            itemElement.className = 'data-item';
+
+                            // Generate table rows for each key-value pair
+                            let tableContent = '<table>';
+                            let firstKey = null;
+
+                            for (const key in item) {
+                                if (item.hasOwnProperty(key)) {
+                                    if (firstKey === null) {
+                                        firstKey = key;
+                                    }
+                                    tableContent += `
+                                        <tr>
+                                            <td onclick="copyToClipboard('${key}')">${key.charAt(0).toUpperCase() + key.slice(1)}</td>
+                                            <td onclick="copyToClipboard('${item[key]}')">${item[key]}</td>
+                                        </tr>
+                                    `;
+                                }
+                            }
+                            tableContent += '</table>';
+
+                            const mainInfo = firstKey ? item[firstKey] : 'No main item';
+                            itemElement.innerHTML = `
+                                <div class="main-info" onclick="copyToClipboard('${mainInfo}')">${mainInfo}</div>
+                                ${tableContent}
+                            `;
+                            dataList.appendChild(itemElement);
+                        });
+                    } else if (typeof categoryData === 'object') {
+                        const itemElement = document.createElement('li');
+                        itemElement.className = 'data-item';
+                        
+                        // Generate table rows for each key-value pair
+                        let tableContent = '<table>';
+                        let firstKey = null;
+
+                        for (const key in categoryData) {
+                            if (categoryData.hasOwnProperty(key)) {
+                                if (firstKey === null) {
+                                    firstKey = key;
+                                }
+                                tableContent += `
+                                    <tr>
+                                        <td onclick="copyToClipboard('${key}')">${key.charAt(0).toUpperCase() + key.slice(1)}</td>
+                                        <td onclick="copyToClipboard('${categoryData[key]}')">${categoryData[key]}</td>
+                                    </tr>
+                                `;
+                            }
+                        }
+                        tableContent += '</table>';
+
+                        const mainInfo = firstKey ? categoryData[firstKey] : 'No main item';
+                        itemElement.innerHTML = `
+                            <div class="main-info" onclick="copyToClipboard('${mainInfo}')">${mainInfo}</div>
+                            ${tableContent}
+                        `;
+                        dataList.appendChild(itemElement);
+                    }
+                }
+            }
+        }
+
+        function copyToClipboard(text) {
+            // Create a temporary textarea element to copy the text
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            // Show copy indicator
+            showCopyIndicator(text);
+        }
+
+        function showCopyIndicator(text) {
+            copyIndicator.textContent = `Copied: ${text}`;
+            copyIndicator.style.display = 'block';
+            setTimeout(() => {
+                copyIndicator.style.display = 'none';
+            }, 800);
+        }
+    </script>
+</body>
+</html>
