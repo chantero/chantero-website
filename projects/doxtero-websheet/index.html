@@ -513,7 +513,7 @@ table input[type="text"] {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #f9fcff;
-background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
+    background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
     padding: 20px;
     border-radius: 12px;
     width: 90%;
@@ -527,6 +527,7 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
     transition: opacity 0.1s ease-in-out;
     box-sizing: border-box;
 }
+
 
 .hint-button {
     background-color: #388bfd;
@@ -565,27 +566,33 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
 }
 
 
-
 .hint-box th:nth-child(1),
 .hint-box td:nth-child(1) {
     width: auto;
-    min-width: 220px;
+    min-width: 150px;
 }
 
 .hint-box th:nth-child(2),
 .hint-box td:nth-child(2) {
     width: auto; 
-    min-width: 220px;
+    min-width: 200px;
 }
 
 .hint-box th:nth-child(3),
 .hint-box td:nth-child(3) {
-    width: auto%; 
-    min-width: 280px;
+    width: auto; 
+    min-width: 350px;
+    font-size: smaller;
 }
 
 .hint-box th:nth-child(4),
 .hint-box td:nth-child(4) {
+    width: auto; 
+    min-width: 200px;
+}
+
+.hint-box th:nth-child(5),
+.hint-box td:nth-child(5) {
     width: auto; 
     min-width: 350px;
 }
@@ -603,6 +610,7 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
     color: black;
     font-weight: bold;
     text-align: center;
+    font-size: large !important;
 }
 
 .hint-box td {
@@ -716,13 +724,14 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
     <div class="hint-box" id="hint_box">
 
    
-        <h2>Guidelines</h2>
+        <h2>Quick Reference</h2>
         
         <table>
             <thead>
                 <tr>
                     <th>Variable Type</th>
                     <th>Variable</th>
+                    <th>Methods</th>
                     <th>Example Value</th>
                     <th>Remarks [Format]</th>
                 </tr>
@@ -730,15 +739,119 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
             <tbody>
                 <tr>
                     <td>General Variable</td>
-                    <td>{{variable}}</td>
+                    
+                    <td>{{variable}}<br>{{variable | method}}</td>
+                    
+                    <td>
+                        Text case methods:
+                        <ul>
+                            <li>upper</li>
+                            <li>lower</li>
+                            <li>swap</li>
+                            <li>title</li>
+                            <li>capwords</li>
+                            <li>caps</li>
+                            <li>capitalize</li>
+                            <li>sentence case</li>
+                            <li>sentence</li><br>
+                            <li>name and ic</li>
+                            <li>name</li>
+                            <li>name [text case, eg. upper]</li>
+                            <li>ic</li>
+                            <li>ic number</li>
+                            <li>land case</li>
+                        </ul>
+                        <br>
+                        Text masking methods:
+                        <ul>
+                            <li>initials</li>
+                            <li>initials dot</li>
+                            <li>initials lower</li>
+                            <li>initials dot lower</li>
+                            <li>mask</li>
+                            <li>mask number</li><br>
+                            <li>tag</li>
+                            <li>tag [text case, eg. upper]</li>
+                            <li>line</li>
+                            <li>line [text case, eg. upper]</li>
+                        </ul>
+
+                    </td>
+                    
                     <td>This is an example</td>
-                    <td>&nbsp;</td>
+                    <td> - </td>
                 </tr>
 
 
                 <tr>
+                    <td>Numbers / Ringgit</td>
+                    <td> <u>Template</u> <br>{{variable | ringgit describe}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
+
+                    <td>
+                        Ringgit:
+                        <ul>
+                            <li>ringgit</li>
+                            <li>ringgit words</li>
+                            <li>ringgit describe</li>
+                        </ul>
+                        <br>
+
+                        Ringgit Percent:
+                        <ul>
+                            <li>ringgit:percent(10)</li>
+                            <li>ringgit_words:percent(10)</li>
+                            <li>ringgit_describe:percent(10)</li>
+                        </ul>
+                        <br>
+
+                        Numbers:
+                        <ul>
+                            <li>num</li>
+                            <li>num words</li>
+                            <li>num describe</li>
+                        </ul>
+                        <br>
+
+                        Numbers Percent:
+                        <ul>
+                            <li>num:percent(10)</li>
+                            <li>num_words:percent(10)</li>
+                            <li>num_describe:percent(10)</li>
+                        </ul>
+                        <br>
+                    </td>
+
+                    <td>150000</td>
+                    <td class="table-notes">
+                        <p><strong><span class="blue">150000</span></strong> >> Ringgit Malaysia One Hundred Fifty Thousand (RM150,000.00)</p>
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
                     <td>Dates</td>
-                    <td> <u>Template</u> <br>{{variable | date}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
+                    <td> <u>Template</u> <br>{{variable | date}}<br><br> <u>variables.csv</u><br> {{variable}}</td>
+
+                    <td>
+                        <ul>
+                            <li>date</li>
+                            <li>date time</li>
+                            <li>date day</li>
+                            <li>date number</li>
+                            <li>date iso</li>
+                            <li>date ordinal longform</li>
+                            <li>date ordinal shortform</li><br>
+                            <li>dob</li>
+                            <li>dob years</li>
+                            <li>dob years months</li>
+                            <li>dob years months days</li>
+                            <li>dob full</li>
+                            <li>dob num</li>
+                        </ul>
+                    </td>
+
                     <td>19980514</td>
                     <td class="table-notes">
                         <strong><span class="blue">YYYYMMDD</span></strong><br>
@@ -746,34 +859,34 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                     </td>
                 </tr>
 
-                <tr>
-                    <td>Numbers / Ringgit</td>
-                    <td> <u>Template</u> <br>{{variable | ringgit describe}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
-                    <td>150000</td>
-                    <td class="table-notes">
-                        <p><strong><span class="blue">150000</span> ==> Ringgit Malaysia One Hundred Fifty Thousand (RM150,000.00)</p>
-                    </td>
-                </tr>
-
-
-
-                <tr>
-                    <td>Smart Paragraphs</td>
-                    <td><u>variables.csv</u><br> condition - [?]</td>
-                    <td>yes</td>
-                    <td class="table-notes">
-                        Positive indicator:<br>
-                        <strong><span class="blue">yes, y, true, t, male, m</span></strong>
-                        <br><br>
-                        Negative indicator:<br>
-                        <strong><span class="red">no, n, false, f, female, f</span></strong>
-                    </td>
-                </tr>
 
 
                 <tr>
                     <td>Lists</td>
                     <td> <u>Template</u> <br>{{variable | lv}} <br><br> <u>variables.csv</u><br> {{list variable}} - [list]</td>
+                    
+                    <td>
+                        <ul>
+                            <li>ol</li>
+                            <li>ola</li>
+                            <li>oli</li>
+                            <li>ul</li>
+                            <li>dl</li>
+                            <li>sl</li>
+                            <li>li</li>
+                            <li>ml</li>
+                            <li>ls</li>
+                            <li>ln</li>
+                            <li>lv</li>
+                            <li>lh</li>
+                            <li>l&</li>
+                            <li>lsign</li>
+                            <li>lseal</li>
+                            <li>lsig</li>
+                            <li>[list method] [text case method]</li>
+                        </ul>
+                    </td>
+
                     <td>Adam Smith // (NRIC No. 12345) | Ben Smith // (NRIC No. 54321)</td>
                     <td class="table-notes">
                         <span class="blue"> | </span> = Item separator (to separate 2 items)<br>
@@ -804,20 +917,65 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                 </tr>
 
 
-                <tr>
-                    <td>Charts</td>
-                    <td> <u>Template</u> <br>{{variable | pie}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
-                    <td>a: 100, b:200, c:300</td>
-                    <td class="table-notes">
-                    <strong>
-                        item 1<span class="red">:</span>100<span class="blue">, </span><br>
-                        
-                        item 2<span class="red">:</span>200<span class="blue">, </span><br>
 
-                        item 3<span class="red">:</span>300<span class="blue">
-                        </span>
-                    </strong>
-                       
+
+                <tr>
+                    <td>Smart Paragraphs</td>
+                    <td><u>variables.csv</u><br> condition - [?]</td>
+                    
+                    <td>
+                        <ul>
+                            <li>[[START condition | indicator]] text [[END condition | indicator]]</li><br>
+                            <li>[[$ condition | indicator]] text [[% condition | indicator]]</li><br>
+                            <li>[[# condition]] true text // false text [[/]]</li><br>
+                            <li>[[# condition]] true text only [[/]]</li><br>
+                            <li>[[# condition]] // false text only [[/]]</li><br>
+                        </ul>
+                    </td>
+
+                    <td>yes</td>
+                    <td class="table-notes">
+                        Positive indicator:<br>
+                        <strong><span class="blue">yes, y, true, t, male, m</span></strong>
+                        <br><br>
+                        Negative indicator:<br>
+                        <strong><span class="red">no, n, false, f, female, f</span></strong>
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>Options / Multiple Choice</td>
+                    <td> <u>Template</u> <br>((o? food)) apple // banana // coconut // durian ((/))<br><br> <u>variables.csv</u><br> ((o? food)) [1]  apple //[2]  banana //[3]  coconut //[4]  durian</td>
+                    
+
+                    <td>
+                        <ul>
+                            <li>[[o? condition]] option 1 // option 2 // option 3 [[/]]</li><br>
+                            <li>((o? condition)) option 1 // option 2 // option 3 ((/))</li><br>
+                        </ul>
+                    </td>
+
+
+                    <td>2, 3, 4</td>
+                    <td class="table-notes">
+
+                            To select single item, insert number:<br>
+                            <strong>
+                                <span class="red"> 2 </span>
+                            </strong>
+                            <br><br>
+
+                            To select multiple items, insert number with comma:<br>
+                            <strong>
+                                <span class="red">2</span>
+                                <span class="blue">, </span>
+                                <span class="red">3</span>
+                                <span class="blue">, </span>
+                                <span class="red">4</span>
+
+                            </strong>
                     </td>
                 </tr>
 
@@ -825,6 +983,16 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                 <tr>
                     <td>Repeater (simple)</td>
                     <td> <u>Template</u> <br>[[r? repeat this]]This sentence will be repeated.[[/]]<br><br> <u>variables.csv</u><br> repeat this - [repeater]</td>
+                    
+                    <td>
+                        <ul>
+                            <li>[[r? condition]]repeat this text[[/]]</li><br>
+                            <li>[[rol? condition]]repeat this text - ordered[[/]]</li><br>
+                            <li>[[rul? condition]]repeat this text - unordered[[/]]</li><br>
+                            <li>[[rh? condition]]repeat this text - horizontal[[/]]</li><br>
+                        </ul>
+                    </td>
+
                     <td>3</td>
                     <td class="table-notes">
                     <strong>
@@ -838,6 +1006,16 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                 <tr>
                     <td>Repeater (with variables)</td>
                     <td> <u>Template</u> <br>[[x? repeat this]]Hello, I am ((name)). I am ((age)) years old.[[/]]<br><br> <u>variables.csv</u><br> "repeat this [v: age, name] - [repeater v]"</td>
+                    
+                    <td>
+                        <ul>
+                            <li>[[x? condition]] this is ((variable 1)) and ((variable 2))[[/]]</li><br>
+                            <li>[[xol? condition]] this is ((variable 1)) and ((variable 2)) - ordered[[/]]</li><br>
+                            <li>[[xul? condition]] this is ((variable 1)) and ((variable 2)) - unordered[[/]]</li><br>
+                            <li>[[xh? condition]] this is ((variable 1)) and ((variable 2)) - horizontal[[/]]</li><br>
+                        </ul>
+                    </td>
+
                     <td>name = Adam Smith // age = 16 | age = 21 // name = Ben Smith</td>
                     <td class="table-notes">
                         <span class="blue"> | </span> = Item separator (to separate 2 items)<br>
@@ -853,6 +1031,121 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                         </strong>
                     </td>
                 </tr>
+
+
+
+
+                <tr>
+                    <td>Evaluation Paragraphs</td>
+                    <td>
+                        <u>Template</u> <br>[[? {{age}} > 10]] true text // false text [[/]]<br><br><br>
+                        <u>"Calculation Variables" in "Evaluation Paragraphs"</u><br><br>
+                        [[? ^^ {{age}} + 10 ^^ >= 18 ]] You are an adult // You are a child [[/]]
+                    </td>
+                    
+                    <td>
+                        <ul>
+                            <li>+</li>
+                            <li>-</li>
+                            <li>*</li>
+                            <li>/</li>
+                            <li>==</li>
+                            <li>!=</li>
+                            <li><, <=, >, >=</li>
+                        </ul>
+                    </td>
+
+                    <td>
+                        -
+                    </td>
+                    <td class="table-notes">
+                        This evaluates automatically based on the evaluation paragraph's open tag,
+                        and shows the "true text" or "false text"
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>Calculation Variables</td>
+                    <td><u>Template</u> <br>
+                        ^^ {{price}} + 100 ^^ <br>
+                        ^^ {{price}} + 100 | ringgit^^ <br><br>
+                        [[^ {{price}} + 100]] <br>
+                        [[^ {{price}} + 100 | ringgit words]] <br>
+                    </td>
+                    
+                    <td>
+                        <ul>
+                            <li>+</li>
+                            <li>-</li>
+                            <li>*</li>
+                            <li>/</li>
+                        </ul>
+                    </td>
+
+                    <td> - </td>
+                    <td class="table-notes">
+                        This calculates automatically based on the contents of the calculation variable, 
+                        and shows the "calculated result"
+                    </td>
+                </tr>
+
+
+
+
+
+                <tr>
+                    <td>Charts</td>
+                    <td> <u>Template</u> <br>{{variable | pie}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
+
+                    <td>
+                        <ul>
+                            <li>pie</li>
+                            <li>money_pie</li>
+                            <li>bar</li>
+                            <li>money_bar</li>
+                        </ul>
+                    </td>
+
+                    <td>a: 100, b:200, c:300</td>
+                    <td class="table-notes">
+                    <strong>
+                        item 1<span class="red">:</span>100<span class="blue">, </span><br>
+                        
+                        item 2<span class="red">:</span>200<span class="blue">, </span><br>
+
+                        item 3<span class="red">:</span>300<span class="blue">
+                        </span>
+                    </strong>
+                       
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>Images</td>
+                    <td> <u>Template</u> <br>{{variable | image 1cm}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
+
+                    <td>
+                        <ul>
+                            <li>image</li>
+                            <li>image 3cm / image 4 inch</li>
+                            <li>qr</li>
+                            <li>figlet / figlet1 / figlet(font)</li>
+                        </ul>
+                    </td>
+
+                    <td>
+                        image = path/to/image.png<br>
+                        qr = contents of qr code<br>
+                        figlet = text
+                    </td>
+                    <td class="table-notes"> - </td>
+                </tr>
+
+
 
 
 
