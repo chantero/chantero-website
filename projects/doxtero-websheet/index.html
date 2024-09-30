@@ -734,6 +734,8 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                     <td>This is an example</td>
                     <td>&nbsp;</td>
                 </tr>
+
+
                 <tr>
                     <td>Dates</td>
                     <td> <u>Template</u> <br>{{variable | date}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
@@ -743,6 +745,18 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                         <strong><span class="blue">YYYYMMDD</span><span class="red">HHMM</span></strong>
                     </td>
                 </tr>
+
+                <tr>
+                    <td>Numbers / Ringgit</td>
+                    <td> <u>Template</u> <br>{{variable | ringgit describe}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
+                    <td>150000</td>
+                    <td class="table-notes">
+                        <p><strong><span class="blue">150000</span> ==> Ringgit Malaysia One Hundred Fifty Thousand (RM150,000.00)</p>
+                    </td>
+                </tr>
+
+
+
                 <tr>
                     <td>Smart Paragraphs</td>
                     <td><u>variables.csv</u><br> condition - [?]</td>
@@ -755,6 +769,8 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                         <strong><span class="red">no, n, false, f, female, f</span></strong>
                     </td>
                 </tr>
+
+
                 <tr>
                     <td>Lists</td>
                     <td> <u>Template</u> <br>{{variable | lv}} <br><br> <u>variables.csv</u><br> {{list variable}} - [list]</td>
@@ -804,6 +820,41 @@ background-image: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
                        
                     </td>
                 </tr>
+
+
+                <tr>
+                    <td>Repeater (simple)</td>
+                    <td> <u>Template</u> <br>[[r? repeat this]]This sentence will be repeated.[[/]]<br><br> <u>variables.csv</u><br> repeat this - [repeater]</td>
+                    <td>3</td>
+                    <td class="table-notes">
+                    <strong>
+                        insert a number (eg. <span class="red">3</span>), and the repeater text will repeat that number of times
+                    </strong>
+                       
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>Repeater (with variables)</td>
+                    <td> <u>Template</u> <br>[[x? repeat this]]Hello, I am ((name)). I am ((age)) years old.[[/]]<br><br> <u>variables.csv</u><br> "repeat this [v: age, name] - [repeater v]"</td>
+                    <td>name = Adam Smith // age = 16 | age = 21 // name = Ben Smith</td>
+                    <td class="table-notes">
+                        <span class="blue"> | </span> = Item separator (to separate 2 items)<br>
+                        <span class="red"> // </span> = Variable separator (within each item)
+                        <br><br>
+                    
+                        <strong>
+                            name = Adam Smith <span class="red"> // </span>
+                            age = 16
+                            <span class="blue"> | </span><br>
+                            name = Ben Smith <span class="red"> // </span>
+                            age = 21
+                        </strong>
+                    </td>
+                </tr>
+
+
 
 
 
