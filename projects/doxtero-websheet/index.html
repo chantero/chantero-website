@@ -745,15 +745,12 @@ table input[type="text"] {
                     <td>
                         Text case methods:
                         <ul>
-                            <li>upper</li>
-                            <li>lower</li>
+                            <li>upper / lower</li>
                             <li>swap</li>
-                            <li>title</li>
-                            <li>capwords</li>
-                            <li>caps</li>
+                            <li>title / capwords / caps</li>
                             <li>capitalize</li>
-                            <li>sentence case</li>
-                            <li>sentence</li><br>
+                            <li>sentence case / sentence</li>
+                            <br>
                             <li>name and ic</li>
                             <li>name</li>
                             <li>name [text case, eg. upper]</li>
@@ -768,8 +765,10 @@ table input[type="text"] {
                             <li>initials dot</li>
                             <li>initials lower</li>
                             <li>initials dot lower</li>
+                            <br>
                             <li>mask</li>
-                            <li>mask number</li><br>
+                            <li>mask number</li>
+                            <br>
                             <li>tag</li>
                             <li>tag [text case, eg. upper]</li>
                             <li>line</li>
@@ -842,7 +841,8 @@ table input[type="text"] {
                             <li>date number</li>
                             <li>date iso</li>
                             <li>date ordinal longform</li>
-                            <li>date ordinal shortform</li><br>
+                            <li>date ordinal shortform</li>
+                            <br>
                             <li>dob</li>
                             <li>dob years</li>
                             <li>dob years months</li>
@@ -867,23 +867,20 @@ table input[type="text"] {
                     
                     <td>
                         <ul>
-                            <li>ol</li>
-                            <li>ola</li>
-                            <li>oli</li>
-                            <li>ul</li>
-                            <li>dl</li>
-                            <li>sl</li>
+                            <li>ol / ola / oli</li>
+                            <li>ul / dl / sl</li>
+                            <br>
                             <li>li</li>
                             <li>ml</li>
                             <li>ls</li>
                             <li>ln</li>
-                            <li>lv</li>
-                            <li>lh</li>
-                            <li>l&</li>
+                            <br>
+                            <li>lv / lh / l&</li>
+                            <br>
                             <li>lsign</li>
                             <li>lseal</li>
                             <li>lsig</li>
-                            <li>[list method] [text case method]</li>
+                            <li>[list method] [text case]</li>
                         </ul>
                     </td>
 
@@ -925,10 +922,14 @@ table input[type="text"] {
                     
                     <td>
                         <ul>
-                            <li>[[START condition | indicator]] text [[END condition | indicator]]</li><br>
-                            <li>[[$ condition | indicator]] text [[% condition | indicator]]</li><br>
-                            <li>[[# condition]] true text // false text [[/]]</li><br>
-                            <li>[[# condition]] true text only [[/]]</li><br>
+                            <li>[[START condition | indicator]] text [[END condition | indicator]]</li>
+                            <br>
+                            <li>[[$ condition | indicator]] text [[% condition | indicator]]</li>
+                            <br>
+                            <li>[[# condition]] true text // false text [[/]]</li>
+                            <br>
+                            <li>[[# condition]] true text only [[/]]</li>
+                            <br>
                             <li>[[# condition]] // false text only [[/]]</li><br>
                         </ul>
                     </td>
@@ -967,14 +968,12 @@ table input[type="text"] {
                             </strong>
                             <br><br>
 
-                            To select multiple items, insert number with comma:<br>
+                            To select multiple items:<br>
                             <strong>
+                                I like to eat
                                 <span class="red">2</span>
-                                <span class="blue">, </span>
+                                <span class="blue">and  </span>
                                 <span class="red">3</span>
-                                <span class="blue">, </span>
-                                <span class="red">4</span>
-
                             </strong>
                     </td>
                 </tr>
@@ -987,9 +986,9 @@ table input[type="text"] {
                     <td>
                         <ul>
                             <li>[[r? condition]]repeat this text[[/]]</li><br>
-                            <li>[[rol? condition]]repeat this text - ordered[[/]]</li><br>
-                            <li>[[rul? condition]]repeat this text - unordered[[/]]</li><br>
-                            <li>[[rh? condition]]repeat this text - horizontal[[/]]</li><br>
+                            <li>[[rol? condition]]repeat this text[[/]]</li><br>
+                            <li>[[rul? condition]]repeat this text[[/]]</li><br>
+                            <li>[[rh? condition]]repeat this text[[/]]</li><br>
                         </ul>
                     </td>
 
@@ -1005,14 +1004,18 @@ table input[type="text"] {
 
                 <tr>
                     <td>Repeater (with variables)</td>
+
                     <td> <u>Template</u> <br>[[x? repeat this]]Hello, I am ((name)). I am ((age)) years old.[[/]]<br><br> <u>variables.csv</u><br> "repeat this [v: age, name] - [repeater v]"</td>
                     
                     <td>
                         <ul>
                             <li>[[x? condition]] this is ((variable 1)) and ((variable 2))[[/]]</li><br>
-                            <li>[[xol? condition]] this is ((variable 1)) and ((variable 2)) - ordered[[/]]</li><br>
-                            <li>[[xul? condition]] this is ((variable 1)) and ((variable 2)) - unordered[[/]]</li><br>
-                            <li>[[xh? condition]] this is ((variable 1)) and ((variable 2)) - horizontal[[/]]</li><br>
+
+                            <li>[[xol? condition]] this is ((variable 1)) and ((variable 2))[[/]]</li><br>
+
+                            <li>[[xul? condition]] this is ((variable 1)) and ((variable 2))[[/]]</li><br>
+
+                            <li>[[xh? condition]] this is ((variable 1)) and ((variable 2))[[/]]</li><br>
                         </ul>
                     </td>
 
@@ -1038,17 +1041,16 @@ table input[type="text"] {
                 <tr>
                     <td>Evaluation Paragraphs</td>
                     <td>
+
                         <u>Template</u> <br>[[? {{age}} > 10]] true text // false text [[/]]<br><br><br>
+
                         <u>"Calculation Variables" in "Evaluation Paragraphs"</u><br><br>
                         [[? ^^ {{age}} + 10 ^^ >= 18 ]] You are an adult // You are a child [[/]]
                     </td>
                     
                     <td>
                         <ul>
-                            <li>+</li>
-                            <li>-</li>
-                            <li>*</li>
-                            <li>/</li>
+                            <li>+ - * /</li>
                             <li>==</li>
                             <li>!=</li>
                             <li><, <=, >, >=</li>
@@ -1070,27 +1072,24 @@ table input[type="text"] {
                     <td>Calculation Variables</td>
                     <td><u>Template</u> <br>
                         ^^ {{price}} + 100 ^^ <br>
-                        ^^ {{price}} + 100 | ringgit^^ <br><br>
+                        ^^ {{price}} + 100 | ringgit^^ <br>
+                        <br>
                         [[^ {{price}} + 100]] <br>
                         [[^ {{price}} + 100 | ringgit words]] <br>
                     </td>
                     
                     <td>
                         <ul>
-                            <li>+</li>
-                            <li>-</li>
-                            <li>*</li>
-                            <li>/</li>
+                            <li>+ - * /</li>
+                            <li>( )</li>
                         </ul>
                     </td>
 
                     <td> - </td>
                     <td class="table-notes">
-                        This calculates automatically based on the contents of the calculation variable, 
-                        and shows the "calculated result"
+                        This calculates automatically based on the contents of the calculation variable, and shows the "calculated result"
                     </td>
                 </tr>
-
 
 
 
@@ -1103,6 +1102,7 @@ table input[type="text"] {
                         <ul>
                             <li>pie</li>
                             <li>money_pie</li>
+                            <br>
                             <li>bar</li>
                             <li>money_bar</li>
                         </ul>
@@ -1132,6 +1132,7 @@ table input[type="text"] {
                         <ul>
                             <li>image</li>
                             <li>image 3cm / image 4 inch</li>
+                            <br>
                             <li>qr</li>
                             <li>figlet / figlet1 / figlet(font)</li>
                         </ul>
