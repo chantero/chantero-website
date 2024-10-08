@@ -1148,6 +1148,82 @@ table input[type="text"] {
 
 
 
+                <tr>
+                    <td>Name and IC</td>
+                    <td> <u>Template</u> <br>{{variable | name and ic}} <br><br> <u>variables.csv</u><br> {{variable}}</td>
+
+                    <td>
+                        <ul>
+                            <li>name and ic</li>
+                            <li>name</li>
+ 			   <li>name upper</li>
+			   <li>name lower</li>
+			   <li>name caps</li>
+			   <li>ic</li>
+			  <li>ic number</li>                           
+ 			  <br>
+                            <li>[list case] name and ic</li>
+                            <li>ls name and ic</li>
+                            <li>ls name</li>
+ 			   <li>ls name upper</li>
+			   <li>ls name lower</li>
+			   <li>ls name caps</li>
+			   <li>ls ic</li>
+			  <li>ls ic number</li>
+		    </ul>
+                    </td>
+
+                    <td>
+                       	<u>For single items:</u><br><br>
+			Adam Smith (NRIC No. 12345)<br><br>
+			
+                       	<u>For multiple items (list):</u><br><br>
+			Adam Smith (NRIC No. 111111-11-1111) | <br>ABC Sdn Bhd (Registration No. 11111 (1111-A)) <br><br>
+			Ben Smith // (NRIC No. 222222-22-2222) | <br> XYZ Sdn Bhd // (Registration No. 2222 (2222-B)) <br><br>
+			
+                    </td>
+
+                       <td class="table-notes">
+
+			<u>syntax of user value</u> <br><br>
+			<span class="blue"> name details outside of bracket </span>(<span class="red">ic details inside bracket</span>)
+                        <br><br>
+
+			<br><br>
+			<u>For single items:</u><br><br>
+			
+			<span class="blue"> Adam Smith </span>(<span class="red">NRIC No. 11111-11-1111</span>)
+                        <br><br>
+			<br>
+			
+			<u>For multiple items (list):</u><br><br>
+			
+                        <span class="blue"> | </span> = Item separator (to separate 2 items)<br>
+                        <span class="red"> // </span> = Newline separator (within each item)
+                        <br><br>
+                   
+                            Adam Smith (NRIC No. 111111-11-1111)
+                            <span class="blue"> | <br></span>
+                            Ben Smith (NRIC No. 222222-22-2222)
+                            <span class="blue"> | <br></span>
+                            ABC Sdn Bhd (Registration No. 333333 (3333-X))<br>
+                        
+                        <br>
+                        
+                            Adam Smith<span class="red"> // </span>
+                            (NRIC No. 111111-11-1111)
+                            <span class="blue"> | <br></span><br>
+                            Ben Smith <span class="red"> // </span>
+                             (NRIC No. 222222-22-2222)
+                            <span class="blue"> | <br></span><br>
+                            ABC Sdn Bhd<span class="red"> // </span>
+                             (Registration No. 333333 (3333-X))
+
+                    </td>
+                </tr>
+
+
+
 
 
 
