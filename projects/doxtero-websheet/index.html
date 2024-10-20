@@ -928,6 +928,8 @@ table input[type="text"] {
                             <br>
                             <li>[[# condition]] true text // false text [[/]]</li>
                             <br>
+                            <li>[[# condition]] true text // false text [[/color]]</li>
+                            <br>
                             <li>[[# condition]] true text only [[/]]</li>
                             <br>
                             <li>[[# condition]] // false text only [[/]]</li><br>
@@ -941,6 +943,9 @@ table input[type="text"] {
                         <br><br>
                         Negative indicator:<br>
                         <strong><span class="red">no, n, false, f, female, f</span></strong>
+                        <br><br>
+                        <u>Notes:</u><br><br>
+                        Inline smart paragraphs have an option to switch the colours of the results based on the "true" or "false" value. Use the [[/color]] close tag to set this
                     </td>
                 </tr>
 
@@ -1042,10 +1047,12 @@ table input[type="text"] {
                     <td>Evaluation Paragraphs</td>
                     <td>
 
-                        <u>Template</u> <br>[[? {{age}} > 10]] true text // false text [[/]]<br><br><br>
+                        <u>Template</u> <br>[[if? {{age}} > 10]] true text // false text [[/]]<br><br><br>
+
+                        <br>[[if? {{age}} > 10]] true text // false text [[/color]]<br><br><br>
 
                         <u>"Calculation Variables" in "Evaluation Paragraphs"</u><br><br>
-                        [[? ^^ {{age}} + 10 ^^ >= 18 ]] You are an adult // You are a child [[/]]
+                        [[if? (^^ {{age}} + 10 ^^) >= 18 ]] You are an adult // You are a child [[/]]
                     </td>
                     
                     <td>
@@ -1061,8 +1068,13 @@ table input[type="text"] {
                         -
                     </td>
                     <td class="table-notes">
-                        This evaluates automatically based on the evaluation paragraph's open tag,
+                        <u>Notes:</u><br><br>
+                        (1) This evaluates automatically based on the evaluation paragraph's open tag,
                         and shows the "true text" or "false text"
+                        <br><br>
+                        (2) Use the [[/color]] close tag to automatically change the colour depending on the "true" or "false" value
+                        <br><br>
+                        (3) "Calculation variables" should be "bracketed" when used in "evaluation paragraphs".
                     </td>
                 </tr>
 
@@ -1228,6 +1240,44 @@ table input[type="text"] {
 
                     </td>
                 </tr>
+
+
+
+
+                <tr>
+                    <td>Hyperlinks [Beta]</td>
+                    <td> <u>Template</u> <br>{{variable | link}} <br><br> 
+                         <u>variables.csv</u><br> {{variable}}
+                    </td>
+                    
+                    <td>
+                        <ul>
+                            <li>link</li>
+                        </ul>
+                    </td>
+
+                    <td>
+                        <ul>
+                            <li>"https://example.com"</li>
+                            <li>"https://example.com | Example Website"</li>
+                        </ul>
+
+                    <td class="table-notes">
+                        <span class="blue"> | </span> = Item separator to separate [url] and [text]<br>
+                        <br>
+                            https://example.com 
+                            <span class="blue"> | </span>
+                            Example Website
+                        <br><br>
+                        </strong>
+                        <u>Important:</u><br><br>
+                        (1) You cannot be place 2 different hyperlinks in the same paragraph! It will not work properly!<br><br>
+                        (2) You must insert "https://example.com" [and NOT "example.com" only] or else the link won't work to open up the website.<br><br>
+                        (3) You may link to a "local file" (example: "sample.pdf | PDF File") but do you really need this?<br><br>
+                        (4) Hyperlinks do not retain the "style" (eg. font, size, etc.) of the "variable".
+                    </td>
+                </tr>
+
 
 
 
