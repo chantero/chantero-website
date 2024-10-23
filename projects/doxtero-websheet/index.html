@@ -781,7 +781,7 @@ table input[type="text"] {
                     </td>
                     
                     <td>This is an example</td>
-                    <td> - </td>
+                    <td>Note:<br><br>For "default(...)" method, user should insert a "dash" as value to trigger the default text</td>
                 </tr>
 
 
@@ -931,6 +931,8 @@ table input[type="text"] {
                             <br>
                             <li>[[# condition]] true text // false text [[/]]</li>
                             <br>
+                            <li>[[# condition]] true text // false text // default text[[/]]</li>
+                            <br>
                             <li>[[# condition]] true text // false text [[/color]]</li>
                             <br>
                             <li>[[# condition]] true text only [[/]]</li>
@@ -948,7 +950,11 @@ table input[type="text"] {
                         <strong><span class="red">no, n, false, f, female, f</span></strong>
                         <br><br>
                         <u>Notes:</u><br><br>
-                        Inline smart paragraphs have an option to switch the colours of the results based on the "true" or "false" value. Use the [[/color]] close tag to set this
+                        (1) Inline smart paragraphs have an option to switch the colours of the results based on the "true" or "false" value. Use the [[/color]] close tag to set this
+                        <br><br>
+                        (2) If got the "default" (3rd option), the default value will be triggered when the user inserts "dash" [ - ] </li>
+
+
                     </td>
                 </tr>
 
@@ -1052,6 +1058,8 @@ table input[type="text"] {
 
                         <u>Template</u> <br>[[if? {{age}} > 10]] true text // false text [[/]]<br><br><br>
 
+                        [[if? {{age}} > 10]] true text // false text // default text[[/]]<br><br><br>
+
                         <br>[[if? {{age}} > 10]] true text // false text [[/color]]<br><br><br>
 
                         <u>"Calculation Variables" in "Evaluation Paragraphs"</u><br><br>
@@ -1078,6 +1086,8 @@ table input[type="text"] {
                         (2) Use the [[/color]] close tag to automatically change the colour depending on the "true" or "false" value
                         <br><br>
                         (3) "Calculation variables" should be "bracketed" when used in "evaluation paragraphs".
+                        <br><br>
+                        (4) If default value (3rd option) is set, the default value will be triggered if unable to evaluate.
                     </td>
                 </tr>
 
