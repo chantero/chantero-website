@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///Users/robot/Desktop/smart%20paragraphs%20builder.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Condition Format Generator</title>
+<style>
+
+body {
+    font-family: "Arial", sans-serif;
+    background: #f6f8fa;
+    margin: 1.5em 1.5em;
+    padding: 0;
+    color: #222;
+    line-height: 1.6;
+    font-size: large;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 2em;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1em;
+    font-size: large; 
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    font-size: large;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+    font-size: large;
+}
+
+.output-box {
+    background: white;
+    border: 1.5px solid #bbb;
+    border-radius: 15px;
+    padding: 16px 20px;
+    margin-top: 1.25em;
+    font-family: "Courier New", Courier, monospace;
+    cursor: pointer;
+    font-size: large;
+    line-height: 1.5;
+    transition: background-color 0.3s ease;
+}
+
+
+.copied {
+    background-color: #ede9f7;
+    transition: background-color 0.2s ease;
+}
+
+.output-title {
+    font-weight: 700;
+    margin-top: 3em;
+    font-size: 1.25rem;
+    color: #222;
+    letter-spacing: 0.02em;
+}
+
+ /* Container for inputs and outputs side by side */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  /* Input section styling */
+  .inputs {
+    flex: 1 1 300px;
+    min-width: 280px;
+    background: #fff1f1;
+    border-radius: 15px;
+    padding: 20px;
+  }
+
+  /* Output section styling */
+  .outputs {
+    flex: 1 1 350px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: #e3f4fa;
+    border-radius: 15px;
+    padding: 20px;
+  }
+
+  .output-title {
+    margin-top: 0;
+  }
+
+  /* On small screens stack vertically */
+  @media (max-width: 760px) {
+    .container {
+      flex-direction: column;
+    }
+    .outputs {
+      min-width: auto;
+    }
+  }
+ 
+
+</style>
+</head>
+<body>
+
+
+<h1>Smart Paragraphs Builder</h1>
+
+<div class="container">
+  <div class="inputs">
+    <div class="form-group">
+      <label>Condition</label>
+      <input type="text" id="condition" placeholder="">
+    </div>
+    <div class="form-group">
+      <label>Positive Indicator Text</label>
+      <textarea id="positive" placeholder=""></textarea>
+    </div>
+    <div class="form-group">
+      <label>Negative Indicator Text</label>
+      <textarea id="negative" placeholder=""></textarea>
+    </div>
+  </div>
+
+  <div class="outputs">
+    <div>
+      <div class="output-title">🔴 Inline Smart Paragraphs</div>
+      <div id="output1" class="output-box" onclick="copyToClipboard(this)">[[# gender]]male dude//deflkjsfd[[/]]</div>
+    </div>
+
+    <div>
+      <div class="output-title">🟢 Concise Smart Paragraphs</div>
+      <div id="output2" class="output-box" onclick="copyToClipboard(this)">[[START gender | yes]]male dude[[END gender | yes]][[START gender | no]]deflkjsfd[[END gender | no]]</div>
+    </div>
+
+    <div>
+      <div class="output-title">🔵 General Smart Paragraphs</div>
+      <div id="output3" class="output-box" onclick="copyToClipboard(this)">[[$ gender | yes]]male dude[[% gender | yes]][[$ gender | no]]deflkjsfd[[% gender | no]]</div>
+    </div>
+  </div>
+</div>
+
+<br><br>
+
+<script>
+function updateOutput() {
+    const condition = document.getElementById('condition').value;
+    const positive = document.getElementById('positive').value.replace(/\n/g, '<br>');
+    const negative = document.getElementById('negative').value.replace(/\n/g, '<br>');
+
+    // Type 1
+    document.getElementById('output1').innerText =
+        `[[# ${condition}]]${positive}//${negative}[[/]]`;
+
+    // Type 2
+    document.getElementById('output2').innerText =
+        `[[START ${condition} | yes]]${positive}[[END ${condition} | yes]]` +
+        `[[START ${condition} | no]]${negative}[[END ${condition} | no]]`;
+
+    // Type 3
+    document.getElementById('output3').innerText =
+        `[[$ ${condition} | yes]]${positive}[[% ${condition} | yes]]` +
+        `[[$ ${condition} | no]]${negative}[[% ${condition} | no]]`;
+}
+
+function copyToClipboard(el) {
+    navigator.clipboard.writeText(el.innerText).then(() => {
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 250);
+    });
+}
+
+// Auto-update as user types
+document.getElementById('condition').addEventListener('input', updateOutput);
+document.getElementById('positive').addEventListener('input', updateOutput);
+document.getElementById('negative').addEventListener('input', updateOutput);
+
+// Initialize empty output
+updateOutput();
+</script>
+
+
+
+</body></html>
