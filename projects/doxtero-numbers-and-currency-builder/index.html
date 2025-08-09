@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Numbers Builder</title>
+<style>
+body {
+    font-family: "Arial", sans-serif;
+    background: #f6f8fa;
+    margin: 1.5em 1.5em;
+    padding: 0;
+    color: #222;
+    line-height: 1.6;
+    font-size: large;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 2em;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5em;
+    font-size: large; 
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: large;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.method-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 0.5em;
+}
+
+.method-buttons button {
+    background: #4a90e2;
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.method-buttons button.selected {
+    background-color: #357abd;
+}
+
+.method-buttons button:hover:not(.selected) {
+    background-color: #357abd;
+}
+
+.output-container {
+    margin-top: 1.5em;
+}
+
+.output-item {
+    background: white;
+    border: 1.5px solid #bbb;
+    border-radius: 15px;
+    padding: 12px 16px;
+    margin-bottom: 1em;
+    font-family: "Courier New", Courier, monospace;
+    font-size: large;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: pre-wrap;
+    position: relative;
+}
+
+.output-item:hover {
+    background-color: #f0f5fb;
+}
+
+.output-label {
+    font-weight: 700;
+    font-family: "Arial", sans-serif;
+    color: #222;
+    margin-bottom: 0.3em;
+    font-size: 1.1rem;
+}
+
+.copied {
+    background-color: #ede9f7 !important;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Numbers Builder</h1>
+
+<div class="container">
+
+  <div class="form-group">
+    <label for="variableInput">Variable Name</label>
+    <input type="text" id="variableInput" placeholder="" />
+  </div>
+
+  <div class="form-group">
+    <label for="percentInput">Percent (optional)</label>
+    <input type="number" id="percentInput" placeholder="" min="0" />
+  </div>
+
+  <div class="form-group">
+    <label>Choose Method</label>
+    <div class="method-buttons" id="methodButtons"></div>
+  </div>
+
+  <div class="output-container" id="outputContainer">
+    <!-- Generated outputs appear here -->
+  </div>
+
+</div>
+
+<script>
+const methods = [
+  'ringgit', 'num', 'aud', 'cad', 'gbp', 'usd', 'jpy', 'euro'
+];
+
+const methodButtonsDiv = document.getElementById('methodButtons');
+const variableInput = document.getElementById('variableInput');
+const percentInput = document.getElementById('percentInput');
+const outputContainer = document.getElementById('outputContainer');
+
+let selectedMethod = 'ringgit';
+
+methods.forEach(method => {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = method;
+  if (method === selectedMethod) btn.classList.add('selected');
+
+  btn.addEventListener('click', () => {
+    selectedMethod = method;
+    document.querySelectorAll('.method-buttons button').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    updateOutputs();
+  });
+
+  methodButtonsDiv.appendChild(btn);
+});
+
+function genLine(variable, method, suffix = '', percent = null) {
+  let methodStr = method + suffix;
+  if (percent !== null) {
+    methodStr += `:percent(${percent})`;
+  }
+  return `{{${variable} | ${methodStr}}}`;
+}
+
+function createOutputItem(label, text) {
+  const container = document.createElement('div');
+  container.className = 'output-item';
+
+  const labelEl = document.createElement('div');
+  labelEl.className = 'output-label';
+  labelEl.textContent = label;
+
+  const textEl = document.createElement('pre');
+  textEl.textContent = text;
+
+  container.appendChild(labelEl);
+  container.appendChild(textEl);
+
+  container.addEventListener('click', () => {
+    navigator.clipboard.writeText(text).then(() => {
+      container.classList.add('copied');
+      setTimeout(() => container.classList.remove('copied'), 400);
+    });
+  });
+
+  return container;
+}
+
+function updateOutputs() {
+  outputContainer.innerHTML = '';
+
+  const variable = variableInput.value.trim();
+  if (!variable) {
+    outputContainer.textContent = 'Please enter a variable name.';
+    return;
+  }
+
+  const percentRaw = percentInput.value.trim();
+  let percentNum = null;
+  if (percentRaw !== '') {
+    const p = Number(percentRaw);
+    if (!Number.isFinite(p) || p < 0) {
+      outputContainer.textContent = 'Percent must be a non-negative number.';
+      return;
+    }
+    percentNum = p;
+  }
+
+  // Always generate the base 3:
+  const outputs = [
+    { label: `${selectedMethod}`, text: genLine(variable, selectedMethod) },
+    { label: `${selectedMethod}_words`, text: genLine(variable, selectedMethod, '_words') },
+    { label: `${selectedMethod}_describe`, text: genLine(variable, selectedMethod, '_describe') },
+  ];
+
+  if (percentNum !== null) {
+    outputs.push(
+      { label: `${selectedMethod}:percent(${percentNum})`, text: genLine(variable, selectedMethod, '', percentNum) },
+      { label: `${selectedMethod}_words:percent(${percentNum})`, text: genLine(variable, selectedMethod, '_words', percentNum) },
+      { label: `${selectedMethod}_describe:percent(${percentNum})`, text: genLine(variable, selectedMethod, '_describe', percentNum) },
+    );
+  }
+
+  outputs.forEach(({label, text}) => {
+    outputContainer.appendChild(createOutputItem(label, text));
+  });
+}
+
+variableInput.addEventListener('input', updateOutputs);
+percentInput.addEventListener('input', updateOutputs);
+
+updateOutputs();
+</script>
+
+</body>
+</html>
