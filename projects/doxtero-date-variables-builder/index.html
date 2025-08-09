@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Date Variables Builder</title>
+<style>
+body {
+    font-family: "Arial", sans-serif;
+    background: #f6f8fa;
+    margin: 1.5em 1.5em;
+    padding: 0;
+    color: #222;
+    line-height: 1.6;
+    font-size: large;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.container {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 2em;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5em;
+    font-size: large; 
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: large;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+input[type="numbers"]{
+    font-size: large;
+    font-family: "Arial", sans-serif;
+    padding: 1em;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1.5em;
+}
+
+.mode-buttons button {
+    flex: 1;
+    background: lightgray;
+    border: none;
+    color: white;
+    padding: 12px 0;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.mode-buttons button.selected {
+    background-color: #005A9C;
+}
+
+.mode-buttons button:hover:not(.selected) {
+    background-color: #B0C4DE;
+}
+
+.output-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1em;
+  margin-top: 1.5em;
+}
+
+.output-item {
+  background: white;
+  border: 1.5px solid #bbb;
+  border-radius: 15px;
+  padding: 12px 16px;
+  margin-bottom: 1em;
+  font-family: "Courier New", Courier, monospace;
+  font-size: large;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: pre-wrap;
+  position: relative;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.output-item:hover {
+    background-color: #f0f5fb;
+}
+
+.output-item pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin: 0;
+}
+
+
+.output-label {
+    font-weight: 700;
+    font-family: "Arial", sans-serif;
+    color: #222;
+    margin-bottom: 0.3em;
+    font-size: 1.1rem;
+}
+
+.copied {
+    background-color: #ede9f7 !important;
+}
+</style>
+</head>
+<body>
+
+<h1>Date Variables Builder</h1>
+
+<div class="container">
+
+  <div class="mode-buttons">
+    <button id="btnDateVars" class="selected" type="button" aria-pressed="true">Date Variables</button>
+    <button id="btnSmartDateVars" type="button" aria-pressed="false">Smart Date Variables</button>
+  </div>
+
+  <div id="formDateVars">
+    <div class="form-group">
+      <label for="dateVarInput">Variable Name</label>
+      <input type="text" id="dateVarInput" placeholder="" autocomplete="off" />
+    </div>
+  </div>
+
+  <div id="formSmartDateVars" style="display:none;">
+    <div class="form-group">
+      <label for="smartDateValInput">Date Value (Optional)</label>
+      <p>Insert date in number format (eg. YYYYMMDD)</p>
+      <input
+        type="numbers"
+        id="smartDateValInput"
+        autocomplete="off"
+      />
+    </div>
+  </div>
+
+  <div class="output-container" id="outputContainer">
+    <!-- Outputs appear here -->
+  </div>
+
+</div>
+
+<script>
+const btnDateVars = document.getElementById('btnDateVars');
+const btnSmartDateVars = document.getElementById('btnSmartDateVars');
+
+const formDateVars = document.getElementById('formDateVars');
+const formSmartDateVars = document.getElementById('formSmartDateVars');
+
+const dateVarInput = document.getElementById('dateVarInput');
+const smartDateValInput = document.getElementById('smartDateValInput');
+
+const outputContainer = document.getElementById('outputContainer');
+
+let currentMode = 'dateVars'; // or 'smartDateVars'
+
+// Date variable methods:
+const dateMethods = [
+  "date",
+  "date time",
+  "date day",
+  "date number",
+  "date iso",
+  "date ordinal longform",
+  "date ordinal shortform",
+  "dob",
+  "dob years",
+  "dob years months",
+  "dob years months days",
+  "dob full"
+];
+
+function createOutputItem(label, text) {
+  const container = document.createElement('div');
+  container.className = 'output-item';
+
+  const labelEl = document.createElement('div');
+  labelEl.className = 'output-label';
+  labelEl.textContent = label;
+
+  const textEl = document.createElement('pre');
+  textEl.textContent = text;
+
+  container.appendChild(labelEl);
+  container.appendChild(textEl);
+
+  container.addEventListener('click', () => {
+    navigator.clipboard.writeText(text).then(() => {
+      container.classList.add('copied');
+      setTimeout(() => container.classList.remove('copied'), 400);
+    });
+  });
+
+  return container;
+}
+
+function generateDateVarsOutputs(variable) {
+  outputContainer.innerHTML = '';
+  if (!variable) {
+    outputContainer.textContent = 'Please enter a variable name.';
+    return;
+  }
+  dateMethods.forEach(method => {
+    const label = method;
+    const text = `{{${variable} | ${method}}}`;
+    outputContainer.appendChild(createOutputItem(label, text));
+  });
+}
+
+function generateSmartDateVarsOutputs(dateValue) {
+  outputContainer.innerHTML = '';
+  // No variable name input here
+  dateMethods.forEach(method => {
+    const label = method;
+    let text = `<<${method}>>`;
+    if (dateValue && dateValue.trim()) {
+      text = `<<${method} | ${dateValue.trim()}>>`;
+    }
+    outputContainer.appendChild(createOutputItem(label, text));
+  });
+}
+
+btnDateVars.addEventListener('click', () => {
+  if (currentMode === 'dateVars') return;
+  currentMode = 'dateVars';
+  btnDateVars.classList.add('selected');
+  btnDateVars.setAttribute('aria-pressed', 'true');
+  btnSmartDateVars.classList.remove('selected');
+  btnSmartDateVars.setAttribute('aria-pressed', 'false');
+
+  formDateVars.style.display = '';
+  formSmartDateVars.style.display = 'none';
+  outputContainer.innerHTML = '';
+  dateVarInput.value = '';
+});
+
+btnSmartDateVars.addEventListener('click', () => {
+  if (currentMode === 'smartDateVars') return;
+  currentMode = 'smartDateVars';
+  btnSmartDateVars.classList.add('selected');
+  btnSmartDateVars.setAttribute('aria-pressed', 'true');
+  btnDateVars.classList.remove('selected');
+  btnDateVars.setAttribute('aria-pressed', 'false');
+
+  formSmartDateVars.style.display = '';
+  formDateVars.style.display = 'none';
+  outputContainer.innerHTML = '';
+  smartDateValInput.value = '';
+});
+
+// Update outputs as user types:
+dateVarInput.addEventListener('input', () => {
+  if (currentMode !== 'dateVars') return;
+  generateDateVarsOutputs(dateVarInput.value.trim());
+});
+
+smartDateValInput.addEventListener('input', () => {
+  // Remove non-digit chars immediately:
+  smartDateValInput.value = smartDateValInput.value.replace(/\D/g, '');
+  if (currentMode !== 'smartDateVars') return;
+  generateSmartDateVarsOutputs(smartDateValInput.value.trim());
+});
+</script>
+
+</body>
+</html>
