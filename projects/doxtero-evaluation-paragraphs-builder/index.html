@@ -190,16 +190,16 @@ function updateOutput() {
 
 
     // Compose base string
-    let base = `[[if? ${evaluation}]] ${trueText} // ${falseText}`;
+    let base = `[[if? ${evaluation}]]${trueText}//${falseText}`;
     if (defaultText) {
-        base += ` // ${defaultText}`;
+        base += `//${defaultText}`;
     }
 
     // Output with [[/]]
-    document.getElementById('output1').innerText = base + ' [[/]]';
+    document.getElementById('output1').innerText = base + '[[/]]';
 
     // Output with [[/ color]]
-    document.getElementById('output2').innerText = base + ' [[/ color]]';
+    document.getElementById('output2').innerText = base + '[[/color]]';
 }
 
 function copyToClipboard(el) {
