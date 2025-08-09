@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Variables Builder</title>
+<style>
+body {
+    font-family: "Arial", sans-serif;
+    background: #f6f8fa;
+    margin: 1.5em 1.5em;
+    padding: 0;
+    color: #222;
+    line-height: 1.6;
+    font-size: large;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.container {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1.25em;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5em;
+    font-size: large; 
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1.5px solid #bbb;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: large;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1.25em;
+}
+
+.mode-buttons button {
+    flex: 1;
+    background: lightgray;
+    border: none;
+    color: white;
+    padding: 10px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.mode-buttons button.selected {
+    background-color: #005A9C;
+}
+
+.mode-buttons button:hover:not(.selected) {
+    background-color: #B0C4DE;
+}
+
+.output-container {
+  margin-top: 1.25em;
+}
+
+.output-section {
+  margin-bottom: 2em;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #eee;
+}
+
+.output-section-title {
+  font-weight: 700;
+  font-family: "Arial", sans-serif;
+  color: #222;
+  font-size: 1.05rem;
+  margin-bottom: 0.75em;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5em;
+}
+
+.output-sub-section-title {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    color: #141d61;
+}
+
+.output-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.output-item {
+  background: white;
+  border: 1.3px solid #d0d6dc;
+  border-radius: 10px;
+  padding: 10px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.98rem;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: box-shadow 0.18s ease, background-color 0.15s ease;
+  white-space: pre-wrap;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+
+/* base variable (no method) visual distinction */
+.output-item.base {
+  background: #f0f7ff; /* slightly different */
+  border-color: #bcd9ff;
+}
+
+/* method label and code */
+
+.output-item .method-label { font-weight: 700; color: #214a6a; font-family: "Arial", sans-serif;; font-size: 0.9rem; }
+
+.output-item pre.code { margin:0; background: #fbfdff; padding:6px 8px; border-radius:6px; overflow-x:auto; font-family: "Courier New", Courier, monospace; }
+
+.output-item:hover {
+    background: #e8faff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06); 
+}
+
+.output-item:active {
+    background: #c0e8ff; /* a slightly darker/light blue */
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transform: translateY(2px);
+    transition: none; /* immediate effect on click */
+}
+
+@media (max-width: 640px) {
+  .mode-buttons { flex-direction: column; }
+  .output-items { grid-template-columns: 1fr; }
+}
+
+
+.info-box {
+    font-size:small;
+    color:#666;
+    margin:1em;
+    background: #FEF2F2;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+
+.table_component {
+    overflow: auto;
+    width: 100%;
+}
+
+.table_component table {
+    border: 1px solid #dededf;
+    height: 100%;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    text-align: left;
+}
+
+.table_component caption {
+    caption-side: top;
+    text-align: left;
+}
+
+.table_component th {
+    border: 1px solid #dededf;
+    background-color: #eceff1;
+    color: #000000;
+    padding: 5px;
+}
+
+.table_component td {
+    border: 1px solid #dededf;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 5px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Variables Builder</h1>
+
+<div class="container">
+
+  <div class="form-group">
+    <label for="variableInput">Variable Name</label>
+    <input type="text" id="variableInput" placeholder="" autocomplete="off" />
+  </div>
+
+  <div class="mode-buttons" id="methodGroupButtons">
+    <button data-group="general" class="selected" type="button" aria-pressed="true">Text Case</button>
+    <button data-group="nameic" type="button" aria-pressed="false">Name and IC</button>
+    <button data-group="icdigits" type="button" aria-pressed="false">IC Digits</button>
+    <button data-group="textmask" type="button" aria-pressed="false">Text Masking</button>
+    <button data-group="defaulttext" type="button" aria-pressed="false">Default Text</button>
+  </div>
+
+  <div class="output-container" id="outputContainer">
+
+    <div id="general" class="output-section">
+      <div class="output-section-title">Text Case</div>
+      <div class="output-items" id="generalOutputs"></div>
+    </div>
+
+    <div id="nameic" class="output-section" style="display:none;">
+      <div class="output-section-title">Name and IC</div>
+      <div class="info-box">
+        <div class="table_component" role="region" tabindex="0">
+          <table>
+            <h3>Name and IC - Usage Example:</h3>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>User Value</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{party details}}</td>
+                <td>John Smith (NRIC No. 123456-12-1234)</td>
+                <td>John Smith (NRIC No. 123456-12-1234)</td>
+              </tr>
+              <tr>
+                <td>{{party details | name}}</td>
+                <td>John Smith (NRIC No. 123456-12-1234)</td>
+                <td>John Smith</td>
+              </tr>
+              <tr>
+                <td>{{party details | name ic vertical}}</td>
+                <td>John Smith (NRIC No. 123456-12-1234)</td>
+                <td>John Smith<br>NRIC No. 123456-12-1234</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+        </div>
+      </div><br>
+      <div class="output-items" id="nameicOutputs"></div>
+    </div>
+
+    <div id="icdigits" class="output-section" style="display:none;">
+      <div class="output-section-title">IC Digits</div>
+      <div class="info-box">
+        <div class="table_component" role="region" tabindex="0">
+          <table>
+            <h3>IC Digits Case - Usage Example:</h3>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>User Value</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{party id}}</td>
+                <td>NRIC No. 123456-12-1234</td>
+                <td>NRIC No. 123456-12-1234</td>
+              </tr>
+              <tr>
+                <td>{{party id | ic digits}}</td>
+                <td>NRIC No. 123456-12-1234</td>
+                <td>123456-12-1234</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+        </div>
+      </div><br>
+      <div class="output-items" id="icdigitsOutputs"></div>
+    </div>
+
+    <div id="textmask" class="output-section" style="display:none;">
+      <div class="output-section-title">Text Masking</div>
+
+          <div class="info-box">
+            <div class="table_component" role="region" tabindex="0">
+              <table>
+                <h3>Text Masking - Usage Example:</h3>
+                <thead>
+                  <tr>
+                    <th>Variable</th>
+                    <th>User Value</th>
+                    <th>Output</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{name | initials dot}}</td>
+                    <td>John Smith</td>
+                    <td>J.S.</td>
+                  </tr>
+
+                </tbody>
+              </table>
+              <br>
+            </div>
+          </div><br>
+
+
+
+      <div style="margin-bottom:12px;">
+        <div class="output-sub-section-title">Initials</div>
+        <div class="output-items" id="textmaskInitialsOutputs"></div>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <div class="output-sub-section-title">Mask Text</div>
+        <div class="output-items" id="textmaskMaskTextOutputs"></div>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <div class="output-sub-section-title">Mask Number</div>
+        <div class="output-items" id="textmaskMaskNumberOutputs"></div>
+      </div>
+
+      <div>
+        <div class="output-sub-section-title">Tag &amp; Line</div>
+        <div class="output-items" id="textmaskTagLineOutputs"></div>
+      </div>
+    </div>
+
+    <div id="defaulttext" class="output-section" style="display:none;">
+      <div class="output-section-title">Default Text</div>
+
+      <div style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+         <div style="flex:1 1 320px;">
+          <label for="defaultTextInput">Insert Default Text</label>
+          <input id="defaultTextInput" type="text" placeholder="" />
+        </div>
+      </div>
+
+      <div class="info-box">
+        <div class="table_component" role="region" tabindex="0">
+          <table>
+            <h3>Default Text - Usage Example:</h3>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>User Value</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{name | default(unknown)}}</td>
+                <td>-</td>
+                <td>unknown</td>
+              </tr>
+              <tr>
+                <td>{{name | default(unknown)}}</td>
+                <td></td>
+                <td>unknown</td>
+              </tr>
+              <tr>
+                <td>{{name | default(unknown)}}</td>
+                <td>John</td>
+                <td>John</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+        </div>
+      </div><br>
+
+      <div class="output-items" id="defaultTextOutputs"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const variableInput = document.getElementById('variableInput');
+
+  const methodGroups = {
+    general: [
+      'upper','lower','swap','title','capwords','capitalize','sentence case','sentence','caps','land case'
+    ],
+    nameic: [
+      'name ic','name ic vertical','name ic vb','ic','ic bracket','ic number','name','name upper','name lower','name caps'
+    ],
+    icdigits: ['ic digits'],
+    textmask: {
+      initials: ['initials','initials dot','initials lower','initials dot lower'],
+      maskText: ['mask'],
+      maskNumber: ['mask number']
+      // tag/line dynamic
+    }
+  };
+
+  const btns = document.querySelectorAll('#methodGroupButtons button');
+  const sections = {
+    general: document.getElementById('general'),
+    nameic: document.getElementById('nameic'),
+    icdigits: document.getElementById('icdigits'),
+    textmask: document.getElementById('textmask'),
+    defaulttext: document.getElementById('defaulttext')
+  };
+
+  const outputs = {
+    general: document.getElementById('generalOutputs'),
+    nameic: document.getElementById('nameicOutputs'),
+    icdigits: document.getElementById('icdigitsOutputs'),
+    textmaskInitials: document.getElementById('textmaskInitialsOutputs'),
+    textmaskMaskText: document.getElementById('textmaskMaskTextOutputs'),
+    textmaskMaskNumber: document.getElementById('textmaskMaskNumberOutputs'),
+    textmaskTagLine: document.getElementById('textmaskTagLineOutputs'),
+    defaulttext: document.getElementById('defaultTextOutputs')
+  };
+
+  const defaultTextInput = document.getElementById('defaultTextInput');
+
+  function createOutputItem(methodLabel, codeText, isBase=false){
+    const container = document.createElement('div');
+    container.className = 'output-item' + (isBase ? ' base' : '');
+
+    const lab = document.createElement('div');
+    lab.className = 'method-label';
+    lab.textContent = methodLabel;
+    container.appendChild(lab);
+
+    const pre = document.createElement('pre');
+    pre.className = 'code';
+    pre.textContent = codeText;
+    container.appendChild(pre);
+
+    container.addEventListener('click', () => {
+      navigator.clipboard.writeText(codeText).then(() => {
+        container.classList.add('copied');
+        setTimeout(()=>container.classList.remove('copied'), 380);
+      });
+    });
+
+    return container;
+  }
+
+  // Generate dynamic tag/line methods based on general methods
+  function generateTagLineTemplates(variable){
+    const list = [];
+    list.push({label:'tag', tmpl:`{{${variable} | tag}}`});
+    list.push({label:'line', tmpl:`{{${variable} | line}}`});
+    methodGroups.general.forEach(m => {
+      list.push({label:`${m} tag`, tmpl:`{{${variable} | ${m} tag}}`});
+      list.push({label:`${m} line`, tmpl:`{{${variable} | ${m} line}}`});
+    });
+    return list;
+  }
+
+  function clearAllOutputsMsg(){
+    Object.values(outputs).forEach(c => c.innerHTML = '');
+  }
+
+  function updateOutputs(variable){
+    clearAllOutputsMsg();
+    if(!variable){
+      Object.values(outputs).forEach(container => {
+        container.innerHTML = "";
+      });
+      return;
+    }
+
+    // GENERAL
+    outputs.general.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    methodGroups.general.forEach(m => outputs.general.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+    // NAME & IC
+    outputs.nameic.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    methodGroups.nameic.forEach(m => outputs.nameic.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+    // IC DIGITS
+    outputs.icdigits.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    methodGroups.icdigits.forEach(m => outputs.icdigits.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+    // TEXT MASK - Initials
+    outputs.textmaskInitials.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    methodGroups.textmask.initials.forEach(m => outputs.textmaskInitials.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+    // TEXT MASK - Mask Text
+    outputs.textmaskMaskText.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    methodGroups.textmask.maskText.forEach(m => outputs.textmaskMaskText.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+    // TEXT MASK - Mask Number
+    outputs.textmaskMaskNumber.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    methodGroups.textmask.maskNumber.forEach(m => outputs.textmaskMaskNumber.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+    // TEXT MASK - Tag & Line dynamic
+    outputs.textmaskTagLine.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    const dynamic = generateTagLineTemplates(variable);
+    dynamic.forEach(d => outputs.textmaskTagLine.appendChild(createOutputItem(d.label, d.tmpl)));
+
+    // DEFAULT TEXT
+    outputs.defaulttext.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+    const defVal = (defaultTextInput.value || '').trim();
+    const defaultCode = `{{${variable} | default(${defVal || ''})}}`;
+    outputs.defaulttext.appendChild(createOutputItem('default', defaultCode));
+  }
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group;
+      btns.forEach(b => {
+        b.classList.toggle('selected', b === btn);
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      Object.entries(sections).forEach(([k,el]) => el.style.display = (k === group) ? '' : 'none');
+    });
+  });
+
+  // Sync inputs:
+  variableInput.addEventListener('input', () => updateOutputs(variableInput.value.trim()));
+
+  defaultTextInput.addEventListener('input', () => {
+    const varName = (variableInput.value || '').trim();
+    if(!varName) return;
+    outputs.defaulttext.innerHTML = '';
+    outputs.defaulttext.appendChild(createOutputItem('variable', `{{${varName}}}`, true));
+    const defVal = (defaultTextInput.value || '').trim();
+    const defaultCode = `{{${varName} | default(${defVal || ''})}}`;
+    outputs.defaulttext.appendChild(createOutputItem('default', defaultCode));
+  });
+
+  // Initialize
+  updateOutputs('');
+</script>
+
+</body>
+</html>
