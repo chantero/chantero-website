@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Condition Format Generator</title>
+<style>
+body {
+    font-family: "Arial", sans-serif;
+    background: #f6f8fa;
+    margin: 1.5em 1.5em;
+    padding: 0;
+    color: #222;
+    line-height: 1.6;
+    font-size: large;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 2em;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1em;
+    font-size: large; 
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    font-size: large;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+    font-size: large;
+}
+
+.output-box {
+    background: white;
+    border: 1.5px solid #bbb;
+    border-radius: 15px;
+    padding: 20px 20px;
+    margin-top: 1.25em;
+    font-family: "Courier New", Courier, monospace;
+    cursor: pointer;
+    font-size: large;
+    line-height: 1.5;
+    transition: background-color 0.3s ease;
+    white-space: pre-wrap;
+}
+
+
+.copied {
+    background-color: #ede9f7;
+    transition: background-color 0.2s ease;
+}
+
+.output-title {
+    font-weight: 700;
+    margin-top: 3em;
+    font-size: 1.25rem;
+    color: #222;
+    letter-spacing: 0.02em;
+}
+
+/* Container for inputs and outputs side by side */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+/* Input section styling */
+.inputs {
+    flex: 1 1 300px;
+    min-width: 280px;
+    background: #fff1f1;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+/* Output section styling */
+.outputs {
+    flex: 1 1 350px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: #e3f4fa;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.output-title {
+    margin-top: 0;
+}
+
+/* On small screens stack vertically */
+@media (max-width: 760px) {
+    .container {
+      flex-direction: column;
+    }
+    .outputs {
+      min-width: auto;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>Evaluation Paragraphs Builder</h1>
+
+<div class="container">
+  <div class="inputs">
+    <div class="form-group">
+      <label>Evaluation (Condition)</label>
+      <input type="text" id="evaluation" placeholder="{{number}} > 10" />
+    </div>
+    <div class="form-group">
+      <label>True Text</label>
+      <textarea id="trueText" placeholder=""></textarea>
+    </div>
+    <div class="form-group">
+      <label>False Text</label>
+      <textarea id="falseText" placeholder=""></textarea>
+    </div>
+    <div class="form-group">
+      <label>Default Text (optional)</label>
+      <textarea id="defaultText" placeholder=""></textarea>
+    </div>
+  </div>
+
+  <div class="outputs">
+    <div>
+      <div class="output-title">🔴 Output with [[/]]</div>
+      <div id="output1" class="output-box" onclick="copyToClipboard(this)"></div>
+    </div>
+
+    <div>
+      <div class="output-title">🟢 Output with [[/ color]]</div>
+      <div id="output2" class="output-box" onclick="copyToClipboard(this)"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function updateOutput() {
+
+    const evaluation = document.getElementById('evaluation').value.trim();  
+
+
+    if (!evaluation) {
+      document.getElementById('output1').innerText = '';
+      document.getElementById('output2').innerText = '';
+      return;
+    }
+
+    let trueText = document.getElementById('trueText').value;  // NO trim here
+    let falseText = document.getElementById('falseText').value;  // NO trim here
+    let defaultText = document.getElementById('defaultText').value;  // NO trim here
+
+    trueText = trueText.replace(/\n/g, '<br>');
+    falseText = falseText.replace(/\n/g, '<br>');
+    defaultText = defaultText.replace(/\n/g, '<br>');
+
+
+
+    // Compose base string
+    let base = `[[if? ${evaluation}]] ${trueText} // ${falseText}`;
+    if (defaultText) {
+        base += ` // ${defaultText}`;
+    }
+
+    // Output with [[/]]
+    document.getElementById('output1').innerText = base + ' [[/]]';
+
+    // Output with [[/ color]]
+    document.getElementById('output2').innerText = base + ' [[/ color]]';
+}
+
+function copyToClipboard(el) {
+    navigator.clipboard.writeText(el.innerText).then(() => {
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 250);
+    });
+}
+
+// Auto-update as user types
+document.getElementById('evaluation').addEventListener('input', updateOutput);
+document.getElementById('trueText').addEventListener('input', updateOutput);
+document.getElementById('falseText').addEventListener('input', updateOutput);
+document.getElementById('defaultText').addEventListener('input', updateOutput);
+
+// Initialize output on page load
+updateOutput();
+</script>
+
+</body>
+</html>
