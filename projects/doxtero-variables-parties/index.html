@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Variables: Parties</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 1em;
+    background: #fafafa;
+    font-size: large;
+  }
+  .block {
+
+    border: 1px solid #ccc;
+    background: white;
+    padding: 1em;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin: 2em;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+
+  label {
+    display: block;
+    margin: 1em 0 1em;
+    font-weight: bold;
+  }
+
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: large;
+  }
+
+  .section-heading {
+    margin-top: 1.5em;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+  }
+  /* Smaller, responsive copyable blocks */
+    .method-block {
+      background: #eee;
+      padding:1em;
+      margin: 0.5em;
+      border-radius: 15px;
+      cursor: pointer;
+      font-family: monospace;
+      flex: 0 0 auto; 
+      min-width: 140px;
+      box-sizing: border-box;
+      font-size: large;
+    }
+
+    .text-block {
+      background: #eee;
+      padding: 1em;
+      margin: 0.5em;
+      border-radius: 15px;
+      cursor: pointer;
+      font-family: monospace;
+      white-space: pre-line;
+      display: block;   
+      width: 100%;        
+      box-sizing: border-box;
+      font-size: large;
+    }
+
+
+  .method-block:hover, .text-block:hover {
+    background: #dcdcdc;
+  }
+
+  .method-block:active, .text-block:active {
+    background: lightyellow;
+  }
+
+  .method-block {
+  white-space: pre-line; /* so \n works */
+  word-wrap: break-word; /* so long text wraps */
+  border: 1px solid #ccc;
+}
+
+  .text-block {
+    white-space: pre-line;
+    border: 1px solid #ccc;
+  }
+
+  /* Make copy blocks wrap and adjust automatically */
+  .methods-grid, .directors-container, .templates-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .director-block {
+    border: 1px solid #ccc;
+    padding: 6px;
+    margin-bottom: 6px;
+    background: #fff9ec;
+    border-radius: 15px;
+  }
+
+  .variable-block {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: background-color 0.3s ease;
+}
+
+#add-variable-button {
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: block;
+  font-family: Arial,sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 0 auto;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 40%;
+}
+
+#add-variable-button:after {
+  background-clip: padding-box;
+  background-color: #1CB0F6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+#add-variable-button,
+#add-variable-button:focus {
+  user-select: auto;
+}
+
+#add-variable-button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+
+#add-variable-button:active {
+  border-width: 4px 0 0;
+  background: none;
+}
+
+
+</style>
+</head>
+<body>
+
+<h1>Variables: Parties</h1>
+
+<div id="blocksContainer"></div>
+<button id="add-variable-button" onclick="addVariableBlock()">Add Variable Block</button>
+
+<br><br><br><br>
+
+<script>
+const pastelColors = [
+  '#FDF2F8', // light pink
+  '#FDF2F8', // light yellow
+  '#ECFDF5', // light green
+  '#f5fcff', // light cyan
+];
+
+const labels = {
+  name: "Name",
+  id: "Identity Number",
+  address: "Address",
+  "address registered": "Registered Address",
+  "address business": "Business Address",
+};
+
+const modeData = {
+  methods: {
+
+    name: ['upper', 'caps',],
+    id: ['ic digits'],
+    address: ['lh', 'lv'],
+    'address registered': ['lh', 'lv'],
+    'address business': ['lh', 'lv']
+  },
+
+    templates: [
+    "{{variable name | upper}} ({{variable id}}) of {{variable address | lh}}",
+
+    "{{variable name | upper}}\n{{variable id}}",
+
+    "________________________\n{{variable name | upper}}\n{{variable id}}",
+
+    "{{variable name | upper}}\n({{variable id}})\n{{variable address | lv}}",
+
+    "SIGNED by\n{{variable name | upper}}\n({{variable id}})\nin the presence of:",
+
+
+    "{{variable name | upper}} ({{variable id}}) a company incorporated in Malaysia and having an address at {{variable address | lh}}",
+
+    "{{variable name | upper}} ({{variable id}}) a company incorporated in Malaysia, and having its registered address at {{variable address registered | lh}} and a place of business at {{variable address business | lh}}",
+
+
+    "THE COMMON SEAL of\n{{variable name | upper}}\n({{variable id}})\naffixed in the presence of:"
+  ]
+};
+
+function addVariableBlock() {
+  const block = document.createElement('section');
+  block.className = 'block';
+
+  // Random pastel background
+  block.style.backgroundColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+
+  let directorCount = 2;
+
+  const varLabel = document.createElement('label');
+  varLabel.textContent = 'Variable Name';
+  const varInput = document.createElement('input');
+  varInput.type = 'text';
+  block.append(varLabel, varInput);
+
+  const directorCountLabel = document.createElement('label');
+  directorCountLabel.textContent = 'Number of Directors:';
+  const directorCountInput = document.createElement('input');
+  directorCountInput.type = 'number';
+  directorCountInput.min = 0;
+  directorCountInput.value = directorCount;
+  directorCountInput.oninput = () => {
+    directorCount = parseInt(directorCountInput.value) || 0;
+    renderDirectors();
+  };
+  block.append(directorCountLabel, directorCountInput);
+
+  const methodsContainer = document.createElement('div');
+  const directorsContainer = document.createElement('div');
+  directorsContainer.className = 'directors-container';
+  const predefinedTextsContainer = document.createElement('div');
+
+  block.append(methodsContainer, directorsContainer, predefinedTextsContainer);
+  document.getElementById('blocksContainer').appendChild(block);
+
+  function renderMethods() {
+    methodsContainer.innerHTML = '';
+    const baseName = varInput.value.trim() || 'variable';
+    for (const category in modeData.methods) {
+      const group = document.createElement('div');
+      const labelText = labels[category] || category.toUpperCase();
+      group.innerHTML = `<div class="section-heading">${labelText}</div>`;
+      const flexWrap = document.createElement('div');
+      flexWrap.className = 'methods-grid';
+      modeData.methods[category].forEach(method => {
+        const placeholder = `{{${baseName} ${category}${method ? ' | ' + method : ''}}}`;
+        flexWrap.appendChild(createMethodBlock(placeholder));
+      });
+      group.appendChild(flexWrap);
+      methodsContainer.appendChild(group);
+    }
+  }
+
+  function renderDirectors() {
+    directorsContainer.innerHTML = '';
+    const heading = document.createElement('div');
+    heading.className = 'section-heading';
+    heading.textContent = 'Directors';
+    directorsContainer.appendChild(heading);
+
+    const baseName = (varInput.value.trim() || 'variable') + ' director';
+    for (let i = 1; i <= directorCount; i++) {
+      const dirBlock = document.createElement('div');
+      dirBlock.className = 'director-block';
+      const flexWrap = document.createElement('div');
+      flexWrap.className = 'methods-grid';
+      flexWrap.appendChild(createMethodBlock(`{{${baseName} ${i} name | upper}}`));
+      flexWrap.appendChild(createMethodBlock(`{{${baseName} ${i} name | caps}}`));
+      flexWrap.appendChild(createMethodBlock(`{{${baseName} ${i} id}}`));
+      flexWrap.appendChild(createMethodBlock(`{{${baseName} ${i} address | lh}}`));
+      flexWrap.appendChild(createMethodBlock(`{{${baseName} ${i} address | lv}}`));
+
+      flexWrap.appendChild(createMethodBlock(
+        `{{${baseName} ${i} name | upper}}\n{{${baseName} ${i} id}}`
+      ));
+
+      flexWrap.appendChild(createMethodBlock(
+        `________________________\n{{${baseName} ${i} name | upper}}\n({{${baseName} ${i} id}})`
+      ));
+
+
+      dirBlock.appendChild(flexWrap);
+      directorsContainer.appendChild(dirBlock);
+    }
+  }
+
+  function renderTemplates() {
+    predefinedTextsContainer.innerHTML = '';
+    const heading = document.createElement('div');
+    heading.className = 'section-heading';
+    heading.textContent = 'Templates';
+    predefinedTextsContainer.appendChild(heading);
+
+    const flexWrap = document.createElement('div');
+    flexWrap.className = 'templates-grid';
+    const baseName = varInput.value.trim() || 'variable';
+    modeData.templates.forEach(template => {
+      const replaced = template.replace(
+        /{{variable\s+(\w+)(\s*\|\s*[\w\s]+)?}}/g,
+        (_, cat, mods) => `{{${baseName} ${cat}${mods || ''}}}`
+      );
+      flexWrap.appendChild(createTextBlock(replaced));
+    });
+    predefinedTextsContainer.appendChild(flexWrap);
+  }
+
+  function createMethodBlock(text) {
+    const div = document.createElement('div');
+    div.className = 'method-block';
+    div.textContent = text;
+    div.onclick = () => copyToClipboard(text);
+    return div;
+  }
+  function createTextBlock(text) {
+    const div = document.createElement('div');
+    div.className = 'text-block';
+    div.textContent = text;
+    div.onclick = () => copyToClipboard(text);
+    return div;
+  }
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text);
+  }
+
+  varInput.oninput = () => {
+    renderMethods();
+    renderDirectors();
+    renderTemplates();
+  };
+  renderMethods();
+  renderDirectors();
+  renderTemplates();
+}
+
+addVariableBlock();
+</script>
+
+</body>
+</html>
