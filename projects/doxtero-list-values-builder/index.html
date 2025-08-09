@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>List Values Builder</title>
+<style>
+body {
+    font-family: "Arial", sans-serif;
+    background: #f6f8fa;
+    margin: 1.5em 1.5em;
+    padding: 0;
+    color: #222;
+    line-height: 1.6;
+    font-size: large;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 2em;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1em;
+    font-size: large; 
+}
+
+textarea, button {
+    font-family: inherit;
+    font-size: large;
+}
+
+textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    padding: 10px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.list-container {
+    background: #fff1f1;
+    border-radius: 15px;
+    padding: 20px;
+    min-width: 280px;
+    flex: 1 1 300px;
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+.list-item {
+    margin-bottom: 1em;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.list-textarea {
+    flex: 1 1 auto;
+    min-height: 60px;
+    resize: vertical;
+    padding: 10px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    font-family: inherit;
+    font-size: large;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.list-textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.list-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.list-buttons button {
+    background: #4a90e2;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+.list-buttons button:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+}
+
+.list-buttons button:hover:not(:disabled) {
+    background: #357abd;
+}
+
+button#addLineBtn {
+    margin-top: 0.75em;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 15px;
+    background-color: #4a90e2;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button#addLineBtn:hover {
+    background-color: #357abd;
+}
+
+.output-box {
+    background: white;
+    border: 1.5px solid #bbb;
+    border-radius: 15px;
+    padding: 16px 20px;
+    margin-top: 1.25em;
+    font-family: "Courier New", Courier, monospace;
+    cursor: pointer;
+    font-size: large;
+    line-height: 1.5;
+    transition: background-color 0.3s ease;
+    white-space: pre-wrap;
+    user-select: all;
+    min-height: 2em;
+}
+
+.copied {
+    background-color: #ede9f7;
+    transition: background-color 0.2s ease;
+}
+
+.output-title {
+    font-weight: 700;
+    margin-top: 3em;
+    font-size: 1.25rem;
+    color: #222;
+    letter-spacing: 0.02em;
+}
+
+/* Container */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.outputs {
+    flex: 1 1 350px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: #e3f4fa;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.output-title {
+    margin-top: 0;
+}
+
+/* Responsive */
+@media (max-width: 760px) {
+    .container {
+      flex-direction: column;
+    }
+    .outputs {
+      min-width: auto;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>List Values Builder</h1>
+
+<div class="container">
+  <div class="list-container" id="listContainer">
+
+    <div id="listItems">
+      <!-- List items inserted here -->
+    </div>
+
+    <button id="addLineBtn" type="button">Add Line</button>
+  </div>
+
+  <div class="outputs">
+    <div>
+      <div class="output-title">List Values</div>
+      <div id="output" class="output-box" onclick="copyToClipboard(this)"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const listItemsDiv = document.getElementById('listItems');
+const addLineBtn = document.getElementById('addLineBtn');
+const outputDiv = document.getElementById('output');
+
+let lines = ['', '', '']; // default 3 empty lines
+
+function createLineElement(text, index) {
+  const container = document.createElement('div');
+  container.className = 'list-item';
+  container.dataset.index = index;
+
+  const textarea = document.createElement('textarea');
+  textarea.className = 'list-textarea';
+  textarea.value = text;
+  textarea.rows = 3;
+  textarea.addEventListener('input', () => {
+    lines[index] = textarea.value;
+    updateOutput();
+  });
+
+  const btns = document.createElement('div');
+  btns.className = 'list-buttons';
+
+  const upBtn = document.createElement('button');
+  upBtn.type = 'button';
+  upBtn.textContent = '↑';
+  upBtn.title = 'Move Up';
+  upBtn.disabled = (index === 0);
+  upBtn.addEventListener('click', () => {
+    if (index === 0) return;
+    [lines[index - 1], lines[index]] = [lines[index], lines[index - 1]];
+    renderLines();
+  });
+
+  const downBtn = document.createElement('button');
+  downBtn.type = 'button';
+  downBtn.textContent = '↓';
+  downBtn.title = 'Move Down';
+  downBtn.disabled = (index === lines.length - 1);
+  downBtn.addEventListener('click', () => {
+    if (index === lines.length - 1) return;
+    [lines[index + 1], lines[index]] = [lines[index], lines[index + 1]];
+    renderLines();
+  });
+
+  const delBtn = document.createElement('button');
+  delBtn.type = 'button';
+  delBtn.textContent = '✕';
+  delBtn.title = 'Delete Line';
+  delBtn.style.backgroundColor = '#d9534f';
+  delBtn.addEventListener('click', () => {
+    lines.splice(index, 1);
+    renderLines();
+  });
+
+  btns.appendChild(upBtn);
+  btns.appendChild(downBtn);
+  btns.appendChild(delBtn);
+
+  container.appendChild(textarea);
+  container.appendChild(btns);
+
+  return container;
+}
+
+function renderLines() {
+  listItemsDiv.innerHTML = '';
+  if (lines.length === 0) {
+    listItemsDiv.textContent = '';
+  } else {
+    lines.forEach((line, idx) => {
+      listItemsDiv.appendChild(createLineElement(line, idx));
+    });
+  }
+  updateOutput();
+}
+
+function updateOutput() {
+  // Filter out empty lines (trimmed)
+  const filtered = lines.filter(line => line.trim() !== '');
+
+  if (filtered.length === 0) {
+    outputDiv.textContent = '';
+    return;
+  }
+
+  // Replace newlines in each line with literal <br>
+  const replaced = filtered.map(line => line.replace(/\n/g, '<br>'));
+
+  // Join with ' | '
+  outputDiv.textContent = replaced.join('|');
+}
+
+addLineBtn.addEventListener('click', () => {
+  lines.push('');
+  renderLines();
+});
+
+renderLines();
+
+function copyToClipboard(el) {
+  const text = el.textContent || el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 250);
+  });
+}
+</script>
+
+</body>
+</html>
