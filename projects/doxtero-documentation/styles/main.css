@@ -148,7 +148,7 @@ tbody td:hover {
 }
 
 tbody td.copied {
-  background-color: #d4edda !important; /* light green */
+  background-color: pink !important;
 }
 
 /* Mobile stacked layout */
