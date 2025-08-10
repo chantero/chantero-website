@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Doxtero | Quick Reference</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+<div class="container">
+
+
+
+
+<h1>Quick Reference</h1>
+
+  <h2><a href="#">General Text Case</a></h2>
+
+
+  <div class="note-yellow">
+    This section covers the general text case transformations used most frequently in document automation.
+  </div>
+
+
+
+  <h3><a href="#">(a) Upper and Lower Case</a></h3>
+  <table class="table-color-blue">
+
+    <thead>
+
+      <tr>
+        <th>Method</th>
+        <th>Alternate Method</th>
+        <th>Description</th>
+        <th>Usage Example</th>
+        <th>User Input</th>
+        <th>Output</th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr>
+        <td>upper</td>
+        <td>-</td>
+        <td>Converts all text to uppercase</td>
+        <td>{{variable | upper}}</td>
+        <td>Hello World</td>
+        <td>HELLO WORLD</td>
+      </tr>
+
+      <tr>
+        <td>lower</td>
+        <td>-</td>
+        <td>Converts all text to lowercase</td>
+        <td>{{variable | lower}}</td>
+        <td>Hello World</td>
+        <td>hello world</td>
+      </tr>
+
+
+    <div class="note-blue">
+        This section covers the general text case transformations used most frequently in document automation.
+    </div>
+
+    </tbody>
+  </table>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cells = document.querySelectorAll('tbody td');
+      cells.forEach(cell => {
+        cell.title = 'Click to copy';
+
+        cell.addEventListener('click', () => {
+          const textToCopy = cell.innerText.trim();
+          if (!textToCopy) return;
+
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            // Add 'copied' class to highlight
+            cell.classList.add('copied');
+            setTimeout(() => {
+              cell.classList.remove('copied');
+            }, 200);
+          }).catch(err => {
+            console.error('Copy failed:', err);
+          });
+        });
+      });
+    });
+
+
+
+// Table Script .. for responsiveness //
+document.addEventListener("DOMContentLoaded", function() {
+  const tables = document.querySelectorAll("table");
+  tables.forEach(table => {
+    const headers = Array.from(table.querySelectorAll("thead th"))
+                         .map(th => th.textContent.trim());
+    table.querySelectorAll("tbody tr").forEach(row => {
+      Array.from(row.children).forEach((td, i) => {
+        td.setAttribute("data-th", headers[i] || "");
+      });
+    });
+  });
+});
+
+
+  </script>
+
+
+
+</div>
+</body>
+</html>

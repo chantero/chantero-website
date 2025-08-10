@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Evaluation Paragraphs Builder</title>
+<title>Calculation Paragraphs Generator</title>
 <style>
 body {
     font-family: "Arial", sans-serif;
@@ -61,7 +61,7 @@ textarea {
     background: white;
     border: 1.5px solid #bbb;
     border-radius: 15px;
-    padding: 20px 20px;
+    padding: 16px 20px;
     margin-top: 1.25em;
     font-family: "Courier New", Courier, monospace;
     cursor: pointer;
@@ -70,7 +70,6 @@ textarea {
     transition: background-color 0.3s ease;
     white-space: pre-wrap;
 }
-
 
 .copied {
     background-color: #ede9f7;
@@ -132,90 +131,90 @@ textarea {
 </head>
 <body>
 
-<h1>Evaluation Paragraphs Builder</h1>
+<h1>Calculation Paragraphs Generator</h1>
 
 <div class="container">
   <div class="inputs">
     <div class="form-group">
-      <label>Evaluation (Condition)</label>
-      <input type="text" id="evaluation" placeholder="{{number}} > 10" />
+      <label>Calculation Expression</label>
+      <p>example: {{age}} + 10   [or]   10 + 10</p>
+      <textarea id="calculation" placeholder=""></textarea>
     </div>
     <div class="form-group">
-      <label>True Text</label>
-      <textarea id="trueText" placeholder=""></textarea>
-    </div>
-    <div class="form-group">
-      <label>False Text</label>
-      <textarea id="falseText" placeholder=""></textarea>
-    </div>
-    <div class="form-group">
-      <label>Default Text (optional)</label>
-      <textarea id="defaultText" placeholder=""></textarea>
+      <label>Method (optional)</label>
+      <p>example: num, num words, num describe, ringgit, ringgit words, ringgit describe</p>
+      <input type="text" id="method" placeholder="" />
     </div>
   </div>
 
   <div class="outputs">
     <div>
-      <div class="output-title">🔴 Output with [[/]]</div>
+      <div class="output-title">🔴 Type 1: ^^ calculation ^^</div>
       <div id="output1" class="output-box" onclick="copyToClipboard(this)"></div>
     </div>
 
     <div>
-      <div class="output-title">🟢 Output with [[/ color]]</div>
+      <div class="output-title">🟢 Type 2: [[^ calculation ]]</div>
       <div id="output2" class="output-box" onclick="copyToClipboard(this)"></div>
+    </div>
+
+    <div>
+      <div class="output-title">🔵 Type 3: [[^ calculation | method ]]</div>
+      <div id="output3" class="output-box" onclick="copyToClipboard(this)"></div>
     </div>
   </div>
 </div>
 
 <script>
 function updateOutput() {
+    let calc = document.getElementById('calculation').value;
+    let method = document.getElementById('method').value.trim();
 
-    const evaluation = document.getElementById('evaluation').value.trim();  
-
-
-    if (!evaluation) {
+    if (!calc.trim()) {
+      // No calculation, clear outputs
       document.getElementById('output1').innerText = '';
       document.getElementById('output2').innerText = '';
+      document.getElementById('output3').innerText = '';
       return;
     }
 
-    let trueText = document.getElementById('trueText').value;  // NO trim here
-    let falseText = document.getElementById('falseText').value;  // NO trim here
-    let defaultText = document.getElementById('defaultText').value;  // NO trim here
+    // Preserve line breaks as <br> if any (optional, but consistent)
+    // Usually calc expressions won't have line breaks, but just in case:
+    let calcText = calc.replace(/\n/g, '<br>');
 
-    trueText = trueText.replace(/\n/g, '<br>');
-    falseText = falseText.replace(/\n/g, '<br>');
-    defaultText = defaultText.replace(/\n/g, '<br>');
+    // Type 1
+    // If method exists, append as: ^^ calc | method ^^ else just ^^ calc ^^
+    let output1 = method
+      ? `^^${calcText} | ${method}^^`
+      : `^^${calcText}^^`;
 
+    // Type 2
+    // No method supported here per your spec:
+    let output2 = `[[^ ${calcText} ]]`;
 
+    // Type 3
+    // Only output if method present, else show message
+    let output3 = method
+      ? `[[^ ${calcText} | ${method} ]]`
+      : '[no number method]';
 
-    // Compose base string
-    let base = `[[if? ${evaluation}]]${trueText}//${falseText}`;
-    if (defaultText) {
-        base += `//${defaultText}`;
-    }
-
-    // Output with [[/]]
-    document.getElementById('output1').innerText = base + '[[/]]';
-
-    // Output with [[/ color]]
-    document.getElementById('output2').innerText = base + '[[/color]]';
+    document.getElementById('output1').innerHTML = output1;
+    document.getElementById('output2').innerHTML = output2;
+    document.getElementById('output3').innerHTML = output3;
 }
 
 function copyToClipboard(el) {
-    navigator.clipboard.writeText(el.innerText).then(() => {
+    // Copy raw text without html tags (in case <br> are present)
+    let textToCopy = el.innerText || el.textContent;
+    navigator.clipboard.writeText(textToCopy).then(() => {
         el.classList.add('copied');
         setTimeout(() => el.classList.remove('copied'), 250);
     });
 }
 
-// Auto-update as user types
-document.getElementById('evaluation').addEventListener('input', updateOutput);
-document.getElementById('trueText').addEventListener('input', updateOutput);
-document.getElementById('falseText').addEventListener('input', updateOutput);
-document.getElementById('defaultText').addEventListener('input', updateOutput);
+document.getElementById('calculation').addEventListener('input', updateOutput);
+document.getElementById('method').addEventListener('input', updateOutput);
 
-// Initialize output on page load
 updateOutput();
 </script>
 
