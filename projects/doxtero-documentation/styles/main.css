@@ -67,6 +67,7 @@ body, html {
 /* h1 is for the content PAGE TITLE BANNER (at the top) */
 h1 {
     text-align: center;
+    word-wrap: break-word;
     font-size: xx-large; 
     font-weight: bold;
     color: ;
@@ -156,7 +157,6 @@ tbody td.copied {
   table, thead, tbody, th, td, tr {
     display: block;
     width: 100%;
-
   }
 
   thead {
