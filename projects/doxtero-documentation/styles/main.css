@@ -4,9 +4,7 @@
 	box-sizing: border-box;
 }
 
-
 body, html {
-
     margin: 0; padding: 0; height: 100%;
     font-family: Arial, sans-serif;
     line-height: 1.5;
@@ -19,6 +17,25 @@ body, html {
     display: flex;
     height: 100vh;
 }
+
+/* this is container for the contents pages - so inside got margin */
+.container {
+    display: block;
+    height: 100vh;
+    margin: 3em;
+    margin-bottom: 100px;
+
+}
+
+
+/* Container for input-container and output-container side by side */
+.column-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    margin: 0 auto;
+}
+
 
 #main-content {
     flex-grow: 1;
@@ -53,14 +70,100 @@ body, html {
 }
 
 
-/* this is container for the contents pages */
-.container {
-    display: block;
-    height: 100vh;
-    margin: 3em;
+
+
+
+
+/* "code pill" mainly for "methods" or examples*/
+code {
+  display: inline-block;
+  background: #f5f5fa;      
+  color: #36395a;          
+  padding: 3px 12px;  
+  text-align: center;
+  margin: 0.3em;
+  border-radius: 13px;
+  font-style: normal;
+  font-family: 'Courier', monospace;
+  font-weight: normal;
+  white-space: nowrap;
+  border: 0.5px solid #444;
+  font-size: small;
 }
 
-  
+
+/* copy highlight */
+.copy-style {
+    cursor: pointer;
+}
+.copy-style:hover {
+    background: #ffe6e9; /* light pink */
+}
+.copied {
+    background-color: pink;
+    transition: background-color 0.2s ease;
+}
+
+
+
+input, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    font-size: large;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    min-height: 3em;
+}
+
+
+.output-box {
+    min-height: 3em;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;
+    border: 1.5px solid #bbb;
+    font-size: large;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    background: white;
+    font-family: "Courier New", Courier, monospace;
+    cursor: pointer;
+    font-size: large;
+    transition: background-color 0.3s ease;
+    white-space: normal;
+    word-break: break-word
+
+}
+
+.output-box:hover {
+    background: #ffe6e9; /* light pink */
+}
+
+.output-box:active {
+    background: pink;
+}
+
+
+
+.input-container {
+    flex: 1 1 350px;
+    background: #fff1f1;
+    border-radius: 15px;
+    padding: 1.5em;
+}
+
+.output-container {
+    flex: 1 1 350px;
+    display: flex;
+    flex-direction: column;
+    background: #e3f4fa;
+    border-radius: 15px;
+    padding: 1.5em;
+}
 
 
 

@@ -2,168 +2,81 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Calculation Paragraphs Generator</title>
-<style>
-body {
-    font-family: "Arial", sans-serif;
-    background: #f6f8fa;
-    margin: 1.5em 1.5em;
-    padding: 0;
-    color: #222;
-    line-height: 1.6;
-    font-size: large;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 1.5em;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 2em;
-}
-
-label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 1em;
-    font-size: large; 
-}
-
-input, textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 15px;
-    border: 1.5px solid #bbb;
-    font-size: large;
-    font-family: inherit;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-}
-
-input:focus, textarea:focus {
-    border-color: #4a90e2;
-    outline: none;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
-textarea {
-    resize: vertical;
-    min-height: 120px;
-    line-height: 1.5;
-    font-size: large;
-}
-
-.output-box {
-    background: white;
-    border: 1.5px solid #bbb;
-    border-radius: 15px;
-    padding: 16px 20px;
-    margin-top: 1.25em;
-    font-family: "Courier New", Courier, monospace;
-    cursor: pointer;
-    font-size: large;
-    line-height: 1.5;
-    transition: background-color 0.3s ease;
-    white-space: pre-wrap;
-}
-
-.copied {
-    background-color: #ede9f7;
-    transition: background-color 0.2s ease;
-}
-
-.output-title {
-    font-weight: 700;
-    margin-top: 3em;
-    font-size: 1.25rem;
-    color: #222;
-    letter-spacing: 0.02em;
-}
-
-/* Container for inputs and outputs side by side */
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-    max-width: 90%;
-    margin: 0 auto;
-}
-
-/* Input section styling */
-.inputs {
-    flex: 1 1 300px;
-    min-width: 280px;
-    background: #fff1f1;
-    border-radius: 15px;
-    padding: 20px;
-}
-
-/* Output section styling */
-.outputs {
-    flex: 1 1 350px;
-    min-width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    background: #e3f4fa;
-    border-radius: 15px;
-    padding: 20px;
-}
-
-.output-title {
-    margin-top: 0;
-}
-
-/* On small screens stack vertically */
-@media (max-width: 760px) {
-    .container {
-      flex-direction: column;
-    }
-    .outputs {
-      min-width: auto;
-    }
-}
-</style>
+<title>Calculation Paragraphs</title>
+<link rel="stylesheet" href="../styles/main.css">
 </head>
 <body>
-
-<h1>Calculation Paragraphs Generator</h1>
-
 <div class="container">
-  <div class="inputs">
-    <div class="form-group">
-      <label>Calculation Expression</label>
-      <p>example: {{age}} + 10   [or]   10 + 10</p>
+
+
+
+
+<h1>Calculation Paragraphs</h1>
+
+
+<div class="note-blue">
+    Calculation paragraphs can be used to calculate based on numbers, and numbers in variables
+</div>
+
+
+<div class="column-container">
+
+  <div class="input-container">
+
+    <div>
+      <h2>Insert Calculation Expression</h2>
+
+      <div class="note-yellow">Example:<br>
+            <code>{{age}} + 10</code>
+            <code>10 + 10</code>
+      </div>
+
       <textarea id="calculation" placeholder=""></textarea>
+
     </div>
-    <div class="form-group">
-      <label>Method (optional)</label>
-      <p>example: num, num words, num describe, ringgit, ringgit words, ringgit describe</p>
-      <input type="text" id="method" placeholder="" />
+
+    <br>
+
+
+    <div>
+      <h2>Insert Method (optional)</h2>
+
+        <div class="note-blue">Click to insert:<br>
+            <code class="copy-style" onclick="clearMethod()">* clear *</code>
+            <code class="copy-style" onclick="copyToClipboard(this); setMethod(this)">num</code>
+            <code class="copy-style" onclick="copyToClipboard(this); setMethod(this)">num words</code>
+            <code class="copy-style" onclick="copyToClipboard(this); setMethod(this)">num describe</code>
+            <code class="copy-style" onclick="copyToClipboard(this); setMethod(this)">ringgit</code>
+            <code class="copy-style" onclick="copyToClipboard(this); setMethod(this)">ringgit words</code>
+            <code class="copy-style" onclick="copyToClipboard(this); setMethod(this)">ringgit describe</code>
+        </div>
+
+      <input type="text" id="method" placeholder=""/>
     </div>
   </div>
 
-  <div class="outputs">
+  <div class="output-container">
+    <h2>Calculation Paragraph Variables</h2>
+      <div class="note-yellow">There are 2 calculation paragraph styles. Example:<br>
+        <code>^^ 10 + 10 | ringgit^^</code><br>
+        <code>[[^ {{age}} + 10 | num words]]</code>
+
+      </div>
+
     <div>
-      <div class="output-title">🔴 Type 1: ^^ calculation ^^</div>
+      <h3>🔴 Type 1 <code>^^ calculation ^^</code></h3>
       <div id="output1" class="output-box" onclick="copyToClipboard(this)"></div>
     </div>
 
     <div>
-      <div class="output-title">🟢 Type 2: [[^ calculation ]]</div>
+      <h3>🟢 Type 2 <code>[[^ calculation ]]</code></h3>
       <div id="output2" class="output-box" onclick="copyToClipboard(this)"></div>
     </div>
 
-    <div>
-      <div class="output-title">🔵 Type 3: [[^ calculation | method ]]</div>
-      <div id="output3" class="output-box" onclick="copyToClipboard(this)"></div>
-    </div>
   </div>
 </div>
+
+<br><br><br><br>
 
 <script>
 function updateOutput() {
@@ -174,7 +87,6 @@ function updateOutput() {
       // No calculation, clear outputs
       document.getElementById('output1').innerText = '';
       document.getElementById('output2').innerText = '';
-      document.getElementById('output3').innerText = '';
       return;
     }
 
@@ -183,24 +95,18 @@ function updateOutput() {
     let calcText = calc.replace(/\n/g, '<br>');
 
     // Type 1
-    // If method exists, append as: ^^ calc | method ^^ else just ^^ calc ^^
     let output1 = method
       ? `^^${calcText} | ${method}^^`
       : `^^${calcText}^^`;
 
     // Type 2
-    // No method supported here per your spec:
-    let output2 = `[[^ ${calcText} ]]`;
+    let output2 = method
+     ? `[[^ ${calcText} | ${method}]]`
+     : `[[^${calcText}]]`;
 
-    // Type 3
-    // Only output if method present, else show message
-    let output3 = method
-      ? `[[^ ${calcText} | ${method} ]]`
-      : '[no number method]';
 
     document.getElementById('output1').innerHTML = output1;
     document.getElementById('output2').innerHTML = output2;
-    document.getElementById('output3').innerHTML = output3;
 }
 
 function copyToClipboard(el) {
@@ -212,11 +118,39 @@ function copyToClipboard(el) {
     });
 }
 
+
+
+
+function setMethod(el) {
+    // Copy to clipboard
+    copyToClipboard(el);
+
+    // Populate the method input with clicked value
+    document.getElementById('method').value = el.innerText.trim();
+
+    // Trigger update to refresh the outputs
+    updateOutput();
+}
+
+
+function clearMethod() {
+    document.getElementById('method').value = '';
+    updateOutput();
+}
+
+
+
+
 document.getElementById('calculation').addEventListener('input', updateOutput);
 document.getElementById('method').addEventListener('input', updateOutput);
 
 updateOutput();
+
+
 </script>
 
+
+
+</div>
 </body>
 </html>
