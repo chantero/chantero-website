@@ -81,10 +81,25 @@ body, html {
 
 
 
-
-
 /* "code pill" mainly for "methods" or examples*/
 code {
+  display: inline-block;
+  background: #f5f5fa;      
+  color: #36395a;          
+  padding: 3px 12px;  
+  text-align: center;
+  margin: 0.3em;
+  border-radius: 13px;
+  font-style: normal;
+  font-family: 'Courier', monospace;
+  font-weight: normal;
+  white-space: nowrap;
+  border: 0.5px solid #444;
+  font-size: small;
+}
+
+
+.method-list {
   display: inline-block;
   background: #f5f5fa;      
   color: #36395a;          

@@ -10,14 +10,6 @@
 
 <h1>Variables - Parties</h1>
 
-<div class="center">
-    <button id="companyToggle" onclick="toggleCompany()">Company</button>
-    <span id="directorCountWrapper" style="display:none; margin-left: 1em;">
-        Number of Directors: 
-        <input type="number" id="dirCountGlobal" min="0" value="2" style="width:100px;">
-    </span>
-</div>
-
 <div id="blocks_container"></div>
 
 <div style="text-align:center; margin-top: 1em;">
@@ -27,13 +19,21 @@
 <script>
 const pastelColors = ['#F9D3C5', '#FFEBA1', '#D2E0FE', '#C3E7CA'];
 const labels = {
-  name: "Name", id: "Identity Number", address: "Address",
-  "address registered": "Registered Address", "address business": "Business Address"
+  // details: "Details (Name & IC) - eg: Sherlock Holmes (NRIC No. 123456-12-1234)",
+  name: "Name", 
+  id: "Identity Number", 
+  address: "Address",
+  "address registered": "Registered Address", 
+  "address business": "Business Address"
 };
 const modeData = {
   methods: {
-    name: ['upper', 'caps'], id: ['ic digits'],
-    address: ['lh', 'lv'], 'address registered': ['lh', 'lv'], 'address business': ['lh', 'lv']
+    // details: ['name upper', 'name caps', 'ic', 'ic bracket', 'ic number only', 'name ic', 'name ic vertical', 'name ic vertical bracket'], 
+    name: ['upper', 'caps'], 
+    id: ['ic digits'],
+    address: ['lh', 'lv'], 
+    'address registered': ['lh', 'lv'], 
+    'address business': ['lh', 'lv'],
   },
   templates: [
     "{{variable name | upper}} ({{variable id}}) of {{variable address | lh}}",
@@ -47,29 +47,42 @@ const modeData = {
   ]
 };
 
-let isCompany = false;
-
-function toggleCompany() {
-  isCompany = !isCompany;
-  document.getElementById('companyToggle').style.opacity = isCompany ? '1' : '0.5';
-  document.getElementById('directorCountWrapper').style.display = isCompany ? 'inline' : 'none';
-  document.getElementById('blocks_container').innerHTML = '';
-  addVariableBlock();
-}
+const presets = [
+    "(clear)",
+    "vendor", 
+    "purchaser", 
+    "customer",
+    "borrower",
+    "chargor",
+    "assignor",
+    "bank",
+    "developer",
+    "proprietor",
+];
 
 function addVariableBlock() {
   const block = document.createElement('section');
   block.className = 'paper';
 
   const containerColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
-  let directorCount = parseInt(document.getElementById('dirCountGlobal')?.value) || 2;
+  let isCompany = false;
+  let directorCount = 2;
 
   block.innerHTML = `
     <h2>Variable Name: <input type="text" class="var-name"></h2>
+    <div class="preset-list"></div>
+    <br>
+    <div class="center">
+      <button class="companyToggle">Company</button>
+      <span class="directorCountWrapper" style="display:none; margin-left: 1em;">
+        Number of Directors 
+        <input type="number" class="dirCount" min="0" value="2" style="width:120px; text-align:center;font-weight:bold">
+      </span>
+    </div>
     <br>
     <h2 class="center">Methods</h2>
     <div class="methods"></div><br>
-    ${isCompany ? `<h2 class="center">Directors</h2><div class="directors"></div><br>` : ''}
+    <div class="directors"></div>
     <h2 class="center">Templates</h2>
     <div class="templates"></div><br>
   `;
@@ -80,13 +93,44 @@ function addVariableBlock() {
   const methodsContainer = block.querySelector('.methods');
   const directorsContainer = block.querySelector('.directors');
   const templatesContainer = block.querySelector('.templates');
+  const companyToggleBtn = block.querySelector('.companyToggle');
+  const directorCountWrapper = block.querySelector('.directorCountWrapper');
+  const dirCountInput = block.querySelector('.dirCount');
+  const presetListDiv = block.querySelector('.preset-list');
 
-  if (isCompany) {
-    document.getElementById('dirCountGlobal').oninput = () => {
-      directorCount = parseInt(document.getElementById('dirCountGlobal').value) || 0;
-      renderDirectors();
+  // Preset list
+  presets.forEach(preset => {
+    const presetBtn = document.createElement('span');
+    presetBtn.className = 'method-list';
+    presetBtn.style.cursor = 'pointer';
+    presetBtn.style.marginRight = '0.5em';
+    presetBtn.textContent = preset;
+    presetBtn.onclick = () => {
+      if (preset === "(clear)") {
+        varInput.value = "";
+      } else {
+        varInput.value = preset;
+      }
+      renderMethods();
+      if (isCompany) renderDirectors();
+      renderTemplates();
     };
-  }
+    presetListDiv.appendChild(presetBtn);
+  });
+
+  companyToggleBtn.onclick = () => {
+    isCompany = !isCompany;
+    companyToggleBtn.style.opacity = isCompany ? '1' : '0.5';
+    directorCountWrapper.style.display = isCompany ? 'inline' : 'none';
+    renderMethods();
+    if (isCompany) renderDirectors(); else directorsContainer.innerHTML = '';
+    renderTemplates();
+  };
+
+  dirCountInput.oninput = () => {
+    directorCount = parseInt(dirCountInput.value) || 0;
+    if (isCompany) renderDirectors();
+  };
 
   function renderMethods() {
     methodsContainer.innerHTML = '';
@@ -103,14 +147,17 @@ function addVariableBlock() {
       grid.appendChild(labelDiv);
 
       modeData.methods[category].forEach(method => {
-        grid.appendChild(createBox(`{{${baseName} ${category}${method ? ' | ' + method : ''}}}`));
+        const codeEl = document.createElement('div');
+        codeEl.className = 'output-box copy-style';
+        codeEl.textContent = `{{${baseName} ${category}${method ? ' | ' + method : ''}}}`;
+        codeEl.onclick = () => navigator.clipboard.writeText(codeEl.textContent);
+        grid.appendChild(codeEl);
       });
       methodsContainer.appendChild(grid);
     }
   }
 
   function renderDirectors() {
-    if (!isCompany) return;
     directorsContainer.innerHTML = '';
     const baseName = (varInput.value.trim() || 'variable') + ' director';
     for (let i = 1; i <= directorCount; i++) {
@@ -123,13 +170,21 @@ function addVariableBlock() {
       labelDiv.textContent = `Director ${i}`;
       grid.appendChild(labelDiv);
 
-      grid.appendChild(createBox(`{{${baseName} ${i} name | upper}}`));
-      grid.appendChild(createBox(`{{${baseName} ${i} name | caps}}`));
-      grid.appendChild(createBox(`{{${baseName} ${i} id}}`));
-      grid.appendChild(createBox(`{{${baseName} ${i} address | lh}}`));
-      grid.appendChild(createBox(`{{${baseName} ${i} address | lv}}`));
-      grid.appendChild(createBox(`{{${baseName} ${i} name | upper}}\n{{${baseName} ${i} id}}`));
-      grid.appendChild(createBox(`________________________\n{{${baseName} ${i} name | upper}}\n({{${baseName} ${i} id}})`));
+      [
+        `{{${baseName} ${i} name | upper}}`,
+        `{{${baseName} ${i} name | caps}}`,
+        `{{${baseName} ${i} id}}`,
+        `{{${baseName} ${i} address | lh}}`,
+        `{{${baseName} ${i} address | lv}}`,
+        `{{${baseName} ${i} name | upper}}\n{{${baseName} ${i} id}}`,
+        `________________________\n{{${baseName} ${i} name | upper}}\n({{${baseName} ${i} id}})`
+      ].forEach(text => {
+        const codeEl = document.createElement('div');
+        codeEl.className = 'output-box copy-style';
+        codeEl.textContent = text;
+        codeEl.onclick = () => navigator.clipboard.writeText(text);
+        grid.appendChild(codeEl);
+      });
 
       directorsContainer.appendChild(grid);
     }
@@ -154,17 +209,13 @@ function addVariableBlock() {
         /{{variable\s+(\w+)(\s*\|\s*[\w\s]+)?}}/g,
         (_, cat, mods) => `{{${baseName} ${cat}${mods || ''}}}`
       );
-      grid.appendChild(createBox(replaced));
+      const codeEl = document.createElement('div');
+      codeEl.className = 'output-box copy-style';
+      codeEl.textContent = replaced;
+      codeEl.onclick = () => navigator.clipboard.writeText(replaced);
+      grid.appendChild(codeEl);
     });
     templatesContainer.appendChild(grid);
-  }
-
-  function createBox(text) {
-    const div = document.createElement('div');
-    div.className = 'output-box copy-style';
-    div.textContent = text;
-    div.onclick = () => navigator.clipboard.writeText(text);
-    return div;
   }
 
   varInput.oninput = () => {
@@ -174,7 +225,6 @@ function addVariableBlock() {
   };
 
   renderMethods();
-  if (isCompany) renderDirectors();
   renderTemplates();
 }
 
