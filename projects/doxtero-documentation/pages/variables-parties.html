@@ -48,7 +48,7 @@ const modeData = {
 };
 
 const presets = [
-    "(clear)",
+    "* clear *",
     "vendor", 
     "purchaser", 
     "customer",
@@ -106,7 +106,7 @@ function addVariableBlock() {
     presetBtn.style.marginRight = '0.5em';
     presetBtn.textContent = preset;
     presetBtn.onclick = () => {
-      if (preset === "(clear)") {
+      if (preset === "* clear *") {
         varInput.value = "";
       } else {
         varInput.value = preset;
