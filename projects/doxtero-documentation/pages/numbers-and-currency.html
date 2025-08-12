@@ -2,143 +2,39 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Numbers Builder</title>
+<title>Numbers and Currency</title>
+<link rel="stylesheet" href="../styles/main.css">
 <style>
-body {
-    font-family: "Arial", sans-serif;
-    background: #f6f8fa;
-    margin: 1.5em 1.5em;
-    padding: 0;
-    color: #222;
-    line-height: 1.6;
-    font-size: large;
-}
 
-h1 {
-    text-align: center;
-    margin-bottom: 1.5em;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #333;
-}
 
-.form-group {
-    margin-bottom: 2em;
-}
-
-label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.5em;
-    font-size: large; 
-}
-
-input[type="text"], input[type="number"] {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 15px;
-    border: 1.5px solid #bbb;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: large;
-    transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus, input[type="number"]:focus {
-    border-color: #4a90e2;
-    outline: none;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
-.method-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 0.5em;
-}
-
-.method-buttons button {
-    background: #4a90e2;
-    border: none;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 15px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.method-buttons button.selected {
-    background-color: #357abd;
-}
-
-.method-buttons button:hover:not(.selected) {
-    background-color: #357abd;
-}
-
-.output-container {
-    margin-top: 1.5em;
-}
-
-.output-item {
-    background: white;
-    border: 1.5px solid #bbb;
-    border-radius: 15px;
-    padding: 12px 16px;
-    margin-bottom: 1em;
-    font-family: "Courier New", Courier, monospace;
-    font-size: large;
-    line-height: 1.4;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    white-space: pre-wrap;
-    position: relative;
-}
-
-.output-item:hover {
-    background-color: #f0f5fb;
-}
-
-.output-label {
-    font-weight: 700;
-    font-family: "Arial", sans-serif;
-    color: #222;
-    margin-bottom: 0.3em;
-    font-size: 1.1rem;
-}
-
-.copied {
-    background-color: #ede9f7 !important;
-}
-
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-}
 
 </style>
 </head>
 <body>
-
-<h1>Numbers Builder</h1>
-
 <div class="container">
 
+
+<h1>Numbers and Currency</h1>
+
+<div class="container-squished">
+
+
   <div class="form-group">
-    <label for="variableInput">Variable Name</label>
+    <h2 for="variableInput">Variable Name</h2>
     <input type="text" id="variableInput" placeholder="" />
   </div>
 
   <div class="form-group">
-    <label for="percentInput">Percent (optional)</label>
+    <h2 for="percentInput">Percent (optional)</h2>
     <input type="number" id="percentInput" placeholder="" min="0" />
   </div>
 
   <div class="form-group">
-    <label>Choose Method</label>
+    <h2>Choose Method</h2>
     <div class="method-buttons" id="methodButtons"></div>
   </div>
+
+  <br>
 
   <div class="output-container" id="outputContainer">
     <!-- Generated outputs appear here -->
@@ -184,7 +80,7 @@ function genLine(variable, method, suffix = '', percent = null) {
 
 function createOutputItem(label, text) {
   const container = document.createElement('div');
-  container.className = 'output-item';
+  container.className = 'output-box';
 
   const labelEl = document.createElement('div');
   labelEl.className = 'output-label';
@@ -252,5 +148,7 @@ percentInput.addEventListener('input', updateOutputs);
 updateOutputs();
 </script>
 
+
+<br><br><br><br><br>
 </body>
 </html>

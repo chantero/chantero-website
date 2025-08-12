@@ -2,297 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Options Paragraph Builder</title>
-<style>
-body {
-    font-family: "Arial", sans-serif;
-    background: #f6f8fa;
-    margin: 1.5em 1.5em;
-    padding: 0;
-    color: #222;
-    line-height: 1.6;
-    font-size: large;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 1.5em;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 2em;
-}
-
-label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 1em;
-    font-size: large; 
-}
-
-input, textarea, button {
-    font-family: inherit;
-    font-size: large;
-}
-
-input {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 15px;
-    border: 1.5px solid #bbb;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-}
-
-input:focus {
-    border-color: #4a90e2;
-    outline: none;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
-
-
-/* Update this in your existing CSS */
-#newOptionInput {
-  min-height: 60px;
-  resize: vertical;
-  padding: 10px 14px;
-  width: 100%;
-  border-radius: 15px;
-  border: 1.5px solid #bbb;
-  font-family: inherit;
-  font-size: large;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-#newOptionInput:focus {
-  border-color: #4a90e2;
-  outline: none;
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
-
-.options-container {
-    background: #fff1f1;
-    border-radius: 15px;
-    padding: 20px;
-    min-width: 280px;
-    flex: 1 1 300px;
-    max-height: 480px;
-    overflow-y: auto;
-}
-
-.option-item {
-    margin-bottom: 1em;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-}
-
-.option-textarea {
-    flex: 1 1 auto;
-    min-height: 60px;
-    resize: vertical;
-    padding: 10px 14px;
-    border-radius: 15px;
-    border: 1.5px solid #bbb;
-    font-family: inherit;
-    font-size: large;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-}
-
-.option-textarea:focus {
-    border-color: #4a90e2;
-    outline: none;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
-.option-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 4px;
-}
-
-.option-buttons button {
-    background: #4a90e2;
-    border: none;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    user-select: none;
-    transition: background-color 0.3s ease;
-}
-
-.option-buttons button:disabled {
-    background: #bbb;
-    cursor: not-allowed;
-}
-
-.option-buttons button:hover:not(:disabled) {
-    background: #357abd;
-}
-
-.options-list-container {
-  background:rgba(255,255,255, 0.7);
-  border: 1.5px solid #e6c6c6;
-  border-radius: 15px;
-  padding: 15px 20px;
-  margin-top: 1.5em;
-  max-height: 320px;
-  overflow-y: auto;
-  box-shadow: 0 2px 6px rgba(230, 198, 198, 0.3);
-}
-
-.options-list-container h3 {
-  margin-top: 0;
-  margin-bottom: 1em;
-  font-weight: 700;
-  font-size: 1.15rem;
-  color: #b33a3a;
-  border-bottom: 1px solid #e6c6c6;
-  padding-bottom: 0.25em;
-  user-select: none;
-}
-
-
-button#addOptionBtn {
-    margin-top: 0.75em;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 15px;
-    background-color: #4a90e2;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-    width: 100%;
-}
-
-button#addOptionBtn:hover {
-    background-color: #357abd;
-}
-
-.output-box {
-    background: white;
-    border: 1.5px solid #bbb;
-    border-radius: 15px;
-    padding: 16px 20px;
-    margin-top: 1.25em;
-    font-family: "Courier New", Courier, monospace;
-    cursor: pointer;
-    font-size: large;
-    line-height: 1.5;
-    transition: background-color 0.3s ease;
-    white-space: pre-wrap;
-    user-select: all;
-}
-
-.copied {
-    background-color: #ede9f7;
-    transition: background-color 0.2s ease;
-}
-
-.output-title {
-    font-weight: 700;
-    margin-top: 3em;
-    font-size: 1.25rem;
-    color: #222;
-    letter-spacing: 0.02em;
-}
-
-/* Container */
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-    max-width: 90%;
-    margin: 0 auto;
-}
-
-.outputs {
-    flex: 1 1 350px;
-    min-width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    background: #e3f4fa;
-    border-radius: 15px;
-    padding: 20px;
-}
-
-.output-title {
-    margin-top: 0;
-}
-
-/* Responsive */
-@media (max-width: 760px) {
-    .container {
-      flex-direction: column;
-    }
-    .outputs {
-      min-width: auto;
-    }
-}
-
-
-</style>
+<title>Options Paragraph</title>
+<link rel="stylesheet" href="../styles/main.css">
 </head>
+
+
 <body>
-
-<h1>Options Paragraph Builder</h1>
-
 <div class="container">
-  <div class="options-container" id="optionsContainer">
-    <div class="form-group">
-      <label>Condition</label>
-      <input type="text" id="conditionInput" placeholder="" />
-    </div>
-
-
-    <div class="form-group">
-      <label>Insert Option (multiline allowed)</label>
-      <textarea id="newOptionInput" placeholder=""></textarea>
-      <button id="addOptionBtn">Add Option</button>
-    </div>
-
-    <div class="options-list-container">
-      <h3>Current Options</h3>
-      <div id="optionsList" aria-live="polite" aria-label="List of current options">
-        <!-- Dynamically added options appear here -->
-      </div>
-    </div>
 
 
 
+<h1>Options Paragraph</h1>
+
+  <div class="input-container">
+
+      <h2>Insert Options Variable</h2>
+      <input type="text" id="condition_input" placeholder="" />
+   </div>
+
+   <br>
+
+    <div class="column-container">
+        <div class="input-container color-light-yellow">
+          <h2>🔻 Insert Option Item</h2>
+          <textarea id="new_option_input" placeholder=""></textarea>
+          <br><br>
+          <button id="add_option_button">Add Option</button><br>
+
+
+        <br>
+        <div class="options-list-container color-light-green">
+          <h3>Current Options</h3>
+          <div id="options_list" aria-live="polite" aria-label="List of current options">
+            <!-- Dynamically added options appear here -->
+          </div>
+        </div>
   </div>
 
-  <div class="outputs">
+  <div class="output-container">
     <div>
-      <div class="output-title">🔴 Style 1: [[o? condition]]</div>
-      <div id="output1" class="output-box" onclick="copyToClipboard(this)">No options yet.</div>
+      <h2>🔴 Style 1: <code>[[o? option variable]]</code></h2>
+      <div id="output1" class="output-box" contenteditable="true" onclick="copyToClipboard(this)">No options yet.</div>
     </div>
 
     <div>
-      <div class="output-title">🟢 Style 2: ((o? condition))</div>
-      <div id="output2" class="output-box" onclick="copyToClipboard(this)">No options yet.</div>
+      <h2 class="output-title">🟢 Style 2: <code>((o? option variable))</code></h2>
+      <div id="output2" class="output-box" contenteditable="true" onclick="copyToClipboard(this)">No options yet.</div>
     </div>
   </div>
 </div>
 
 <script>
-const conditionInput = document.getElementById('conditionInput');
-const newOptionInput = document.getElementById('newOptionInput');
-const addOptionBtn = document.getElementById('addOptionBtn');
-const optionsListDiv = document.getElementById('optionsList');
+const condition_input = document.getElementById('condition_input');
+const new_option_input = document.getElementById('new_option_input');
+const add_option_button = document.getElementById('add_option_button');
+const options_list_div = document.getElementById('options_list');
 
 let options = [];
 
@@ -302,7 +66,7 @@ function createOptionElement(text, index) {
   container.dataset.index = index;
 
   const textarea = document.createElement('textarea');
-  textarea.className = 'option-textarea';
+  textarea.className = 'list-textarea';
   textarea.value = text;
   textarea.rows = 3;
   textarea.addEventListener('input', () => {
@@ -311,43 +75,43 @@ function createOptionElement(text, index) {
   });
 
   const btns = document.createElement('div');
-  btns.className = 'option-buttons';
+  btns.className = 'list-buttons';
 
-  const upBtn = document.createElement('button');
-  upBtn.type = 'button';
-  upBtn.textContent = '↑';
-  upBtn.title = 'Move Up';
-  upBtn.disabled = (index === 0);
-  upBtn.addEventListener('click', () => {
+  const button_up = document.createElement('button');
+  button_up.type = 'button';
+  button_up.textContent = '↑';
+  button_up.title = 'Move Up';
+  button_up.disabled = (index === 0);
+  button_up.addEventListener('click', () => {
     if (index === 0) return;
     [options[index - 1], options[index]] = [options[index], options[index - 1]];
     renderOptions();
   });
 
-  const downBtn = document.createElement('button');
-  downBtn.type = 'button';
-  downBtn.textContent = '↓';
-  downBtn.title = 'Move Down';
-  downBtn.disabled = (index === options.length - 1);
-  downBtn.addEventListener('click', () => {
+  const button_down = document.createElement('button');
+  button_down.type = 'button';
+  button_down.textContent = '↓';
+  button_down.title = 'Move Down';
+  button_down.disabled = (index === options.length - 1);
+  button_down.addEventListener('click', () => {
     if (index === options.length - 1) return;
     [options[index + 1], options[index]] = [options[index], options[index + 1]];
     renderOptions();
   });
 
-  const delBtn = document.createElement('button');
-  delBtn.type = 'button';
-  delBtn.textContent = '✕';
-  delBtn.title = 'Delete Option';
-  delBtn.style.backgroundColor = '#d9534f';
-  delBtn.addEventListener('click', () => {
+  const button_delete = document.createElement('button');
+  button_delete.type = 'button';
+  button_delete.textContent = '✕';
+  button_delete.title = 'Delete Option';
+  button_delete.style.backgroundColor = '#d9534f';
+  button_delete.addEventListener('click', () => {
     options.splice(index, 1);
     renderOptions();
   });
 
-  btns.appendChild(upBtn);
-  btns.appendChild(downBtn);
-  btns.appendChild(delBtn);
+  btns.appendChild(button_up);
+  btns.appendChild(button_down);
+  btns.appendChild(button_delete);
 
   container.appendChild(textarea);
   container.appendChild(btns);
@@ -356,19 +120,19 @@ function createOptionElement(text, index) {
 }
 
 function renderOptions() {
-  optionsListDiv.innerHTML = '';
+  options_list_div.innerHTML = '';
   if (options.length === 0) {
-    optionsListDiv.textContent = '[no options yet]';
+    options_list_div.textContent = '[no options yet]';
   } else {
     options.forEach((opt, idx) => {
-      optionsListDiv.appendChild(createOptionElement(opt, idx));
+      options_list_div.appendChild(createOptionElement(opt, idx));
     });
   }
   updateOutputs();
 }
 
 function updateOutputs() {
-  const condition = conditionInput.value.trim();
+  const condition = condition_input.value.trim();
 
   if (!condition) {
     document.getElementById('output1').textContent = '';
@@ -393,18 +157,18 @@ function updateOutputs() {
   document.getElementById('output2').textContent = output2;
 }
 
-addOptionBtn.addEventListener('click', () => {
-  const val = newOptionInput.value;
+add_option_button.addEventListener('click', () => {
+  const val = new_option_input.value;
   if (!val.trim()) {
     alert('Please enter an option to add.');
     return;
   }
   options.push(val);
-  newOptionInput.value = '';
+  new_option_input.value = '';
   renderOptions();
 });
 
-conditionInput.addEventListener('input', updateOutputs);
+condition_input.addEventListener('input', updateOutputs);
 
 renderOptions();
 
@@ -415,7 +179,15 @@ function copyToClipboard(el) {
     setTimeout(() => el.classList.remove('copied'), 250);
   });
 }
+
+
+
+
+
+
 </script>
 
+<br><br><br><br><br>
+</div>
 </body>
 </html>
