@@ -4,23 +4,44 @@
 <meta charset="UTF-8" />
 <title>Numbers and Currency</title>
 <link rel="stylesheet" href="../../assets/styles/style.css">
-<style>
-
-
-
-</style>
 </head>
 <body>
 <div class="container">
-
 
 <h1>Numbers and Currency</h1>
 
 <div class="container-squished">
 
-
   <div class="form-group">
     <h2 for="variableInput">Variable Name</h2>
+
+  <!-- Presets -->
+  <div id="variable_presets_container">
+    <div id="variable_presets_list">
+
+      <span class="preset-button clear"><code>* clear *</code></span>
+
+      <span class="preset-button"><code>price</code></span>
+      <span class="preset-button"><code>purchase price</code></span>
+    
+      <span class="preset-button"><code>price: deposit</code></span>
+      <span class="preset-button"><code>price: balance sum</code></span>
+
+      <span class="preset-button"><code>price: earnest deposit</code></span>
+      <span class="preset-button"><code>price: balance deposit</code></span>
+
+      <span class="preset-button"><code>facility sum</code></span>
+
+      <span class="preset-button"><code>facility total</code></span>
+      <span class="preset-button"><code>facility: property</code></span>
+      <span class="preset-button"><code>facility: legal fees</code></span>
+      <span class="preset-button"><code>facility: valuation</code></span>
+      <span class="preset-button"><code>facility: stamp duty</code></span>
+      <span class="preset-button"><code>facility: sale price</code></span>
+    </div>
+  </div><br>
+
+
     <input type="text" id="variableInput" placeholder="" />
   </div>
 
@@ -53,6 +74,18 @@ const percentInput = document.getElementById('percentInput');
 const outputContainer = document.getElementById('outputContainer');
 
 let selectedMethod = 'ringgit';
+
+// Preset click handling
+document.querySelectorAll('.preset-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('clear')) {
+      variableInput.value = '';
+    } else {
+      variableInput.value = btn.textContent.trim();
+    }
+    updateOutputs();
+  });
+});
 
 methods.forEach(method => {
   const btn = document.createElement('button');
@@ -122,7 +155,6 @@ function updateOutputs() {
     percentNum = p;
   }
 
-  // Always generate the base 3:
   const outputs = [
     { label: `${selectedMethod}`, text: genLine(variable, selectedMethod) },
     { label: `${selectedMethod}_words`, text: genLine(variable, selectedMethod, '_words') },
@@ -147,7 +179,6 @@ percentInput.addEventListener('input', updateOutputs);
 
 updateOutputs();
 </script>
-
 
 <br><br><br><br><br>
 </body>
