@@ -1,22 +1,22 @@
 /* buttons.css */
 
-
-
-#burger-button {
-  position: absolute;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 0.5em;
-  cursor: pointer;
-  z-index: 1000;
-  background: none;
-  border: none;
-  padding: 0;
-  color: inherit;
-  font-size: xx-large;
+button {
+    flex: 1;
+    background: #005A9C;
+    border: none;
+    color: white;
+    padding: 0.7em;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    width: auto;
 }
 
-
+button:hover {
+    background: #357abd;
+}
 
 
 
@@ -125,20 +125,48 @@
 
 
 
-button {
-    flex: 1;
-    background: #005A9C;
-    border: none;
-    color: white;
-    padding: 0.7em;
-    border-radius: 15px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease;
-    width: auto;
+
+.symbol-button {
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-radius: 15px;       /* rounded corners */
+  background-color: #EC4899;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  min-width: 40px;          /* ensures buttons are uniform size */
+  text-align: center;
 }
 
-button:hover {
-    background: #357abd;
+.symbol-button:hover {
+  background-color: #DB2777;
+  transform: translateY(-1px);
+}
+
+.symbol-button:active {
+  background-color: #9D174D;
+  transform: translateY(0);
+}
+
+
+#indent-button,
+#outdent-button {
+    background: darkblue;
+    word-wrap: auto;
+    padding: 5px;
+    margin: 1em;
+}
+
+
+
+/* Small dots as indicator for indent levels */
+.indent-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: inline-block;
+}
+
+.indent-dot.active {
+  background-color: #007BFF; /* blue for active level */
 }

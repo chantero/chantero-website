@@ -1,24 +1,26 @@
-<!-- this is the main page frame -->
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Doxtero | Documentation</title>
-<link rel="stylesheet" href="assets/styles/style.css">
-</head>
-<body>
+<html>
+
+	<head>
+
+	<meta charset="UTF-8">
+	<title>Untitled Document</title>
+	
+	</head>
 
 
-<div class="main-container">
+
+	<body>
 
 
-<!-- Sidebar -->
+
 <button id="burger-button">&#9776;</button>
+
 
 <div id="main-sidebar"><br>
 
-<h2><a href="index.html">Doxtero</a></h2>
+
+<h2>Doxtero</h2>
 
 <a href="contents/websheet.html" target="content_frame">Websheet</a>
  <a href="contents/quick-start.html" target="content_frame">Quick Start</a>
@@ -51,8 +53,6 @@
 
 <h3>Values Builders</h3>
 
-  <a href="contents/value-builders/multiline-values.html" target="content_frame">Multi-line Values</a>
-
   <a href="contents/value-builders/list-values.html" target="content_frame">List Values</a>
 
 
@@ -60,28 +60,7 @@
 
 
 
-<!-- This is the Main Landing Page -->
-<iframe id="main-content" name="content_frame" src="contents/home.html"></iframe>
+	</body>
 
 
-
-
-</div>
-
-
-<script>
-
-// for burger button
-document.addEventListener('DOMContentLoaded', () => {
-const sidebar = document.getElementById('main-sidebar');
-const burger = document.getElementById('burger-button');
-burger.addEventListener('click', () => {
-    sidebar.classList.toggle('collapsed');
-});
-});
-
-
-
-</script>
-</body>
 </html>

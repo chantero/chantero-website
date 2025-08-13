@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Multi-line Values with Indent</title>
+<link rel="stylesheet" href="../../assets/styles/style.css">
+</head>
+
+<body>
+<div class="container">
+
+<h1>Multi-line Values</h1>
+
+<div class="input-container">
+<h2>Input Text</h2>
+
+<!-- Symbol Buttons -->
+<div style="margin-top:10px; display:flex; flex-wrap: wrap; gap:8px;">
+  <button class="symbol-button" type="button" onclick="insertBullet('• ')">•</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('⏺ ')">⏺</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('⬤ ')">⬤</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('◦ ')">◦</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('◯ ')">◯</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('‣ ')">‣</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('– ')">–</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('→ ')">→</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('⇒ ')">⇒</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('☐ ')">☐</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('□ ')">□</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('☑ ')">☑</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('■ ')">■</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('✔ ')">✔</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('✘ ')">✘</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('★ ')">★</button>
+  <button class="symbol-button" type="button" onclick="insertBullet('☆ ')">☆</button>
+
+</div>
+
+<!-- Indent / Outdent + Indicator -->
+<div style="margin-top:10px; display:flex; align-items:center; gap:12px;">
+
+  <button class="symbol-button" type="button" id="outdent-button">Outdent ◄</button>
+
+  
+  <div id="indent-indicator" style="display:flex; align-items:center; gap:6px;">
+        <span id="indent-text">Indent Level 0</span>
+    <span class="indent-dot"></span>
+    <span class="indent-dot"></span>
+    <span class="indent-dot"></span>
+  </div>
+
+  <button class="symbol-button" type="button" id="indent-button">Indent ►</button>
+
+
+</div>
+
+<br>
+<textarea id="input_text" placeholder=""></textarea>
+</div>
+
+<br>
+<div class="output-container">
+<h2>Output</h2>
+<div class="output-box" id="output" contenteditable="true" onclick="copyToClipboard(this)"></div>
+</div>
+
+<script>
+const input_text = document.getElementById('input_text');
+const outputDiv = document.getElementById('output');
+
+let indentLevel = 0;       // Default = no indent
+const maxIndent = 3;
+const indentSize = 4;      // spaces per indent
+
+function insertBullet(symbol) {
+    const textarea = input_text;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+
+    // Find start of current line
+    const lineStart = text.lastIndexOf('\n', start - 1) + 1; // +1 to move past '\n' (-1 -> 0)
+    const currentLine = text.slice(lineStart, start);
+
+    // Check if current line already has indent
+    const currentIndent = ' '.repeat(indentLevel * indentSize);
+    let prefix = '';
+    if (!currentLine.startsWith(currentIndent)) {
+        prefix = currentIndent; // only add indent if not present
+    }
+
+    const insertText = prefix + symbol;
+
+    textarea.value = text.slice(0, start) + insertText + text.slice(end);
+    textarea.selectionStart = textarea.selectionEnd = start + insertText.length;
+    textarea.focus();
+    updateOutput();
+}
+
+// Update output
+function updateOutput() {
+  const value = input_text.value;
+  outputDiv.textContent = value.replace(/\n/g, '<br>');
+}
+
+input_text.addEventListener('input', updateOutput);
+updateOutput();
+
+// Copy to clipboard
+function copyToClipboard(el) {
+    const text = el.textContent || el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 250);
+    });
+}
+
+// Indent / Outdent buttons
+document.getElementById('indent-button').addEventListener('click', () => {
+    if(indentLevel < maxIndent) indentLevel++;
+    updateIndentIndicator();
+});
+document.getElementById('outdent-button').addEventListener('click', () => {
+    if(indentLevel > 0) indentLevel--;
+    updateIndentIndicator();
+});
+
+// Indent indicator
+function updateIndentIndicator() {
+    const dots = document.querySelectorAll('#indent-indicator .indent-dot');
+    const indentText = document.getElementById('indent-text');
+    indentText.textContent = 'Indent Level ' + indentLevel;
+    dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx < indentLevel);
+    });
+}
+updateIndentIndicator();
+
+// Auto-indent on new lines
+input_text.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') {
+        const start = input_text.selectionStart;
+        const end = input_text.selectionEnd;
+        const text = input_text.value;
+        const indent = ' '.repeat(indentLevel * indentSize);
+        input_text.value = text.slice(0, start) + '\n' + indent + text.slice(end);
+        input_text.selectionStart = input_text.selectionEnd = start + 1 + indent.length;
+        e.preventDefault();
+        updateOutput();
+    }
+});
+
+
+// Auto Expand Textarea
+function autoExpandTextarea(el) {
+    const extraSpace = 20; // extra pixels below the cursor
+    el.style.height = 'auto'; // reset height
+    el.style.height = (el.scrollHeight + extraSpace) + 'px'; // set height plus extra
+}
+
+// Hook into input event
+input_text.addEventListener('input', () => {
+    autoExpandTextarea(input_text);
+    updateOutput();
+});
+
+// Initialize height
+autoExpandTextarea(input_text);
+
+
+
+</script>
+
+<br><br><br><br><br>
+</div>
+</body>
+</html>

@@ -10,7 +10,24 @@
 
 
 
+#burger-button {
+  position: absolute;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0.5em;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: xx-large;
+}
+
+
+
 #main-sidebar {
+    position: relative;
     background: #E7EAED;
     width: 250px;
     padding: 15px;
@@ -43,4 +60,6 @@
     padding: 0;
     overflow: hidden;
 }
+
+
 
