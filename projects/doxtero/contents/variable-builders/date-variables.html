@@ -9,52 +9,47 @@
 <body>
 <div class="container">
 
-
 <h1>Date Variables</h1>
 
+<div class="mode-buttons">
+  <button id="button_date_vars" class="selected" type="button" aria-pressed="true">Date Variables</button>
+  <button id="button_smart_date_vars" type="button" aria-pressed="false">Smart Date Variables</button>
+</div>
 
-  <div class="mode-buttons">
-    <button id="button_date_vars" class="selected" type="button" aria-pressed="true">Date Variables</button>
-    <button id="button_smart_date_vars" type="button" aria-pressed="false">Smart Date Variables</button>
+<!-- Presets (only shown in Date Variables mode) -->
+<div id="variable_presets_container">
+  <div id="variable_presets_list">
+    <span class="preset-button"><code>date</code></span>
+    <span class="preset-button"><code>date x letter of offer</code></span>
+    <span class="preset-button"><code>date x letter of instruction</code></span>
+    <span class="preset-button"><code>date x slo</code></span>
+    <span class="preset-button"><code>date x spa</code></span>
+    
+    <span class="preset-button clear"><code>* clear *</code></span>
   </div>
-
-  <div id="form_date_vars">
-
-      <h2 for="date_variable_input">Insert Variable Name</h2>
-      <input type="text" id="date_variable_input" placeholder="" autocomplete="off" />
-  </div>
-
-  <div id="form_smart_date_vars" style="display:none;">
-
-      <h2 for="smart_date_variable_input">Insert Date (Optional)</h2>
-
-      <input
-        type="numbers"
-        id="smart_date_variable_input"
-        autocomplete="off"
-      />
-
-
-      <div class="note-yellow">Insert date in numbers - format:<br>
-        <code>YYYYMMDD</code>
-        <code>YYYYMMDDhh</code>
-        <code>YYYYMMDDhhmm</code>
-        <code>YYYYMMDDhhmmss</code><br>
-        Example: <code>20230621</code>
-
-      </div>
-      
-
-  </div>
-
-  <div class="output-grid" id="output_grid_container">
-    <!-- Outputs appear here -->
-  </div>
-
 </div>
 
 
-<br><br><br><br><br>
+<div id="form_date_vars">
+    <h2 for="date_variable_input">Insert Variable Name</h2>
+    <input type="text" id="date_variable_input" autocomplete="off" />
+</div>
+
+<div id="form_smart_date_vars" style="display:none;">
+    <h2 for="smart_date_variable_input">Insert Date (Optional)</h2>
+    <input type="numbers" id="smart_date_variable_input" autocomplete="off" />
+    <div class="note-yellow">Insert date in numbers - format:<br>
+      <code>YYYYMMDD</code>
+      <code>YYYYMMDDhh</code>
+      <code>YYYYMMDDhhmm</code>
+      <code>YYYYMMDDhhmmss</code><br>
+      Example: <code>20230621</code>
+    </div>
+</div>
+
+<div class="output-grid" id="output_grid_container"></div>
+
+</div>
 
 <script>
 const button_date_vars = document.getElementById('button_date_vars');
@@ -62,15 +57,14 @@ const button_smart_date_vars = document.getElementById('button_smart_date_vars')
 
 const form_date_vars = document.getElementById('form_date_vars');
 const form_smart_date_vars = document.getElementById('form_smart_date_vars');
+const presets_container = document.getElementById('variable_presets_container');
 
 const date_variable_input = document.getElementById('date_variable_input');
 const smart_date_variable_input = document.getElementById('smart_date_variable_input');
-
 const output_grid_container = document.getElementById('output_grid_container');
 
-let current_mode = 'dateVars'; // or 'smartDateVars'
+let current_mode = 'dateVars';
 
-// Date variable methods:
 const date_methods = [
   "date",
   "date time",
@@ -125,7 +119,6 @@ function generateDateVarsOutputs(variable) {
 
 function generateSmartDateVarsOutputs(dateValue) {
   output_grid_container.innerHTML = '';
-  // No variable name input here
   date_methods.forEach(method => {
     const label = method;
     let text = `<<${method}>>`;
@@ -145,11 +138,11 @@ button_date_vars.addEventListener('click', () => {
   button_smart_date_vars.setAttribute('aria-pressed', 'false');
 
   form_date_vars.style.display = '';
+  presets_container.style.display = ''; // Show presets in Date mode
   form_smart_date_vars.style.display = 'none';
   output_grid_container.innerHTML = '';
   date_variable_input.value = '';
 });
-
 
 button_smart_date_vars.addEventListener('click', () => {
   if (current_mode === 'smartDateVars') return;
@@ -160,33 +153,37 @@ button_smart_date_vars.addEventListener('click', () => {
   button_date_vars.setAttribute('aria-pressed', 'false');
 
   form_smart_date_vars.style.display = '';
+  presets_container.style.display = 'none'; // Hide presets in Smart mode
   form_date_vars.style.display = 'none';
   smart_date_variable_input.value = '';
-  
-  // Generate outputs immediately even if input is empty
   generateSmartDateVarsOutputs('');
 });
 
-
-
-
-
-// Update outputs as user types:
 date_variable_input.addEventListener('input', () => {
   if (current_mode !== 'dateVars') return;
   generateDateVarsOutputs(date_variable_input.value.trim());
 });
 
 smart_date_variable_input.addEventListener('input', () => {
-  // Remove non-digit chars immediately:
   smart_date_variable_input.value = smart_date_variable_input.value.replace(/\D/g, '');
   if (current_mode !== 'smartDateVars') return;
   generateSmartDateVarsOutputs(smart_date_variable_input.value.trim());
 });
+
+document.querySelectorAll('#variable_presets_list .preset-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('clear')) {
+      date_variable_input.value = '';
+      output_grid_container.innerHTML = '';
+    } else {
+      date_variable_input.value = btn.textContent.trim();
+      generateDateVarsOutputs(btn.textContent.trim());
+    }
+  });
+});
 </script>
 
 
-
-
+<br><br><br><br><br>
 </body>
 </html>
