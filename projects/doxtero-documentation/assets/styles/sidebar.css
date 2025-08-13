@@ -1,0 +1,46 @@
+/* sidebar.css */
+
+/* sidebar (left) and the contents (right) */
+
+#main-content {
+  flex: 1;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+
+
+#main-sidebar {
+    background: #E7EAED;
+    width: 250px;
+    padding: 15px;
+    overflow-y: auto;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+
+
+#main-sidebar a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 3px;
+    margin-bottom: 1em;
+}
+
+#main-sidebar a:hover {
+    background: #FFFBEB; /* light yellow */
+}
+
+#main-sidebar h3 {
+    color: inherit; 
+
+}
+
+/* Collapsed sidebar */
+#main-sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+}
+

@@ -1,0 +1,97 @@
+/* tables.css */
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 40px;
+  table-layout: auto;
+  word-wrap: break-word;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+th {
+  user-select: text;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody td:first-child {
+  font-weight: 600;
+  user-select: text;
+}
+
+tbody td:hover {
+  background-color: #fff9c4 !important; /* light yellow */
+  cursor: pointer;
+}
+
+tbody td.copied {
+  background-color: pink !important;
+}
+
+/* Mobile stacked layout */
+@media (max-width: 600px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
+  }
+
+  thead {
+    display: none; /* hide top headers */
+  }
+
+  tr {
+    margin-bottom: 2em;
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+
+  td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    text-align: left !important;
+    border: 0.5px solid #ccc;
+  }
+
+  td::before {
+    content: attr(data-th); /* will be filled automatically by JS */
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    white-space: nowrap;
+  }
+}
+
+
+
+
+/* preset colours for table header row and 1st column */
+.table-color-blue {
+    th {
+      background-color: #d0e8ff;
+    }
+    tbody td:first-child {
+        background-color: #e8f3ff;
+    }
+}
+
+.table-color-green {
+    th {
+      background-color: #c9f8de;
+    }
+    tbody td:first-child {
+        background-color: #e6fcf3;
+    }
+}
+
