@@ -217,9 +217,8 @@ input, textarea {
     flex-direction: column;
     margin: 0;
     padding: 1rem;
-    background: lightgray;
+    background: #fcfcfd;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
