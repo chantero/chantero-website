@@ -11,22 +11,21 @@
 <h1>Variables: Property</h1>
 
 <h2>Variable Name</h2>
-<input type="text" id="varName" value="property">
-
 <div>
-  <strong>Variable Presets:</strong>
   <span class="preset" onclick="setVarPreset('*clear*')"><code>* clear *</code></span>
   <span class="preset" onclick="setVarPreset('property')"><code>property</code></span>
   <span class="preset" onclick="setVarPreset('land')"><code>land</code></span>
-  <span class="preset" onclick="setVarPreset('lot')"><code>lot</code></span>
 </div>
+<br>
+<input type="text" id="varName" value="property">
 
-<label>Method (optional)</label>
-<input type="text" id="method" placeholder="">
+<br>
 
+
+<br>
+<h2>Methods</h2>
 
 <div>
-  <strong>Methods:</strong>
   <span class="preset" onclick="setMethodPreset('')"><code>* clear *</code></span>
   <span class="preset" onclick="setMethodPreset('land case')"><code>land case</code></span>
   <span class="preset" onclick="setMethodPreset('title')"><code>title</code></span>
@@ -35,16 +34,21 @@
 </div>
 
 <div>
-  <strong>Quick Combo:</strong>
   <span class="preset" onclick="setCombo('property','land case')"><code>property | land case</code></span>
   <span class="preset" onclick="setCombo('property','upper')"><code>property | upper</code></span>
   <span class="preset" onclick="setCombo('land','land case')"><code>land | land case</code></span>
   <span class="preset" onclick="setCombo('land','upper')"><code>land | upper</code></span>
-
+<br>
+<br>
 </div>
 
-<h3>Click to Copy (Editable):</h3>
-<div id="outputContainer"></div>
+<input type="text" id="method" placeholder="">
+
+
+
+
+<br><br>
+<div class="output-container" id="outputs"></div>
 
 <script>
 const subVars = [
@@ -88,7 +92,7 @@ function setCombo(varName, methodName) {
 function renderOutput() {
   const base = document.getElementById("varName").value.trim() || "property";
   const method = document.getElementById("method").value.trim();
-  const out = document.getElementById("outputContainer");
+  const out = document.getElementById("outputs");
   out.innerHTML = "";
   
   subVars.forEach(sub => {
@@ -112,6 +116,7 @@ document.getElementById("method").oninput = renderOutput;
 renderOutput();
 </script>
 
+<br><br><br><br><br>
 </div>
 </body>
 </html>
