@@ -8,7 +8,7 @@
 <body>
 <div class="container">
 
-<h1>Variables - Parties</h1>
+<h1>Variables: Parties</h1>
 
 <div id="blocks_container"></div>
 
@@ -20,31 +20,66 @@
 const pastelColors = ['#F9D3C5', '#FFEBA1', '#D2E0FE', '#C3E7CA'];
 const labels = {
   // details: "Details (Name & IC) - eg: Sherlock Holmes (NRIC No. 123456-12-1234)",
+  details: "details",
   name: "Name", 
   id: "Identity Number", 
   address: "Address",
+  tin: "TIN",
   "address registered": "Registered Address", 
   "address business": "Business Address"
 };
 const modeData = {
   methods: {
-    // details: ['name upper', 'name caps', 'ic', 'ic bracket', 'ic number only', 'name ic', 'name ic vertical', 'name ic vertical bracket'], 
-    name: ['upper', 'caps'], 
-    id: ['ic digits'],
-    address: ['lh', 'lv'], 
+    details: ['name caps', 'name upper', 'ic', 'ic digits', 'name ic', 'name ic vertical', 'name ic vertical bracket',],
+    name: ['upper', 'caps',], 
+    id: ['','ic digits'],
+    address: [,'lh', 'lv'],
+    tin: [''],
     'address registered': ['lh', 'lv'], 
     'address business': ['lh', 'lv'],
   },
   templates: [
+
+    // describe
     "{{variable name | upper}} ({{variable id}}) of {{variable address | lh}}",
+
     "{{variable name | upper}}\n{{variable id}}",
+    
+
+    // execution
+
     "________________________\n{{variable name | upper}}\n({{variable id}})",
+    
     "{{variable name | upper}}\n({{variable id}})\n{{variable address | lv}}",
+    
     "SIGNED by\n{{variable name | upper}}\n({{variable id}})\nin the presence of:",
+    
+
+    // execution - company
+
     "{{variable name | upper}} ({{variable id}}) a company incorporated in Malaysia and having an address at {{variable address | lh}}",
+    
     "{{variable name | upper}} ({{variable id}}) a company incorporated in Malaysia, and having its registered address at {{variable address registered | lh}} and a place of business at {{variable address business | lh}}",
-    "THE COMMON SEAL of\n{{variable name | upper}}\n({{variable id}})\naffixed in the presence of:"
-  ]
+    
+    "THE COMMON SEAL of\n{{variable name | upper}}\n({{variable id}})\naffixed in the presence of:",
+
+
+    // gender
+    "[[# variable gender]]he//she[[/]]",
+    "[[# variable gender]]He//She[[/]]",
+    "[[# variable  gender]]him//her[[/]]",
+    "[[# variable gender]]his//her[[/]]",
+    "[[# variable gender]]His//Her[[/]]",
+    "[[# variable gender]]his//hers[[/]]",
+    "[[# variable gender]]himself//herself[[/]]",
+    
+    "[[# variable gender]]Executor//Executrix[[/]]",
+    "[[# variable gender]]Administrator//Administratrix[[/]]",
+    "[[# variable gender]]Testator//Testatrix[[/]]",
+    
+
+    ]
+
 };
 
 const presets = [
@@ -58,6 +93,13 @@ const presets = [
     "bank",
     "developer",
     "proprietor",
+    "landlord",
+    "tenant",
+    "sublessor",
+    "sublessee",
+    "executor",
+    "administrator",
+    "testator",
 ];
 
 function addVariableBlock() {
@@ -205,13 +247,22 @@ function addVariableBlock() {
 
     modeData.templates.forEach(template => {
       if (!isCompany && (template.includes('registered') || template.includes('business'))) return;
-      const replaced = template.replace(
-        /{{variable\s+(\w+)(\s*\|\s*[\w\s]+)?}}/g,
-        (_, cat, mods) => `{{${baseName} ${cat}${mods || ''}}}`
-      );
+      const replaced = template
+
+          // Replace {{variable ...}}
+          .replace(/{{variable\s+(\w+)(\s*\|\s*[\w\s]+)?}}/g,
+            (_, cat, mods) => `{{${baseName} ${cat}${mods || ''}}}`)
+          // Replace [[# variable ...]]
+          .replace(/\[\[#\s*variable\s+(\w+)\s*\]\](.*?)\[\[\/\]\]/g,
+            (_, cat, pronouns) => `[[# ${baseName} ${cat}]]${pronouns}[[/]]`);
+
       const codeEl = document.createElement('div');
       codeEl.className = 'output-box copy-style';
       codeEl.textContent = replaced;
+
+      // Make editable
+      codeEl.contentEditable = "true";
+
       codeEl.onclick = () => navigator.clipboard.writeText(replaced);
       grid.appendChild(codeEl);
     });

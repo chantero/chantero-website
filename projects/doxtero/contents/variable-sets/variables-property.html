@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Variables: Property</title>
+<link rel="stylesheet" href="../../assets/styles/style.css">
+</head>
+<body>
+<div class="container">
+
+<h1>Variables: Property</h1>
+
+<h2>Variable Name</h2>
+<input type="text" id="varName" value="property">
+
+<div>
+  <strong>Variable Presets:</strong>
+  <span class="preset" onclick="setVarPreset('*clear*')"><code>* clear *</code></span>
+  <span class="preset" onclick="setVarPreset('property')"><code>property</code></span>
+  <span class="preset" onclick="setVarPreset('land')"><code>land</code></span>
+  <span class="preset" onclick="setVarPreset('lot')"><code>lot</code></span>
+</div>
+
+<label>Method (optional)</label>
+<input type="text" id="method" placeholder="">
+
+
+<div>
+  <strong>Methods:</strong>
+  <span class="preset" onclick="setMethodPreset('')"><code>* clear *</code></span>
+  <span class="preset" onclick="setMethodPreset('land case')"><code>land case</code></span>
+  <span class="preset" onclick="setMethodPreset('title')"><code>title</code></span>
+  <span class="preset" onclick="setMethodPreset('upper')"><code>upper</code></span>
+  <span class="preset" onclick="setMethodPreset('caps')"><code>caps</code></span>
+</div>
+
+<div>
+  <strong>Quick Combo:</strong>
+  <span class="preset" onclick="setCombo('property','land case')"><code>property | land case</code></span>
+  <span class="preset" onclick="setCombo('property','upper')"><code>property | upper</code></span>
+  <span class="preset" onclick="setCombo('land','land case')"><code>land | land case</code></span>
+  <span class="preset" onclick="setCombo('land','upper')"><code>land | upper</code></span>
+
+</div>
+
+<h3>Click to Copy (Editable):</h3>
+<div id="outputContainer"></div>
+
+<script>
+const subVars = [
+  "describe",
+  "describe full",
+  "describe short",
+
+  ": title",
+  ": master title",
+
+  ": size",
+
+  ": unit",
+  ": floor",
+  ": address",
+  
+  ": postcode",
+  ": district",
+  
+
+
+  
+];
+
+function setVarPreset(name) {
+  document.getElementById("varName").value = (name === "*clear*") ? "" : name;
+  renderOutput();
+}
+
+function setMethodPreset(name) {
+  document.getElementById("method").value = name;
+  renderOutput();
+}
+
+function setCombo(varName, methodName) {
+  document.getElementById("varName").value = varName;
+  document.getElementById("method").value = methodName;
+  renderOutput();
+}
+
+function renderOutput() {
+  const base = document.getElementById("varName").value.trim() || "property";
+  const method = document.getElementById("method").value.trim();
+  const out = document.getElementById("outputContainer");
+  out.innerHTML = "";
+  
+  subVars.forEach(sub => {
+    let code = `{{${base} ${sub}${method ? " | " + method : ""}}}`;
+    let div = document.createElement("div");
+    div.textContent = code;
+    div.className = "output-box copy-style"; // uses your styles
+    div.contentEditable = true;
+
+    // Always copy on click
+    div.addEventListener("click", function() {
+      navigator.clipboard.writeText(div.textContent);
+    });
+
+    out.appendChild(div);
+  });
+}
+
+document.getElementById("varName").oninput = renderOutput;
+document.getElementById("method").oninput = renderOutput;
+renderOutput();
+</script>
+
+</div>
+</body>
+</html>
