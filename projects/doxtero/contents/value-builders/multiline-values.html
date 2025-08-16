@@ -15,31 +15,85 @@
 <h2>Input Text</h2>
 
 <!-- Symbol Buttons -->
-<div style="margin-top:10px; display:flex; flex-wrap: wrap; gap:8px;">
-  <button class="symbol-button" type="button" onclick="insertBullet('• ')">•</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('⏺ ')">⏺</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('⬤ ')">⬤</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('◦ ')">◦</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('◯ ')">◯</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('‣ ')">‣</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('– ')">–</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('→ ')">→</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('⇒ ')">⇒</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('☐ ')">☐</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('□ ')">□</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('☑ ')">☑</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('■ ')">■</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('✔ ')">✔</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('✘ ')">✘</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('★ ')">★</button>
-  <button class="symbol-button" type="button" onclick="insertBullet('☆ ')">☆</button>
+<div class="symbol-buttons-layout">
+<!-- BULLETS & DOTS -->
+<button class="symbol-button" type="button" onclick="insertBullet('• ')">•</button>
+<button class="symbol-button" type="button" onclick="insertBullet('‣ ')">‣</button>
+<button class="symbol-button" type="button" onclick="insertBullet('∘ ')">∘</button>
+<button class="symbol-button" type="button" onclick="insertBullet('◦ ')">◦</button>
+<button class="symbol-button" type="button" onclick="insertBullet('▪ ')">▪</button>
+<button class="symbol-button" type="button" onclick="insertBullet('▫ ')">▫</button>
+<button class="symbol-button" type="button" onclick="insertBullet('■ ')">■</button>
+
+<!-- ARROWS -->
+<button class="symbol-button" type="button" onclick="insertBullet('→ ')">→</button>
+<button class="symbol-button" type="button" onclick="insertBullet('⇒ ')">⇒</button>
+<button class="symbol-button" type="button" onclick="insertBullet('» ')">»</button>
+<button class="symbol-button" type="button" onclick="insertBullet('↪ ')">↪</button>
+<button class="symbol-button" type="button" onclick="insertBullet('↔ ')">↔</button>
+<button class="symbol-button" type="button" onclick="insertBullet('⇨ ')">⇨</button>
+<button class="symbol-button" type="button" onclick="insertBullet('⇥ ')">⇥</button>
+
+<!-- CHECKBOXES & MARKS -->
+<button class="symbol-button" type="button" onclick="insertBullet('☐ ')">☐</button>
+<button class="symbol-button" type="button" onclick="insertBullet('☑ ')">☑</button>
+<button class="symbol-button" type="button" onclick="insertBullet('☒ ')">☒</button>
+<button class="symbol-button" type="button" onclick="insertBullet('✔ ')">✔</button>
+<button class="symbol-button" type="button" onclick="insertBullet('✘ ')">✘</button>
+
+<!-- STARS -->
+<button class="symbol-button" type="button" onclick="insertBullet('★ ')">★</button>
+<button class="symbol-button" type="button" onclick="insertBullet('☆ ')">☆</button>
+
+<!-- TEXT EMOJIS / FACES -->
+<!-- <button class="symbol-button" type="button" onclick="insertBullet(':) ')">:) </button>
+<button class="symbol-button" type="button" onclick="insertBullet(':( ')">:( </button>
+<button class="symbol-button" type="button" onclick="insertBullet(':D ')">:D </button>
+<button class="symbol-button" type="button" onclick="insertBullet(';) ')">;) </button>
+<button class="symbol-button" type="button" onclick="insertBullet(':P ')">:P </button>
+<button class="symbol-button" type="button" onclick="insertBullet(':-| ')">:-| </button> -->
 
 </div>
+
+<!-- CUSTOM TEXT BLOCKS -->
+
+<div class="method-buttons">
+    <button type="button" onclick="clearSymbols()">* clear *</button>
+
+    <!-- Facility / Loan Details -->
+    <button type="button" onclick="setTextareaContent(
+    `Total facilities of up to RM ____, comprising:
+    • Term Loan 1 (TL1) of up to RM ____
+    • Term Loan 2 (TL2) of up to RM ____
+    • Term Loan 3 (TL3) of up to RM ____, comprising:
+        ◦ Legal fees of up to RM ____
+        ◦ Valuation of up to RM ____
+        ◦ Stamp duties of up to RM ____`
+      )">Facility</button>
+
+
+      <!-- Special Conditions -->
+      <button type="button" onclick="setTextareaContent(
+    `Remarks:\n\n1. \n\n2. \n\n3. \n`
+      )">Remarks</button>
+
+
+      <!-- Disclaimer / Notes -->
+      <button type="button" onclick="setTextareaContent(
+    `Disclaimer:
+    • The information provided is confidential and intended only for the recipient.
+    • This document is for reference purposes only and does not constitute legal advice.
+    • The recipient must not share or distribute the content without permission.`
+      )">Disclaimer</button>
+
+</div>
+
+<br>
 
 <!-- Indent / Outdent + Indicator -->
 <div style="margin-top:10px; display:flex; align-items:center; gap:12px;">
 
-  <button class="symbol-button" type="button" id="outdent-button">Outdent ◄</button>
+  <button type="button" id="outdent-button">Outdent ◄</button>
 
   
   <div id="indent-indicator" style="display:flex; align-items:center; gap:6px;">
@@ -49,7 +103,7 @@
     <span class="indent-dot"></span>
   </div>
 
-  <button class="symbol-button" type="button" id="indent-button">Indent ►</button>
+  <button type="button" id="indent-button">Indent ►</button>
 
 
 </div>
@@ -167,6 +221,34 @@ input_text.addEventListener('input', () => {
 // Initialize height
 autoExpandTextarea(input_text);
 
+
+
+//  This is for - if I click the preset - it will auto expand text area also
+function setTextareaContent(text) {
+    input_text.value = text;      // set the new text
+    updateOutput();               // update the output div
+    autoExpandTextarea(input_text);  // adjust input height
+    autoExpandTextarea(outputDiv);   // adjust output height
+}
+
+function appendTextareaContent(text) {
+    input_text.value += text;
+    updateOutput();
+    autoExpandTextarea(input_text);
+    autoExpandTextarea(outputDiv);
+}
+
+
+
+
+function clearSymbols() {
+  const target = document.getElementById('input_text'); // replace with your actual ID
+  if(target.isContentEditable) {
+    target.innerHTML = '';
+  } else {
+    target.value = '';
+  }
+}
 
 
 </script>

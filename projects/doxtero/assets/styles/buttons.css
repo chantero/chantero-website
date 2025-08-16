@@ -125,7 +125,7 @@ button:hover {
 
 
 
-
+/* for multi-line values */
 .symbol-button {
   padding: 2px;
   border: 1px solid #ccc;
@@ -133,8 +133,11 @@ button:hover {
   background-color: #EC4899;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;
-  min-width: 40px;          /* ensures buttons are uniform size */
+  min-width: 100px;          /* ensures buttons are uniform size */
+  max-width: 100px;
   text-align: center;
+  width: 100%;
+
 }
 
 .symbol-button:hover {
@@ -148,12 +151,24 @@ button:hover {
 }
 
 
+.symbol-buttons-layout {
+    margin-top:10px; 
+    display:flex; 
+    flex-wrap: wrap; 
+    gap: 10px;
+   
+}
+
+
+
+
+
+
 #indent-button,
 #outdent-button {
     background: darkblue;
     word-wrap: auto;
-    padding: 5px;
-    margin: 1em;
+    padding: 10px;
 }
 
 
