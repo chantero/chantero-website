@@ -97,7 +97,7 @@
       <input id="charts_currency_input" type="text" placeholder="example: USD, MYR" />
     </div>
     <br>
-    <h2 style="text-align:center">Charts</h2>
+    <h2 style="text-align:center">Charts Output</h2>
     <div class="output-grid" id="charts_outputs"></div>
   </div>
 
@@ -232,19 +232,31 @@ function updateOutputs(variable){
   outputs.hyperlink.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
   outputs.hyperlink.appendChild(createOutputItem('link', `{{${variable} | link}}`));
 
-  // CHARTS
-  const prefix = (charts_currency_input.value || '').trim();
-  outputs.charts.innerHTML = '';
-  if(variable){
-    // Pie
-    outputs.charts.appendChild(createOutputItem('pie chart', `{{${variable} | pie}}`));
-    outputs.charts.appendChild(createOutputItem('money pie', `{{${variable} | money_pie}}`));
-    if(prefix) outputs.charts.appendChild(createOutputItem('money pie (custom)', `{{${variable} | money_pie(${prefix})}}`));
-    // Bar
-    outputs.charts.appendChild(createOutputItem('bar chart', `{{${variable} | bar}}`));
-    outputs.charts.appendChild(createOutputItem('money bar', `{{${variable} | money_bar}}`));
-    if(prefix) outputs.charts.appendChild(createOutputItem('money bar (custom)', `{{${variable} | money_bar(${prefix})}}`));
-  }
+
+    // CHARTS
+    const prefix = (charts_currency_input.value || '').trim();
+    outputs.charts.innerHTML = '';
+    if(variable){
+      // Pie Chart Section
+      const pieHeader = document.createElement('h2');
+      pieHeader.textContent = 'Pie Chart';
+      outputs.charts.appendChild(pieHeader);
+
+      outputs.charts.appendChild(createOutputItem('pie chart', `{{${variable} | pie}}`));
+      outputs.charts.appendChild(createOutputItem('money pie', `{{${variable} | money_pie}}`));
+      if(prefix) outputs.charts.appendChild(createOutputItem('money pie (custom)', `{{${variable} | money_pie(${prefix})}}`));
+
+      <br>
+      // Bar Chart Section
+      const barHeader = document.createElement('h2');
+      barHeader.textContent = 'Bar Chart';
+      outputs.charts.appendChild(barHeader);
+
+      outputs.charts.appendChild(createOutputItem('bar chart', `{{${variable} | bar}}`));
+      outputs.charts.appendChild(createOutputItem('money bar', `{{${variable} | money_bar}}`));
+      if(prefix) outputs.charts.appendChild(createOutputItem('money bar (custom)', `{{${variable} | money_bar(${prefix})}}`));
+    }
+
 
 
 

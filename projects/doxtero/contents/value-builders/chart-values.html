@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Chart Values</title>
+<link rel="stylesheet" href="../../assets/styles/style.css">
+</head>
+
+<body>
+<div class="container">
+
+<h1>Chart Values</h1>
+<div class="input-container">
+  <h2>Insert Item Name</h2>
+  <input type="text" id="chart_item" placeholder="" />
+  
+  <h2>Insert Item Value (number)</h2>
+  <input type="number" id="chart_number" placeholder="" />
+  
+  <br><br>
+  <button id="add_to_chart">Add Chart Item</button>
+</div>
+
+<br><br>
+
+<div class="output-container">
+<br>
+<div id="chart_output" class="output-box" contenteditable="true" onclick="copyToClipboard(this)"></div>
+</div>
+
+
+
+<script>
+  const chartItemInput = document.getElementById('chart_item');
+  const chartNumberInput = document.getElementById('chart_number');
+  const addButton = document.getElementById('add_to_chart');
+  const chartOutput = document.getElementById('chart_output');
+
+  let chart = []; // store {item, number} objects
+
+  function renderChart() {
+    const formatted = chart.map(e => `${e.item}:${e.number}`).join(', ');
+    chartOutput.textContent = formatted;
+  }
+
+  addButton.addEventListener('click', () => {
+    const item = chartItemInput.value.trim();
+    const number = chartNumberInput.value.trim();
+    if(!item || !number) return; // skip empty
+    chart.push({item, number});
+    renderChart();
+    chartItemInput.value = '';
+    chartNumberInput.value = '';
+    chartItemInput.focus();
+  });
+
+  function copyToClipboard(el) {
+    const text = el.textContent || el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      el.classList.add('copied');
+      setTimeout(() => el.classList.remove('copied'), 250);
+    });
+  }
+</script>
+
+<br><br><br><br><br>
+</div>
+</body>
+</html>
