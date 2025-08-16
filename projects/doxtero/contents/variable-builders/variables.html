@@ -6,240 +6,265 @@
 <link rel="stylesheet" href="../../assets/styles/style.css">
 </head>
 
-
-
 <body>
 <div class="container">
 
 <h1>Variables</h1>
 
-
-    <h2 for="variable_input">Variable Name</h2>
-    <input type="text" id="variable_input" placeholder="" autocomplete="off" />
-
+<div class="input-container">
+<h2 for="variable_input">Variable Name</h2>
+<input type="text" id="variable_input" placeholder="" autocomplete="off" />
 
 <br><br>
 
-  <div class="method-buttons" id="method_group_button">
+<div class="method-buttons" id="method_group_button">
+  <button data-group="general" class="selected" type="button" aria-pressed="true">Text Case</button>
+  <button data-group="name_ic" type="button" aria-pressed="false">Name and IC</button>
+  <button data-group="ic_digits" type="button" aria-pressed="false">IC Digits</button>
+  <button data-group="text_mask" type="button" aria-pressed="false">Text Masking</button>
+  <button data-group="default_text" type="button" aria-pressed="false">Default Text</button>
+  <button data-group="image_variable" type="button" aria-pressed="false">Image</button>
+  <button data-group="hyperlink" type="button" aria-pressed="false">Hyperlink</button>
+</div>
 
-    <button data-group="general" class="selected" type="button" aria-pressed="true">Text Case</button>
-    <button data-group="name_ic" type="button" aria-pressed="false">Name and IC</button>
-    <button data-group="ic_digits" type="button" aria-pressed="false">IC Digits</button>
-    <button data-group="text_mask" type="button" aria-pressed="false">Text Masking</button>
-    <button data-group="default_text" type="button" aria-pressed="false">Default Text</button>
+</div>
+
+<br><br>
+
+<div class="output-container">
+
+  <div id="general" class="output-section">
+    <h2 style="text-align:center">Text Case</h2>
+    <div class="output-grid" id="general_outputs"></div>
   </div>
 
+  <div id="name_ic" class="output-section" style="display:none;">
+    <h2 style="text-align:center">Name and IC</h2>
+    <div class="output-grid" id="name_ic_outputs"></div>
+  </div>
 
-<br><br>
-  <div class="output-container">
+  <div id="ic_digits" class="output-section" style="display:none;">
+    <h2 style="text-align:center">IC Digits</h2>
+    <div class="output-grid" id="ic_digits_outputs"></div>
+  </div>
 
+  <div id="text_mask" class="output-section" style="display:none;">
+    <h2 style="text-align:center">Text Masking</h2>
+    <h3>Initials</h3>
+    <div class="output-grid" id="text_mask_initials_outputs"></div>
 
-    <div id="general" class="output-section">
-      <h2 style="text-align:center">Text Case</h2>
-      <div class="output-grid" id="general_outputs"></div>
+    <h3>Mask Text</h3>
+    <div class="output-grid" id="text_mask_text_outputs"></div>
+
+    <h3>Mask Number</h3>
+    <div class="output-grid" id="text_mask_numbers_outputs"></div>
+
+    <h3>Tag &amp; Line</h3>
+    <div class="output-grid" id="text_mask_tagline_outputs"></div>
+  </div>
+
+  <div id="default_text" class="output-section" style="display:none;">
+    <div class="input-container" style="padding-top:0.2em">
+      <h2>Insert Default Text</h2>
+      <input id="default_text_input" type="text" placeholder="" />
     </div>
+    <br>
+    <h2 style="text-align:center">Default Text</h2>
+    <div class="output-grid" id="default_text_outputs"></div>
+  </div>
 
-
-    <div id="name_ic" class="output-section" style="display:none;">
-      <h2 style="text-align:center">Name and IC</h2>
-      <div class="output-grid" id="name_ic_outputs"></div>
+  <div id="image_variable" class="output-section" style="display:none;">
+    <div class="input-container" style="padding-top:0.2em">
+      <h2>Image Size (insert number)</h2>
+      <input id="image_variable_input" type="number" placeholder="" />
     </div>
+    <br>
+    <h2 style="text-align:center">Image Variable</h2>
+    <div class="output-grid" id="image_variable_outputs"></div>
+  </div>
 
-
-    <div id="ic_digits" class="output-section" style="display:none;">
-      <h2 style="text-align:center">IC Digits</h2>
-      <div class="output-grid" id="ic_digits_outputs"></div>
-    </div>
-
-    <div id="text_mask" class="output-section" style="display:none;">
-
-      <h2 style="text-align:center">Text Masking</h2>
-
-            <h3>Initials</h3>
-            <div class="output-grid" id="text_mask_initials_outputs"></div>
-
-            <h3>Mask Text</h3>
-            <div class="output-grid" id="text_mask_text_outputs"></div>
-
-            <h3>Mask Number</h3>
-            <div class="output-grid" id="text_mask_numbers_outputs"></div>
-
-            <h3>Tag &amp; Line</h3>
-            <div class="output-grid" id="text_mask_tagline_outputs"></div>
-
-    </div>
-
-
-    <div id="default_text" class="output-section" style="display:none;">
-        <div class="input-container" style="padding-top:0.2em">
-            <h2>Insert Default Text</h2>
-            <input id="default_text_input" type="text" placeholder="" />
-        </div>
-      <br>
-      <h2 style="text-align:center">Default Text</h2>
-      <div class="output-grid" id="default_text_outputs"></div>
-      </div>
-    </div>
-
+  <div id="hyperlink" class="output-section" style="display:none;">
+    <h2 style="text-align:center">Hyperlink</h2>
+    <div class="output-grid" id="hyperlink_outputs"></div>
+  </div>
 
 
 </div>
 
 <script>
-  const variable_input = document.getElementById('variable_input');
+const variable_input = document.getElementById('variable_input');
 
-  const methodGroups = {
-    general: [
-      'upper','lower','swap','title','capwords','capitalize','sentence case','sentence','caps','land case'
-    ],
-    name_ic: [
-      'name ic','name ic vertical','name ic vb','ic','ic bracket','ic number','name','name upper','name lower','name caps'
-    ],
-    ic_digits: ['ic digits'],
-    text_mask: {
-      initials: ['initials','initials dot','initials lower','initials dot lower'],
-      maskText: ['mask'],
-      maskNumber: ['mask number']
-      // tag/line dynamic
-    }
-  };
-
-  const btns = document.querySelectorAll('#method_group_button button');
-  const sections = {
-    general: document.getElementById('general'),
-    name_ic: document.getElementById('name_ic'),
-    ic_digits: document.getElementById('ic_digits'),
-    text_mask: document.getElementById('text_mask'),
-    default_text: document.getElementById('default_text')
-  };
-
-  const outputs = {
-    general: document.getElementById('general_outputs'),
-    name_ic: document.getElementById('name_ic_outputs'),
-    ic_digits: document.getElementById('ic_digits_outputs'),
-    text_maskInitials: document.getElementById('text_mask_initials_outputs'),
-    text_maskMaskText: document.getElementById('text_mask_text_outputs'),
-    text_maskMaskNumber: document.getElementById('text_mask_numbers_outputs'),
-    text_maskTagLine: document.getElementById('text_mask_tagline_outputs'),
-    default_text: document.getElementById('default_text_outputs')
-  };
-
-  const default_text_input = document.getElementById('default_text_input');
-
-  function createOutputItem(methodLabel, codeText, isBase=false){
-    const container = document.createElement('div');
-    container.className = 'output-box' + (isBase ? ' base' : '');
-
-    const lab = document.createElement('div');
-    lab.className = 'output-label';
-    lab.textContent = methodLabel;
-    container.appendChild(lab);
-
-    const pre = document.createElement('pre');
-    pre.className = 'code';
-    pre.textContent = codeText;
-    container.appendChild(pre);
-
-    container.addEventListener('click', () => {
-      navigator.clipboard.writeText(codeText).then(() => {
-        container.classList.add('copied');
-        setTimeout(()=>container.classList.remove('copied'), 380);
-      });
-    });
-
-    return container;
+const methodGroups = {
+  general: ['upper','lower','swap','title','capwords','capitalize','sentence case','sentence','caps','land case'],
+  name_ic: ['name ic','name ic vertical','name ic vb','ic','ic bracket','ic number','name','name upper','name lower','name caps'],
+  ic_digits: ['ic digits'],
+  text_mask: {
+    initials: ['initials','initials dot','initials lower','initials dot lower'],
+    maskText: ['mask'],
+    maskNumber: ['mask number']
   }
+};
 
-  // Generate dynamic tag/line methods based on general methods
-  function generateTagLineTemplates(variable){
-    const list = [];
-    list.push({label:'tag', tmpl:`{{${variable} | tag}}`});
-    list.push({label:'line', tmpl:`{{${variable} | line}}`});
-    methodGroups.general.forEach(m => {
-      list.push({label:`${m} tag`, tmpl:`{{${variable} | ${m} tag}}`});
-      list.push({label:`${m} line`, tmpl:`{{${variable} | ${m} line}}`});
-    });
-    return list;
-  }
+const btns = document.querySelectorAll('#method_group_button button');
+const sections = {
+  general: document.getElementById('general'),
+  name_ic: document.getElementById('name_ic'),
+  ic_digits: document.getElementById('ic_digits'),
+  text_mask: document.getElementById('text_mask'),
+  default_text: document.getElementById('default_text'),
+  image_variable: document.getElementById('image_variable'),
+  hyperlink: document.getElementById('hyperlink'),
+};
 
-  function clearAllOutputsMsg(){
-    Object.values(outputs).forEach(c => c.innerHTML = '');
-  }
+const outputs = {
+  general: document.getElementById('general_outputs'),
+  name_ic: document.getElementById('name_ic_outputs'),
+  ic_digits: document.getElementById('ic_digits_outputs'),
+  text_maskInitials: document.getElementById('text_mask_initials_outputs'),
+  text_maskMaskText: document.getElementById('text_mask_text_outputs'),
+  text_maskMaskNumber: document.getElementById('text_mask_numbers_outputs'),
+  text_maskTagLine: document.getElementById('text_mask_tagline_outputs'),
+  default_text: document.getElementById('default_text_outputs'),
+  image_variable: document.getElementById('image_variable_outputs'),
+  hyperlink: document.getElementById('hyperlink_outputs'),
+};
 
-  function updateOutputs(variable){
-    clearAllOutputsMsg();
-    if(!variable){
-      Object.values(outputs).forEach(container => {
-        container.innerHTML = "";
-      });
-      return;
-    }
 
-    // GENERAL
-    outputs.general.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    methodGroups.general.forEach(m => outputs.general.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+// this needs a separate "input" because i need to merge this text with something else:
+    // example: the "default text", or "image number"
+const default_text_input = document.getElementById('default_text_input');
+const image_variable_input = document.getElementById('image_variable_input');
 
-    // NAME & IC
-    outputs.name_ic.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    methodGroups.name_ic.forEach(m => outputs.name_ic.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
 
-    // IC DIGITS
-    outputs.ic_digits.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    methodGroups.ic_digits.forEach(m => outputs.ic_digits.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
 
-    // TEXT MASK - Initials
-    outputs.text_maskInitials.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    methodGroups.text_mask.initials.forEach(m => outputs.text_maskInitials.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
 
-    // TEXT MASK - Mask Text
-    outputs.text_maskMaskText.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    methodGroups.text_mask.maskText.forEach(m => outputs.text_maskMaskText.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+function createOutputItem(methodLabel, codeText, isBase=false){
+  const container = document.createElement('div');
+  container.className = 'output-box' + (isBase ? ' base' : '');
 
-    // TEXT MASK - Mask Number
-    outputs.text_maskMaskNumber.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    methodGroups.text_mask.maskNumber.forEach(m => outputs.text_maskMaskNumber.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+  const lab = document.createElement('div');
+  lab.className = 'output-label';
+  lab.textContent = methodLabel;
+  container.appendChild(lab);
 
-    // TEXT MASK - Tag & Line dynamic
-    outputs.text_maskTagLine.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    const dynamic = generateTagLineTemplates(variable);
-    dynamic.forEach(d => outputs.text_maskTagLine.appendChild(createOutputItem(d.label, d.tmpl)));
+  const pre = document.createElement('pre');
+  pre.className = 'code';
+  pre.textContent = codeText;
+  container.appendChild(pre);
 
-    // DEFAULT TEXT
-    outputs.default_text.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
-    const defVal = (default_text_input.value || '').trim();
-    const defaultCode = `{{${variable} | default(${defVal || ''})}}`;
-    outputs.default_text.appendChild(createOutputItem('default', defaultCode));
-  }
-
-  btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const group = btn.dataset.group;
-      btns.forEach(b => {
-        b.classList.toggle('selected', b === btn);
-        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-      });
-      Object.entries(sections).forEach(([k,el]) => el.style.display = (k === group) ? '' : 'none');
+  container.addEventListener('click', () => {
+    navigator.clipboard.writeText(codeText).then(() => {
+      container.classList.add('copied');
+      setTimeout(()=>container.classList.remove('copied'), 380);
     });
   });
 
-  // Sync inputs:
-  variable_input.addEventListener('input', () => updateOutputs(variable_input.value.trim()));
+  return container;
+}
 
-  default_text_input.addEventListener('input', () => {
-    const varName = (variable_input.value || '').trim();
-    if(!varName) return;
-    outputs.default_text.innerHTML = '';
-    outputs.default_text.appendChild(createOutputItem('variable', `{{${varName}}}`, true));
-    const defVal = (default_text_input.value || '').trim();
-    const defaultCode = `{{${varName} | default(${defVal || ''})}}`;
-    outputs.default_text.appendChild(createOutputItem('default', defaultCode));
+function generateTagLineTemplates(variable){
+  const list = [];
+  list.push({label:'tag', tmpl:`{{${variable} | tag}}`});
+  list.push({label:'line', tmpl:`{{${variable} | line}}`});
+  methodGroups.general.forEach(m => {
+    list.push({label:`${m} tag`, tmpl:`{{${variable} | ${m} tag}}`});
+    list.push({label:`${m} line`, tmpl:`{{${variable} | ${m} line}}`});
   });
+  return list;
+}
 
-  // Initialize
-  updateOutputs('');
+function clearAllOutputsMsg(){
+  Object.values(outputs).forEach(c => c.innerHTML = '');
+}
+
+function updateOutputs(variable){
+  clearAllOutputsMsg();
+  if(!variable) return;
+
+  // GENERAL
+  outputs.general.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  methodGroups.general.forEach(m => outputs.general.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+  // NAME & IC
+  outputs.name_ic.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  methodGroups.name_ic.forEach(m => outputs.name_ic.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+  // IC DIGITS
+  outputs.ic_digits.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  methodGroups.ic_digits.forEach(m => outputs.ic_digits.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+  // TEXT MASK - Initials
+  outputs.text_maskInitials.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  methodGroups.text_mask.initials.forEach(m => outputs.text_maskInitials.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+  // TEXT MASK - Mask Text
+  outputs.text_maskMaskText.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  methodGroups.text_mask.maskText.forEach(m => outputs.text_maskMaskText.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+  // TEXT MASK - Mask Number
+  outputs.text_maskMaskNumber.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  methodGroups.text_mask.maskNumber.forEach(m => outputs.text_maskMaskNumber.appendChild(createOutputItem(m, `{{${variable} | ${m}}}`)));
+
+  // TEXT MASK - Tag & Line dynamic
+  outputs.text_maskTagLine.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  generateTagLineTemplates(variable).forEach(d => outputs.text_maskTagLine.appendChild(createOutputItem(d.label, d.tmpl)));
+
+  // DEFAULT TEXT
+  outputs.default_text.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  const defVal = (default_text_input.value || '').trim();
+  outputs.default_text.appendChild(createOutputItem('default', `{{${variable} | default(${defVal || ''})}}`));
+
+  // IMAGE VARIABLE
+  outputs.image_variable.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  const imgVal = (image_variable_input.value || '').trim();
+  outputs.image_variable.appendChild(createOutputItem('image', `{{${variable} | image}}`));
+  outputs.image_variable.appendChild(createOutputItem('image', `{{${variable} | qr}}`));
+  if(imgVal){
+    outputs.image_variable.appendChild(createOutputItem('cm', `{{${variable} | ${imgVal} cm}}`));
+    outputs.image_variable.appendChild(createOutputItem('inch', `{{${variable} | ${imgVal} inch}}`));
+    }   
+
+
+    // HYPERLINK
+  outputs.hyperlink.appendChild(createOutputItem('variable', `{{${variable}}}`, true));
+  const hyperlinkVal = (hyperlink.value || '').trim();
+  outputs.hyperlink.appendChild(createOutputItem('image', `{{${variable} | link}}`));
+
+
+
+
+}
+
+btns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const group = btn.dataset.group;
+    btns.forEach(b => {
+      b.classList.toggle('selected', b === btn);
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    Object.entries(sections).forEach(([k,el]) => el.style.display = (k === group) ? '' : 'none');
+  });
+});
+
+// Sync inputs:
+variable_input.addEventListener('input', () => updateOutputs(variable_input.value.trim()));
+
+default_text_input.addEventListener('input', () => {
+  const varName = (variable_input.value || '').trim();
+  if(!varName) return;
+  outputs.default_text.innerHTML = '';
+  outputs.default_text.appendChild(createOutputItem('variable', `{{${varName}}}`, true));
+  const defVal = (default_text_input.value || '').trim();
+  outputs.default_text.appendChild(createOutputItem('default', `{{${varName} | default(${defVal || ''})}}`));
+});
+
+image_variable_input.addEventListener('input', () => updateOutputs(variable_input.value.trim()));
+
+// Initialize
+updateOutputs('');
 </script>
 
 <br><br><br><br><br>
 
 </body>
-</ht
+</html>

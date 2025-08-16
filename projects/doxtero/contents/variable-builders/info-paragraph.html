@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Info Paragraph</title>
+<link rel="stylesheet" href="../../assets/styles/style.css">
+</head>
+
+<body>
+<div class="container">
+
+<h1>Info Paragraph</h1>
+
+<div class="note-yellow">
+    Information paragraphs are shown in template but hidden in the generated document
+</div>
+<br>
+
+<div class="input-container">
+<h2>Input Text</h2>
+
+<br>
+<textarea id="input_text" placeholder=""></textarea>
+</div>
+
+<br>
+<div class="output-container">
+<h2>Output</h2>
+<div class="output-box" id="output" contenteditable="true" onclick="copyToClipboard(this)"></div>
+</div>
+
+<script>
+const input_text = document.getElementById('input_text');
+const outputDiv = document.getElementById('output');
+
+
+// Update output
+// function updateOutput() {
+//   const value = input_text.value;
+//   outputDiv.textContent = value.replace(/\n/g, '<br>');
+
+  function updateOutput() {
+  const value = input_text.value.replace(/\n/g, '<br>');
+  const prefix = "[[info: ";  // your desired prefix
+  const suffix = " ]]"; 
+
+  outputDiv.textContent = prefix + value + suffix;
+}
+
+input_text.addEventListener('input', updateOutput);
+
+
+input_text.addEventListener('input', updateOutput);
+updateOutput();
+
+// Copy to clipboard
+function copyToClipboard(el) {
+    const text = el.textContent || el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 250);
+    });
+}
+
+// Indent / Outdent buttons
+document.getElementById('indent-button').addEventListener('click', () => {
+    if(indentLevel < maxIndent) indentLevel++;
+    updateIndentIndicator();
+});
+document.getElementById('outdent-button').addEventListener('click', () => {
+    if(indentLevel > 0) indentLevel--;
+    updateIndentIndicator();
+});
+
+// Indent indicator
+function updateIndentIndicator() {
+    const dots = document.querySelectorAll('#indent-indicator .indent-dot');
+    const indentText = document.getElementById('indent-text');
+    indentText.textContent = 'Indent Level ' + indentLevel;
+    dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx < indentLevel);
+    });
+}
+updateIndentIndicator();
+
+// Auto-indent on new lines
+input_text.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') {
+        const start = input_text.selectionStart;
+        const end = input_text.selectionEnd;
+        const text = input_text.value;
+        const indent = ' '.repeat(indentLevel * indentSize);
+        input_text.value = text.slice(0, start) + '\n' + indent + text.slice(end);
+        input_text.selectionStart = input_text.selectionEnd = start + 1 + indent.length;
+        e.preventDefault();
+        updateOutput();
+    }
+});
+
+
+// Auto Expand Textarea
+function autoExpandTextarea(el) {
+    const extraSpace = 20; // extra pixels below the cursor
+    el.style.height = 'auto'; // reset height
+    el.style.height = (el.scrollHeight + extraSpace) + 'px'; // set height plus extra
+}
+
+// Hook into input event
+input_text.addEventListener('input', () => {
+    autoExpandTextarea(input_text);
+    updateOutput();
+});
+
+// Initialize height
+autoExpandTextarea(input_text);
+
+
+
+</script>
+
+<br><br><br><br><br>
+</div>
+</body>
+</html>
