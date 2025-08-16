@@ -16,7 +16,7 @@ body, html {
     line-height: 1.5;
     color: #333;
     background: #f6f8fa;
-    font-size: large;
+    /*font-size: large;*/
 }
 
 
@@ -127,14 +127,13 @@ input, textarea {
     min-height: 3em;
 }
 
-
-/* output boxes are like those mini boxes of generated stuff for methods */
+/* output boxes are like those mini boxes of generated stuff (eg. variables, date variab;es) */
 .output-box {
     min-height: 3em;
     width: 100%;
     padding: 12px 14px;
     border-radius: 15px;
-    border: 1.5px solid #bbb;
+    border: 1px solid #bbb;
     font-size: large;
     font-family: inherit;
     box-sizing: border-box;
@@ -174,7 +173,7 @@ input, textarea {
 }
 
 
-/* this is mainly for the date variables (like little boxes generated) */
+/* this is mainly for the date variables (layout the box items into like grid) */
 .output-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -184,6 +183,7 @@ input, textarea {
 
 
 
+/* These are the Pink and Blue input and output background */
 .input-container {
     flex: 1 1 350px;
     background: #fff1f1;
@@ -217,6 +217,7 @@ input, textarea {
     flex-direction: column;
     margin: 0;
     padding: 1rem;
+    /* transparent */
     background: rgba(252, 252, 253, 0.5);
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -343,6 +344,7 @@ h3 a:hover {
 
 
 h1,
+.output-box
 .options-list-container,
 .input-container, .output-container,
 .info-box,
@@ -351,6 +353,7 @@ h1,
 .note-green, .note-yellow {
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
+
 
 
 

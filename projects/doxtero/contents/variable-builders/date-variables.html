@@ -5,9 +5,11 @@
 <title>Date Variables</title>
 <link rel="stylesheet" href="../../assets/styles/style.css">
 </head>
-
 <body>
 <div class="container">
+
+
+
 
 <h1>Date Variables</h1>
 
@@ -16,35 +18,37 @@
   <button id="button_smart_date_vars" type="button" aria-pressed="false">Smart Date Variables</button>
 </div>
 
-<!-- Presets (only shown in Date Variables mode) -->
-<div id="variable_presets_container">
-
-  <div id="variable_presets_list">
-
-    <span class="preset-button clear"><code>* clear *</code></span>
-    <span class="preset-button"><code>date</code></span>
-    <span class="preset-button"><code>date: letter of offer</code></span>
-    <span class="preset-button"><code>date: letter of instruction</code></span>
-    <span class="preset-button"><code>date: slo</code></span>
-    <span class="preset-button"><code>date: spa</code></span>
-
-    <span class="preset-button"><code>date: will</code></span>
-    <span class="preset-button"><code>date: death</code></span>
-    
-
-  </div>
-</div>
-
+<div class="input-container">
 
 <div id="form_date_vars">
     <h2 for="date_variable_input">Insert Variable Name</h2>
+
+    <!-- Presets (only shown in Date Variables mode) -->
+    <div id="variable_presets_container">
+
+      <div id="variable_presets_list">
+        <span class="preset-button clear"><code>* clear *</code></span>
+        <span class="preset-button"><code>date</code></span>
+        <span class="preset-button"><code>date: letter of offer</code></span>
+        <span class="preset-button"><code>date: letter of instruction</code></span>
+        <span class="preset-button"><code>date: slo</code></span>
+        <span class="preset-button"><code>date: spa</code></span>
+        <span class="preset-button"><code>date: will</code></span>
+        <span class="preset-button"><code>date: death</code></span>
+      </div><Br>
     <input type="text" id="date_variable_input" autocomplete="off" />
+
 </div>
 
+
+</div>
+
+
+
 <div id="form_smart_date_vars" style="display:none;">
-    <h2 for="smart_date_variable_input">Insert Date (Optional)</h2>
+    <h2 for="smart_date_variable_input">Insert Date (Optional)</h2><br>
     <input type="numbers" id="smart_date_variable_input" autocomplete="off" />
-    <div class="note-yellow">Insert date in numbers - format:<br>
+    <div class="note-yellow">Insert date in numbers - format:
       <code>YYYYMMDD</code>
       <code>YYYYMMDDhh</code>
       <code>YYYYMMDDhhmm</code>
@@ -52,6 +56,11 @@
       Example: <code>20230621</code>
     </div>
 </div>
+
+</div>
+
+
+
 
 <div class="output-grid" id="output_grid_container"></div>
 
