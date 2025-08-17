@@ -412,7 +412,7 @@ function renderTables(list){
     if (filtered.length) {
       const catBlock = document.createElement('div');
       catBlock.className = 'table-block';
-      catBlock.innerHTML = `<h2 class="category-header">★ Category: <span class="category-title">${selectedCat}</span></h2>`;
+      catBlock.innerHTML = `<h2 class="category-header">★ <span class="category-title">${selectedCat}</span></h2>`;
       
       filtered.forEach(group => {
         const block = createTableBlock(group); // extract your table creation into a helper
