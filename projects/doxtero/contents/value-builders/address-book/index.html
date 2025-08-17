@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<title>Address Book</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>🗂 Address Book</h1>
+<!-- search box -->
+<input type="text" id="searchBox" placeholder="Search...">
+<!-- categories dropdown -->
+<select id="categorySelect"><option value="">All Categories</option></select>
+<!-- address book contents -->
+<div id="tableContainer"></div>
+
+<script>
+
+// ===== DATA =====
+
+// Add tables here. Each table has a "title" and "rows" [label, value]
+// Use a row with label "Category" to define categories separated by commas
+// Content "|" is separator for vertical and horizontal formatting button (mainly for address)
+const tables = [
+
+
+
+
+// ===== <<  DATA TEMPLATES  >> =====
+
+
+// ===== <<  TEMPLATES : Company  >> =====
+
+
+// {
+//     title: " ... ",
+//     rows: [
+//       ["Name"," ... "],
+//       ["Identity No."," ... "],
+//       ["Address"," ... | ... | ... "],
+//       ["Website", ""],
+//       ["Email", ""],
+//       ["Contact", `
+// Tel: 
+// Fax: 
+// `],
+//       ["Notes"," ... "],
+//       ["Category"," ... , ... "],
+//     ]
+// },
+
+
+  // ===== BANKS =====
+  
+
+
+  {
+    title: "OCBC Bank (Malaysia) Berhad",
+    rows: [
+      ["Name","OCBC Bank (Malaysia) Berhad"],
+      ["Registration No.","199401009721 (295400-W)"],
+      ["Branch Address","21 & 23 Jalan Pantai|88000 Kota Kinabalu|Sabah, Malaysia"],
+      ["Central Services","Level 2 (Central Services)|Menara OCBC|18 Jalan Tun Perak|50050 Kuala Lumpur"],
+      ["Website", "www.ocbc.com.my"],
+      ["Notes",""],
+      ["Category","bank, conventional"]
+    ]
+  },
+  
+
+
+  {
+    title: "OCBC Al-Amin Bank Berhad",
+    rows: [
+      ["Name","OCBC Al-Amin Bank Berhad"],
+      ["Registration No.","200801017151 (818444-T)"],
+      ["Branch Address","21 & 23 Jalan Pantai|88000 Kota Kinabalu|Sabah, Malaysia"],
+      ["Central Services","Level 2 (Central Services)|Menara OCBC|18 Jalan Tun Perak|50050 Kuala Lumpur"],
+      ["Website", "https://ocbc.com.my"],
+      ["Email", ""],
+      ["Contact", `
+Tel: 6-088-232177
+Fax: 6-088-261852
+`],
+      ["Notes",""],
+      ["Category","bank, islamic"]
+    ]
+  },
+
+
+
+  {
+    title: "Sabah Development Bank Bhd",
+    rows: [
+      ["Name","Sabah Development Bank Bhd"],
+      ["Registration No.","197701003571 (34638-W)"],
+      ["Address","L2.06 – L2.09, Level 2, Plaza Shell|29 Jalan Tunku Abdul Rahman|88000 Kota Kinabalu|Sabah, Malaysia"],
+      ["Website", "https://sabahdevbank.com"],
+      ["Email", "info@sabahdevbank.com"],
+      ["Contact", `
+Tel: 088-232177
+Fax: 088-261852
+`],
+      ["Notes",""],
+      ["Category","bank"]
+    ]
+  },
+
+  // DEVELOPER
+  {
+    title: "Dinamik Atlantik Sdn Bhd",
+    rows: [
+      ["Name","Dinamik Atlantik Sdn Bhd"],
+      ["Registration No.","201301034335 (1064165-X)"],
+      ["Project", "Bukit Bantayan Residences"],
+      ["Address","F-07-19 to F-07-21 | Lorong Bukit Bantayan | Bukit Bantayan 1 | 88450 Kota Kinabalu"],
+      ["Website","www.gamudaland.com.my"],
+      ["Email","ypcheo@gamudaland.com.my | msd.bantayan@gamudaland.com.my"],
+      ["Contact", `
+Tel: 088-422880
+Fax: 
+`],
+      ["Notes","gamuda"], 
+      ["Category","developer"]
+    ]
+  },
+
+
+
+  {
+    title: "Aeropod Sdn Bhd",
+    rows: [
+      ["Name","Aeropod Sdn Bhd"],
+      ["Registration No","200701009762 (767765-P)"],
+      ["Project", "Aeropod"],
+      ["Address","I-3A-1, Block I, Level 3A | Aeropod Commercial Square | Jalan Aeropod Off Jalan Kepayan | 88200 Kota Kinabalu"],
+      ["Website","www.aeropod.com.my"],
+      ["Email","aeropodsb@spsetia.com.my;"],
+      ["Contact", `
+Tel: 088-486255, 088-486226
+Fax: 088-486299
+`],
+      ["Notes","sp setia group"],  
+      ["Category","developer"]
+    ]
+  },
+
+
+
+  {
+    title: "Cahaya Hartamas Sdn Bhd",
+    rows: [
+      ["Name","Cahaya Hartamas Sdn Bhd"],
+      ["Registration No.","200401015330 (653833-M)"],
+      ["Project", "E Residence @ Telipok"],
+      ["Address","A-10-23B | Block A | 10TH Floor | Lorong Lebuh Raya Sutera | Sutera Avenue Sembulan | 88100 | Kota Kinabalu | Sabah"],
+      ["Website","www.ehproperty.com.my"],
+      ["Email","ehp.file@gmail.com"],
+      ["Contact", `
+Tel: 088-448008
+Fax: 088-488448
+`],
+      ["Notes","eng han group"],
+      ["Category","developer"]
+    ]
+  },
+
+
+
+// GOVERNMENT
+
+{
+  title: "Lands and Surveys Department (Jabatan Tanah dan Ukur)",
+  rows: [
+    ["Name","Lands and Surveys Department (Jabatan Tanah dan Ukur)"],
+    ["Address","Wisma Tanah Dan Ukur|Jalan Perwira|88100 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact",`
+Tel: +6088-527600, +6088-527601 |
+Fax: +6088-413628
+`],
+    ["Email","jtu@sabah.gov.my"],
+    ["Website","https://jtu.sabah.gov.my"],
+    ["Directory", "https://jtu.sabah.gov.my/index.cfm?section=About&action=OffDir"],
+    ["Notes","land office"],
+    ["Category","government"],
+  ]
+},
+
+
+
+
+
+// ASSOCIATIONS / GROUPS
+
+
+  {
+    title: "SHAREDA",
+    rows: [
+      ["Name","Sabah Housing and Real Estate Developers Association (SHAREDA)"],
+      //["Identity No.",""],
+      ["Address","Lot 1-3 (F) | 3rd Floor | Beverly Hills Plaza | Jalan Bundusan | 88300 Kota Kinabalu | Sabah"],
+      ["Website","https://shareda.com"],
+      ["Email","secretariat@shareda.com"],
+      ["Contact", `
+Tel: 088-720848, 722849
+Fax: 088-720843
+`],
+      ["Notes","Can find the contact of many (developer) members here"],
+      ["Category","developer, association"]
+    ]
+  },
+
+
+
+// UTILITIES
+
+  {
+  title: "Sabah Electricity Sdn. Bhd. (SESB)",
+  rows: [
+    ["Name","Sabah Electricity Sdn. Bhd. (SESB)"],
+    ["Address","Wisma SESB|Jalan Tunku Abdul Rahman|88673 Kota Kinabalu|Sabah, Malaysia"],
+    ["Tel","15444 (Hotline/Careline) | 088-515000 (Digi & Maxis) | 019-852 5427 (Whatsapp)"],
+    ["Fax", "088-282314"],
+    ["Twitter","@CarelineSesb"],
+    ["Website (portal)","https://mysesb.com.my"], 
+    ["Website","https://sesb.com.my"],
+    ["Email","careline@sesb.com.my"],
+    ["Notes",""],
+    ["Category","utilities, electricity"],
+  ]
+},
+
+
+
+
+
+
+// ===== LAWYERS =====
+
+{
+  title: "Hadrian Sinsua & Co",
+  rows: [
+    ["Name","Hadrian Sinsua & Co"],
+    ["Address","Unit No. 31, Floor Level 3A|Signature Office, KK Times Square|Off Coastal Highway|88100 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact","Tel: 016 830 0244 / 019 851 2404"],
+    ["Email","hsinsuaco@yahoo.com"],
+    ["Website",""],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+{
+  title: "C.K. Nar & Co.",
+  rows: [
+    ["Name","C.K. Nar & Co."],
+    ["Address","2nd Floor, Lot 10-2, Lorong Lintas Plaza 4|Lintas Plaza, Off Jalan Lintas|88300 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact","Tel: 088-218178 / 218138 | Fax: 088-217178 / 235313"],
+    ["Email",""],
+    ["Website",""],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+
+
+{
+  title: "Jayasuriya Kah & Co.",
+  rows: [
+    ["Name","Jayasuriya Kah & Co."],
+    ["Address","Suite 208, 2nd Floor|Wisma Sabah|88000 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact","Tel: 088-242311"],
+    ["Email","legal@jaykah.com.my"],
+    ["Website","https://jaykah.com.my"],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+{
+  title: "Koh Gilong & Associates",
+  rows: [
+    ["Name","Koh Gilong & Associates"],
+    ["Address","DBKK No. F-2-01, 2nd Floor|Lorong Inanam Kapital 5, Inanam Capital|88450 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact","Tel: 088-960059 | Fax: 088-231250"],
+    ["Email",""],
+    ["Website",""],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+{
+  title: "Szetu & Co.",
+  rows: [
+    ["Name","Szetu & Co."],
+    ["Address","F-36-3A, Block F, Floor 3A|KK Times Square, Coastal Highway|88100 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact","Tel: 088-221 125"],
+    ["Email","szetu2011@gmail.com"],
+    ["Website",""],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+{
+  title: "Rahman & Juhar",
+  rows: [
+    ["Name","Rahman & Juhar"],
+    ["Address","Suite 439-442, 4th Floor|Wisma Sabah|Jalan Tun Fuad Stephens|88000 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact","Tel: 088-231 673 / 088-236 673 / 088-233 136 | Fax: 088-263 136"],
+    ["Email","rahmanjuhar@gmail.com"],
+    ["Website",""],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+{
+  title: "Wong & Co.",
+  rows: [
+    ["Name","Wong & Co."],
+    ["Address","Lot 72-2, Second Floor|Block I, Lorong Plaza 333-3A|Plaza 333, Kobusak Commercial Centre|Jalan Pintas|89500 Penampang|Sabah, Malaysia"],
+    ["Contact","Tel: 088-711650 | Fax: 088-742395 | HP: +6 017-249424"],
+    ["Email","wkslegal@gmail.com"],
+    ["Website",""],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+{
+  title: "WV & Partners (KK Times Square Office)",
+  rows: [
+    ["Name","WV & Partners"],
+    ["Address","Lot J-55-5 & J-56-5, 5th Floor|Signature Office, KK Times Square|Off Coastal Highway|88100 Kota Kinabalu|Sabah, Malaysia"],
+    ["Contact","Tel: 60-88-201571, 201581 | Fax: 60-88-201591"],
+    ["Email",""],
+    ["Website",""],
+    ["Notes",""],
+    ["Category","lawyer"]
+  ]
+},
+
+
+
+
+
+
+
+
+
+
+
+// don't delete this - it is the end of the content block >>
+];
+// don't delete the above <<
+
+
+
+
+
+// ===== HELPERS =====
+
+function splitByMode(text,mode){ return text.split('|').map(s=>s.trim()).filter(Boolean); }
+function joinByMode(parts,mode){ return mode==='vertical'?parts.join('\n'):parts.join(', '); }
+function applyCase(text,mode){ 
+  if(mode==='upper') return text.toUpperCase(); 
+  if(mode==='lower') return text.toLowerCase(); 
+  if(mode==='title') return text.replace(/\w\S*/g,t=>t[0].toUpperCase()+t.slice(1).toLowerCase()); 
+  return text; 
+}
+
+// ===== RENDER =====
+function renderTables(list){
+  const container = document.getElementById('tableContainer'); 
+  container.innerHTML = "";
+
+  const selectedCat = catSelect.value.trim().toLowerCase();
+
+  if (selectedCat) {
+    // Only show selected category
+    const filtered = list.filter(t => {
+      const catRow = t.rows.find(r => /category/i.test(r[0]));
+      return catRow && catRow[1].toLowerCase().split(',').map(c => c.trim()).includes(selectedCat);
+    });
+
+    if (filtered.length) {
+      const catBlock = document.createElement('div');
+      catBlock.className = 'table-block';
+      catBlock.innerHTML = `<h2 class="category-header">★ Category: <span class="category-title">${selectedCat}</span></h2>`;
+      
+      filtered.forEach(group => {
+        const block = createTableBlock(group); // extract your table creation into a helper
+        catBlock.appendChild(block);
+      });
+
+      container.appendChild(catBlock);
+    }
+
+  } else {
+    // No category selected, show grouped by category as before
+    const catMap = {};
+    list.forEach(t => {
+      const catRow = t.rows.find(r => /category/i.test(r[0]));
+      if (!catRow) return;
+      catRow[1].split(',').map(c => c.trim().toLowerCase()).forEach(c => {
+        if (!catMap[c]) catMap[c] = [];
+        catMap[c].push(t);
+      });
+    });
+
+    Object.keys(catMap).sort().forEach(cat => {
+      const catBlock = document.createElement('div'); 
+      catBlock.className = 'table-block'; 
+      catBlock.innerHTML = `<h2 class="category-header">★ Category : <span class="category-title">${cat}</span></h2>`;
+      catMap[cat].forEach(group => {
+        const block = createTableBlock(group);
+        catBlock.appendChild(block);
+      });
+      container.appendChild(catBlock);
+    });
+  }
+
+  attachHandlers(container);
+}
+
+
+// Helper to create a table block for reuse
+
+
+function createTableBlock(group) {
+  const block = document.createElement('div');
+  const firstAddress = group.rows.find(r => /address/i.test(r[0]));
+
+  block.innerHTML = `<h3 class="item-title">${group.title}</h3>
+    <div class="controls">
+      <div class="btn-group case-group">
+        <button data-type="case" data-mode="upper">Upper</button>
+        <button data-type="case" data-mode="lower">Lower</button>
+        <button data-type="case" data-mode="title">Title</button>
+      </div>
+      ${firstAddress ? `<div class="btn-group addr-group"><button data-type="addr" data-mode="horizontal" class="active">H</button><button data-type="addr" data-mode="vertical">V</button></div>` : ''}
+    </div>
+    <table>
+      <thead><tr><th>Label</th><th>Value</th></tr></thead>
+      <tbody></tbody>
+    </table>`;
+
+  const tbody = block.querySelector('tbody');
+
+  group.rows.forEach(row => {
+    const label = row[0], value = row[1], isAddress = /address/i.test(label);
+    const tr = document.createElement('tr');
+
+    // Label cell
+    const tdLabel = document.createElement('td'); 
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'label-cell';
+    labelSpan.contentEditable = "true";
+    labelSpan.textContent = label;
+    tdLabel.appendChild(labelSpan);
+
+    // Value cell
+    const tdValue = document.createElement('td'); 
+    tdValue.className = 'copyable'; 
+    const valSpan = document.createElement('span');
+    valSpan.className = 'value-text';
+
+    const parts = value.split('|').map(s => s.trim()).filter(Boolean);
+    valSpan.dataset.parts = JSON.stringify(parts);
+    valSpan.dataset.isAddress = isAddress ? 'true' : 'false';
+    valSpan.dataset.addrmode = 'horizontal';
+    valSpan.dataset.casemode = 'none';
+
+    const websitePattern = /^(https?:\/\/)?(www\.)?[a-z0-9.-]+\.[a-z]{2,}(\/[^\s]*)?$/i;
+
+    if(websitePattern.test(value.trim())) {
+      // Website row: non-editable + Open button
+      valSpan.contentEditable = "false";
+      valSpan.style.cursor = "default";
+      valSpan.innerText = joinByMode(parts,'horizontal');
+
+      const openBtn = document.createElement('button');
+      openBtn.textContent = 'open';
+      openBtn.className = 'open-btn';
+      openBtn.onclick = () => {
+        let url = value.trim();
+        if(!/^https?:\/\//i.test(url)) url = 'https://' + url;
+        window.open(url, '_blank');
+      };
+
+      // Wrap text and button with flex for spacing
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.alignItems = 'center';
+      wrapper.style.gap = '8px'; // space between text and button
+      wrapper.appendChild(valSpan);
+      wrapper.appendChild(openBtn);
+
+      tdValue.appendChild(wrapper);
+    } else {
+      // Editable row
+      valSpan.contentEditable = "true";
+      valSpan.innerText = joinByMode(parts,'horizontal');
+      tdValue.appendChild(valSpan);
+    }
+
+    tr.appendChild(tdLabel);
+    tr.appendChild(tdValue);
+    tbody.appendChild(tr);
+  });
+
+  return block;
+}
+
+
+
+
+// ===== HANDLERS =====
+function attachHandlers(container){
+  // Copy-on-click
+  container.querySelectorAll(".copyable").forEach(td=>{
+    td.addEventListener('click',e=>{
+      if(e.target.tagName==='BUTTON') return; 
+      const sel=window.getSelection(); 
+      if(sel&&sel.toString().length>0) return; 
+      const val=td.querySelector('.value-text'); 
+      if(!val) return; 
+      navigator.clipboard.writeText(val.innerText).then(()=>{
+        td.style.backgroundColor="#d1ecf1"; setTimeout(()=>td.style.backgroundColor="",450);
+      });
+    });
+  });
+
+
+
+  // Case buttons
+  container.querySelectorAll(".case-group button").forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const table=btn.closest('.table-block');
+      const allVals=table.querySelectorAll('.value-text');
+      allVals.forEach(val=>{
+        let txt=val.dataset.isAddress==='true'?joinByMode(JSON.parse(val.dataset.parts||'[]'),val.dataset.addrmode):val.innerText; 
+        val.innerText=applyCase(txt,btn.dataset.mode); 
+        val.dataset.casemode=btn.dataset.mode; 
+      });
+      btn.parentNode.querySelectorAll("button").forEach(b=>b.classList.remove('active')); 
+      btn.classList.add('active');
+    });
+  });
+
+
+
+// ===== ADDRESS H/V BUTTONS (APPLY TO ALL ROWS) =====
+container.querySelectorAll(".addr-group button").forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const table = btn.closest('.table-block');
+    const allVals = table.querySelectorAll('.value-text'); // all rows
+
+    allVals.forEach(val=>{
+      val.dataset.addrmode = btn.dataset.mode;
+      if(val.dataset.parts){ 
+        // if parts exist (addresses)
+        val.innerText = joinByMode(JSON.parse(val.dataset.parts), btn.dataset.mode);
+      } else {
+        // non-address: just replace line breaks or commas depending on mode
+        const text = val.innerText.replace(/\n/g,'|'); // normalize existing
+        const parts = text.split('|').map(s=>s.trim()).filter(Boolean);
+        val.innerText = joinByMode(parts, btn.dataset.mode);
+      }
+    });
+
+    btn.parentNode.querySelectorAll("button").forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+
+}
+
+// ===== CATEGORY DROPDOWN =====
+const catSelect=document.getElementById('categorySelect');
+const catSet=new Set();
+tables.forEach(t=>{ 
+  const catRow=t.rows.find(r=>/category/i.test(r[0])); 
+  if(catRow) catRow[1].split(',').map(c=>c.trim()).forEach(c=>catSet.add(c)); 
+});
+Array.from(catSet).sort().forEach(c=>{ const opt=document.createElement('option'); opt.value=c; opt.textContent=c; catSelect.appendChild(opt); });
+
+
+// ===== SEARCH & FILTER =====
+function filterTables() {
+  const term = document.getElementById('searchBox').value.trim().toLowerCase();
+  const cat = catSelect.value.trim().toLowerCase();
+
+  const filtered = tables.filter(t => {
+    // Category match
+    const matchesCat =
+      cat === '' ||
+      t.rows.find(r => /category/i.test(r[0]) &&
+        r[1].toLowerCase().split(',').map(x => x.trim()).includes(cat));
+
+    if (!matchesCat) return false;
+
+    if (term === '') return true;
+
+    // Split search query into words
+    const words = term.split(/\s+/);
+
+    // Check each word exists somewhere in label or value
+    return words.every(w =>
+      t.rows.some(r => r[0].toLowerCase().includes(w) || r[1].toLowerCase().includes(w))
+    );
+  });
+
+  renderTables(filtered);
+}
+
+// Attach event listeners as before
+document.getElementById('searchBox').addEventListener('input', filterTables);
+catSelect.addEventListener('change', filterTables);
+
+
+
+// ===== INITIAL RENDER =====
+renderTables(tables);
+
+
+const e = "eA==";
+let prompt = atob("SW5zZXJ0IEtleQ==");
+let input = window.prompt(prompt);
+if (btoa(input) !== e) {
+  alert(atob("SSdtIGxlYXZpbmcgb24gYSBqZXRwbGFuZQ=="));
+  window.location.href = atob("aHR0cHM6Ly9nb29nbGUuY29t"); 
+}
+
+
+</script>
+
+
+
+</script>
+
+
+<br><br><br>
+<br><br><br>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,252 @@
+/* address book style */
+
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f7;
+  padding: 40px;
+  color: #0f2943;
+}
+
+h1 {
+    font-size: xxx-large;
+}
+
+
+.category-header {
+  margin-top: 1.5em;
+  font-size: xx-large;
+  color: #326089;
+  display: flex;
+  align-items: center;   /* vertical centering */
+  justify-content: flex-start; /* or center horizontally if desired */
+  gap: 8px; /* space between arrow and text */
+}
+
+
+.category-title {
+  font-size: 1.3em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: 6px;   /* makes underline thicker */
+  text-underline-offset: 4px;       /* adds space between text and underline */
+  text-decoration-color: #CF4A22;   /* optional: accent color */
+}
+
+
+/* Space above each table title */
+.item-title {
+  margin-top: 2.5em;
+  font-size: x-large;
+
+}
+
+input, select {
+  font-size: 1.3rem; /* larger for readability */
+  padding: 0.75em 1.5em; /* comfortable padding */
+  border: 1px solid #d1d1d6; /* subtle gray border like macOS */
+  border-radius: 12px; /* soft rounded corners */
+  background: #f9f9f9; /* light subtle background */
+  color: #1c1c1e; /* dark text for contrast */
+  outline: none;
+  margin-right: 12px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); /* slight inner depth */
+  transition: all 0.2s ease;
+}
+
+/* Focus state */
+input:focus, select:focus {
+  border-color: #007aff; /* Apple blue */
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); /* subtle focus ring */
+  background: #fff;
+}
+
+#searchBox {
+  width: 400px;        /* larger fixed width */
+  max-width: 80%;      /* scales down on smaller screens */
+  font-size: 1.3rem;   /* matches your larger input style */
+  padding: 0.75em 1.5em;
+  border-radius: 12px;
+  border: 1px solid #d1d1d6;
+  background: #f9f9f9;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  outline: none;
+  transition: all 0.2s ease;
+  margin-bottom: 12px; /* space below search box */
+}
+
+#searchBox:focus {
+  border-color: #007aff;
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.2);
+  background: #fff;
+}
+/* Dropdown arrow style for select */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><polygon points='0,0 12,0 6,6' fill='%23999'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75em center;
+  background-size: 12px 12px;
+  padding-right: 2.5em; /* space for arrow */
+  cursor: pointer;
+}
+
+
+/* Table container with horizontal scroll for small screens */
+.table-block {
+  margin-top: 30px;
+  overflow-x: auto;
+}
+
+/* Table styling */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  min-width: 600px;
+  background: #fff;
+  table-layout: auto;
+  border: 1px solid #ccc; /* subtle border */
+}
+
+
+/* Table header */
+table thead th {
+  background: #c2e0ef;  /* header row blue */
+  color: #0f2943;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: left;
+  padding: 14px 16px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Zebra striping for tbody */
+tbody tr:nth-child(odd) {
+  background-color: #f5fcff;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* Cells */
+th, td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e5ea;
+  vertical-align: top;
+}
+
+/* Column widths & wrap rules */
+
+th:nth-child(1), td:nth-child(1) {
+  min-width: 120px;
+  width: 20%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th:nth-child(2), td:nth-child(2) {
+  width: 80%;
+  white-space: normal;
+  word-break: break-word;
+}
+
+
+/* Last row border removed */
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Copyable cells */
+td.copyable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.25s;
+}
+
+td.copyable:hover {
+  background-color: #f0f0f5;
+}
+
+/* Editable cells */
+.label-cell, .value-text {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.label-cell[contenteditable="true"], .value-text[contenteditable="true"] {
+  outline: none;
+}
+
+/* Buttons group */
+.btn-group {
+  display: inline-flex;
+  gap: 10px;
+  vertical-align: top;
+  margin-bottom: 8px;
+  margin-right: 2.5em;
+}
+
+.btn-group button {
+  padding: 0.5em;
+  width: 100px;
+  border: 1px solid #c9c9ce;
+  border-radius: 6px;
+  background: #f2f2f7;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-group button:hover {
+  background: #e5e5ea;
+}
+
+.btn-group button.active {
+  background: #dceafd;
+  border-color: #b3d4ff;
+}
+
+/* Active H/V buttons (address mode) */
+.addr-group button.active {
+  background: #c8f0dc; /* a different greenish shade */
+  border-color: #8dd9a6;
+}
+
+
+/* open website button */
+.open-btn {
+  background-color: #0f2943;
+  min-width: 60px;
+  color: #fff;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background-color 0.2s;
+  margin-left: 2em;
+}
+
+.open-btn:hover {
+  background-color: #16365c;
+}
+
+
+
+/* Controls wrapper */
+.controls {
+  margin-bottom: 8px;
+}
+
+/* Responsive: shrink tables on small screens */
+@media (max-width: 768px) {
+  table {
+    min-width: 0;
+  }
+}
