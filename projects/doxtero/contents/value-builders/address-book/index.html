@@ -437,7 +437,7 @@ function renderTables(list){
     Object.keys(catMap).sort().forEach(cat => {
       const catBlock = document.createElement('div'); 
       catBlock.className = 'table-block'; 
-      catBlock.innerHTML = `<h2 class="category-header">★ Category : <span class="category-title">${cat}</span></h2>`;
+      catBlock.innerHTML = `<h2 class="category-header">★ <span class="category-title">${cat}</span></h2>`;
       catMap[cat].forEach(group => {
         const block = createTableBlock(group);
         catBlock.appendChild(block);
