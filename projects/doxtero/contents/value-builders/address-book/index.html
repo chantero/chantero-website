@@ -47,7 +47,7 @@ const tables = [
 // `],
 //       ["Notes"," ... "],
 //       ["Category"," ... , ... "],
-//     ],
+//     ]
 // },
 
 
@@ -70,7 +70,7 @@ const tables = [
     // `],
     //       ["Notes"," ... "],
           ["Category","bank, islamic"],
-        ],
+        ]
     },
 
 
@@ -90,7 +90,7 @@ const tables = [
     // `],
     //       ["Notes"," ... "],
           ["Category","bank, conventional"],
-        ],
+        ]
     },
 
 
@@ -109,7 +109,7 @@ const tables = [
       ["Website", "https://ocbc.com.my"],
       // ["Notes",""],
       ["Category","bank, conventional"]
-    ],
+    ]
   },
   
 
@@ -128,8 +128,8 @@ Tel: 6-088-232177
 Fax: 6-088-261852
 `],
       // ["Notes",""],
-      ["Category","bank, islamic"]
-    ],
+      ["Category","bank, islamic"],
+    ]
   },
 
 
@@ -149,7 +149,7 @@ Fax: 6-088-261852
 // `],
 //       ["Notes"," ... "],
 //       ["Category"," ... , ... "],
-//     ],
+    ],
 },
 
 
@@ -170,7 +170,7 @@ Fax: 088-261852
 `],
       ["Notes",""],
       ["Category","bank"]
-    ],
+    ]
   },
 
 
@@ -343,7 +343,7 @@ Fax: 088-720843
     ["Website",""],
     ["Notes",""],
     ["Category","lawyer"]
-  ],
+  ]
 },
 
 
@@ -558,19 +558,24 @@ function createTableBlock(group) {
   const block = document.createElement('div');
   const firstAddress = group.rows.find(r => /address/i.test(r[0]));
 
-  block.innerHTML = `<h3 class="item-title">${group.title}</h3>
-    <div class="controls">
-      <div class="btn-group case-group">
-        <button data-type="case" data-mode="upper">Upper</button>
-        <button data-type="case" data-mode="lower">Lower</button>
-        <button data-type="case" data-mode="title">Title</button>
+    block.innerHTML = `<h3 class="item-title">${group.title}</h3>
+      <div class="controls">
+        <div class="btn-group case-group">
+          <button data-type="case" data-mode="upper">Upper</button>
+          <button data-type="case" data-mode="lower">Lower</button>
+          <button data-type="case" data-mode="title">Title</button>
+        </div>
+        ${firstAddress ? `<div class="btn-group addr-group">
+          <button data-type="addr" data-mode="horizontal" class="active">H</button>
+          <button data-type="addr" data-mode="vertical">V</button>
+          <button data-type="addr" data-mode="original">X</button>
+        </div>` : ''}
       </div>
-      ${firstAddress ? `<div class="btn-group addr-group"><button data-type="addr" data-mode="horizontal" class="active">H</button><button data-type="addr" data-mode="vertical">V</button></div>` : ''}
-    </div>
-    <table>
-      <thead><tr><th>Label</th><th>Value</th></tr></thead>
-      <tbody></tbody>
-    </table>`;
+      <table>
+        <thead><tr><th>Label</th><th>Value</th></tr></thead>
+        <tbody></tbody>
+      </table>`;
+
 
   const tbody = block.querySelector('tbody');
 
@@ -678,28 +683,35 @@ function attachHandlers(container){
 
 
 // ===== ADDRESS H/V BUTTONS (APPLY TO ALL ROWS) =====
-container.querySelectorAll(".addr-group button").forEach(btn=>{
-  btn.addEventListener('click',()=>{
+container.querySelectorAll(".addr-group button").forEach(btn => {
+  btn.addEventListener('click', () => {
     const table = btn.closest('.table-block');
-    const allVals = table.querySelectorAll('.value-text'); // all rows
+    const allVals = table.querySelectorAll('.value-text');
 
-    allVals.forEach(val=>{
-      val.dataset.addrmode = btn.dataset.mode;
-      if(val.dataset.parts){ 
-        // if parts exist (addresses)
-        val.innerText = joinByMode(JSON.parse(val.dataset.parts), btn.dataset.mode);
-      } else {
-        // non-address: just replace line breaks or commas depending on mode
-        const text = val.innerText.replace(/\n/g,'|'); // normalize existing
-        const parts = text.split('|').map(s=>s.trim()).filter(Boolean);
-        val.innerText = joinByMode(parts, btn.dataset.mode);
+    allVals.forEach(val => {
+      if (val.dataset.isAddress !== 'true') return;  // only address rows
+      const parts = JSON.parse(val.dataset.parts || '[]');
+
+      switch(btn.dataset.mode) {
+        case 'horizontal':
+          val.innerText = parts.join(', ');
+          break;
+        case 'vertical':
+          val.innerText = parts.join('\n');
+          break;
+        case 'original':
+          val.innerText = parts.join('|');
+          break;
       }
+
+      val.dataset.addrmode = btn.dataset.mode;
     });
 
-    btn.parentNode.querySelectorAll("button").forEach(b=>b.classList.remove('active'));
+    btn.parentNode.querySelectorAll("button").forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   });
 });
+
 
 
 }
