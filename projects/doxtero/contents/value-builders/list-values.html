@@ -6,25 +6,25 @@
 <link rel="stylesheet" href="../../assets/styles/style.css">
 </head>
 
-
 <body>
 <div class="container">
-
 
 <h1>List Values</h1>
 
 <div class="column-container">
 
-
   <div class="input-container">
 
-    <h2>Insert List Items</h2>
-    <div id="list_items">
-      <!-- List items inserted here -->
+    <!-- Paste multi-line container -->
+    <div class="paste-container">
+      <h2>Paste / Edit Multi-line Text</h2>
+      <textarea id="paste_input" rows="5" placeholder="Paste or type text here..."></textarea>
     </div>
 
-    <button id="add_line_button" type="button">Add Line</button>
+    <h2>Insert List Items</h2>
+    <div id="list_items"></div>
 
+    <button id="add_line_button" type="button">Add Line</button>
     <button class="color-light-blue" id="to_uppercase" type="button">Upper</button>
     <button class="color-light-blue" id="to_lowercase" type="button">Lower</button>
     <button class="color-light-blue" id="to_titlecase" type="button">Title</button>
@@ -36,7 +36,7 @@
       <h2>List Values</h2>
 
       <div class="note-yellow">
-      Use this to format the "values" for "list variables"
+        Use this to format the "values" for "list variables"
       </div>
 
       <div id="output" class="output-box" contenteditable="true" onclick="copyToClipboard(this)"></div>
@@ -46,12 +46,18 @@
 </div>
 
 <script>
+
+
+
 const list_items_div = document.getElementById('list_items');
 const add_line_button = document.getElementById('add_line_button');
 const output_div = document.getElementById('output');
+const pasteInput = document.getElementById('paste_input');
 
-let lines = ['', '', '']; // default 3 empty lines
+let lines = ['', '', '']; // initial 3 empty lines
+let lineTextareas = [];   // store textarea references
 
+// Create individual list item
 function createLineElement(text, index) {
   const container = document.createElement('div');
   container.className = 'list-item';
@@ -64,6 +70,7 @@ function createLineElement(text, index) {
   textarea.addEventListener('input', () => {
     lines[index] = textarea.value;
     updateOutput();
+    pasteInput.value = lines.join('\n');
   });
 
   const btns = document.createElement('div');
@@ -72,33 +79,31 @@ function createLineElement(text, index) {
   const button_up = document.createElement('button');
   button_up.type = 'button';
   button_up.textContent = '↑';
-  button_up.title = 'Move Up';
   button_up.disabled = (index === 0);
   button_up.addEventListener('click', () => {
     if (index === 0) return;
     [lines[index - 1], lines[index]] = [lines[index], lines[index - 1]];
-    renderLines();
+    renderLines(index - 1); // preserve focus
   });
 
   const button_down = document.createElement('button');
   button_down.type = 'button';
   button_down.textContent = '↓';
-  button_down.title = 'Move Down';
   button_down.disabled = (index === lines.length - 1);
   button_down.addEventListener('click', () => {
     if (index === lines.length - 1) return;
     [lines[index + 1], lines[index]] = [lines[index], lines[index + 1]];
-    renderLines();
+    renderLines(index + 1); // preserve focus
   });
 
   const button_delete = document.createElement('button');
   button_delete.type = 'button';
   button_delete.textContent = '✕';
-  button_delete.title = 'Delete Line';
   button_delete.style.backgroundColor = '#d9534f';
   button_delete.addEventListener('click', () => {
     lines.splice(index, 1);
-    renderLines();
+    if (lines.length === 0) lines = ['', '', ''];
+    renderLines(Math.min(index, lines.length - 1));
   });
 
   btns.appendChild(button_up);
@@ -108,46 +113,79 @@ function createLineElement(text, index) {
   container.appendChild(textarea);
   container.appendChild(btns);
 
+  lineTextareas[index] = textarea;
   return container;
 }
 
-function renderLines() {
+// Render all lines and optionally focus a specific index
+function renderLines(focusIndex = null) {
   list_items_div.innerHTML = '';
-  if (lines.length === 0) {
-    list_items_div.textContent = '';
-  } else {
-    lines.forEach((line, idx) => {
-      list_items_div.appendChild(createLineElement(line, idx));
-    });
+  lineTextareas = [];
+
+  lines.forEach((line, idx) => {
+    list_items_div.appendChild(createLineElement(line, idx));
+  });
+
+  syncAll();
+
+  if (focusIndex !== null && lineTextareas[focusIndex]) {
+    lineTextareas[focusIndex].focus();
+    const val = lineTextareas[focusIndex].value;
+    lineTextareas[focusIndex].setSelectionRange(val.length, val.length);
   }
+}
+
+// Sync output and paste box
+function syncAll() {
   updateOutput();
+  pasteInput.value = lines.join('\n');
 }
 
+// Update the output box
 function updateOutput() {
-  // Filter out empty lines (trimmed)
   const filtered = lines.filter(line => line.trim() !== '');
-
-  if (filtered.length === 0) {
-    output_div.textContent = '';
-    return;
-  }
-
-  // Replace newlines in each line with literal <br>
-  const replaced = filtered.map(line => line.replace(/\n/g, '<br>'));
-
-  // Join with ' | '
-  output_div.textContent = replaced.join('|');
+  output_div.textContent = filtered.join('|');
 }
 
+// Apply a function to all lines and sync
+function applyToLines(callback) {
+  lines = lines.map(callback);
+  lines.forEach((line, idx) => {
+    if (lineTextareas[idx]) lineTextareas[idx].value = line;
+  });
+  syncAll();
+}
+
+// Event listeners
 add_line_button.addEventListener('click', () => {
   lines.push('');
+  renderLines(lines.length - 1); // focus on new line
+});
+
+pasteInput.addEventListener('input', () => {
+  lines = pasteInput.value.split(/\r?\n/);
   renderLines();
 });
 
-renderLines();
+document.getElementById('to_uppercase').addEventListener('click', () => {
+  applyToLines(l => l.toUpperCase());
+});
 
+document.getElementById('to_lowercase').addEventListener('click', () => {
+  applyToLines(l => l.toLowerCase());
+});
 
+document.getElementById('to_titlecase').addEventListener('click', () => {
+  applyToLines(l => l.replace(/\w\S*/g, txt =>
+    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  ));
+});
 
+document.getElementById('clear_all').addEventListener('click', () => {
+  applyToLines(() => '');
+});
+
+// Copy output to clipboard
 function copyToClipboard(el) {
   const text = el.textContent || el.innerText;
   navigator.clipboard.writeText(text).then(() => {
@@ -156,41 +194,15 @@ function copyToClipboard(el) {
   });
 }
 
+// Initial render
+renderLines();
 
-
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, txt =>
-    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-  );
-}
-
-document.getElementById('to_uppercase').addEventListener('click', () => {
-  lines = lines.map(line => line.toUpperCase());
-  renderLines();
-});
-
-document.getElementById('to_lowercase').addEventListener('click', () => {
-  lines = lines.map(line => line.toLowerCase());
-  renderLines();
-});
-
-document.getElementById('to_titlecase').addEventListener('click', () => {
-  lines = lines.map(line => toTitleCase(line));
-  renderLines();
-});
-
-
-document.getElementById('clear_all').addEventListener('click', () => {
-  lines = lines.map(() => '');
-  renderLines();
-});
 
 
 
 
 
 </script>
-
 
 <script src="../assets/scripts/scripts.js"></script>
 <br><br><br><br><br>
