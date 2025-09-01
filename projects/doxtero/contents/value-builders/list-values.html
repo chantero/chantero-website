@@ -17,11 +17,11 @@
 
     <!-- Paste multi-line container -->
     <div class="paste-container">
-      <h2>Paste / Edit Multi-line Text</h2>
-      <textarea id="paste_input" rows="5" placeholder="Paste or type text here..."></textarea>
+      <h2>≡ Multi-line Text Input</h2>
+      <textarea id="paste_input" rows="6" placeholder="Paste or type text here..."></textarea>
     </div>
 
-    <h2>Insert List Items</h2>
+    <h2>⚟ Split List Items Input</h2>
     <div id="list_items"></div>
 
     <button id="add_line_button" type="button">Add Line</button>
@@ -54,7 +54,7 @@ const add_line_button = document.getElementById('add_line_button');
 const output_div = document.getElementById('output');
 const pasteInput = document.getElementById('paste_input');
 
-let lines = ['', '', '']; // initial 3 empty lines
+let lines = ['',]; // initial 1
 let lineTextareas = [];   // store textarea references
 
 // Create individual list item
