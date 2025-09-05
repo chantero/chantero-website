@@ -349,21 +349,39 @@ textarea {
   </div><br>
 
 
-      <h2>Step 1: Define Variables</h2>
+<!--       <h2>Step 1: Define Variables</h2>
       <input type="text" id="var-input" placeholder="Insert variable - example: name">
       <button class="btn" onclick="addVariable()">+ Add Variable</button>
       <br><br>
-      <div class="var-list" id="var-list"></div>
+      <div class="var-list" id="var-list"></div> -->
+    
+    <!-- Step 1: Define Variables -->
+<h2>Step 1: Define Variables</h2>
+<input type="text" id="var-input" placeholder="Insert variable - example: name">
+<button class="btn" onclick="addVariable()">+ Add Variable</button>
+<button class="btn" onclick="clearVariables()" style="background:#e74c3c">Clear All Variables</button>
+<br><br>
+<div class="var-list" id="var-list"></div>
+
+
     </div>
 
     <div class="section">
 
         <br>
-      <h2>Step 2: Add Variable & Value Sets</h2>
+<!--       <h2>Step 2: Add Variable & Value Sets</h2>
       <button class="btn" onclick="addSet()">+ Add Set</button>
       <br><br>
       <div id="sets-container"></div>
-    </div>
+ -->    
+<h2>Step 2: Add Variable & Value Sets</h2>
+<button class="btn" onclick="addSet()">+ Add Set</button>
+<button class="btn" onclick="clearSets()" style="background:#e74c3c">Clear All Sets</button>
+<br><br>
+<div id="sets-container"></div>
+
+
+</div>
 
     <div class="section">
         <br>
@@ -375,91 +393,304 @@ textarea {
 
 
 <script>
-  function switchTab(tab) {
+
+
+// ----------------- TAB SWITCH -----------------
+function switchTab(tab) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
     document.querySelector(`.tab[onclick*="${tab}"]`).classList.add('active');
     document.getElementById(`tab-${tab}`).classList.add('active');
-  }
+}
 
-  function copyToClipboard(el) {
+// ----------------- COPY TO CLIPBOARD -----------------
+function copyToClipboard(el) {
     const text = el.innerText.replace("Copied!", "").trim();
     navigator.clipboard.writeText(text);
     const indicator = el.querySelector(".copied-indicator");
     if (indicator) {
-      indicator.style.opacity = 1;
-      setTimeout(() => { indicator.style.opacity = 0; }, 1000);
+        indicator.style.opacity = 1;
+        setTimeout(() => { indicator.style.opacity = 0; }, 1000);
     }
-  }
+}
 
-  // Simple Repeater
-  document.getElementById("simple-condition").addEventListener("input", updateSimple);
-  document.getElementById("simple-text").addEventListener("input", updateSimple);
+// ----------------- SIMPLE REPEATER -----------------
+document.getElementById("simple-condition").addEventListener("input", updateSimple);
+document.getElementById("simple-text").addEventListener("input", updateSimple);
 
-  function updateSimple() {
+function updateSimple() {
     const cond = document.getElementById("simple-condition").value.trim();
     let text = document.getElementById("simple-text").value.trim().replace(/\n/g, "<br>");
     document.getElementById("output-r").innerText   = `[[r? ${cond}]]${text}[[/]]`;
     document.getElementById("output-rol").innerText = `[[rol? ${cond}]]${text}[[/]]`;
     document.getElementById("output-rul").innerText = `[[rul? ${cond}]]${text}[[/]]`;
     document.getElementById("output-rh").innerText  = `[[rh? ${cond}]]${text}[[/]]`;
-  }
+}
 
-  // Variable Repeater
-  document.getElementById("var-condition").addEventListener("input", updateVar);
-  document.getElementById("var-text").addEventListener("input", updateVar);
+// ----------------- VARIABLE REPEATER -----------------
+document.getElementById("var-condition").addEventListener("input", updateVar);
+document.getElementById("var-text").addEventListener("input", updateVar);
 
-  function updateVar() {
+function updateVar() {
     const cond = document.getElementById("var-condition").value.trim();
     let text = document.getElementById("var-text").value.trim().replace(/\n/g, "<br>");
     document.getElementById("output-x").innerText   = `[[x? ${cond}]]${text}[[/]]`;
     document.getElementById("output-xol").innerText = `[[xol? ${cond}]]${text}[[/]]`;
     document.getElementById("output-xul").innerText = `[[xul? ${cond}]]${text}[[/]]`;
     document.getElementById("output-xh").innerText  = `[[xh? ${cond}]]${text}[[/]]`;
-  }
+}
 
-  // Variable Values Tool
-  let variables = [];
+// ----------------- VARIABLE VALUES TOOL -----------------
+let variables = [];
 
-  function addVariable() {
-    const varName = document.getElementById("var-input").value.trim();
-    if (varName && !variables.includes(varName)) {
-      variables.push(varName);
-      document.getElementById("var-list").innerHTML = variables.map(v => `<span>((${v}))</span>`).join(" ");
-      document.getElementById("var-input").value = "";
+
+// ---------- VARIABLES ----------
+
+// Add variable(s)
+function addVariable() {
+    let input = document.getElementById("var-input").value.trim();
+
+    if (input.startsWith("[v:") && input.endsWith("]")) {
+        input = input.slice(3, -1).trim(); // remove [v: ...]
     }
-  }
 
-  function addSet() {
+    const parts = input.split("//").map(v => v.trim()).filter(v => v !== "");
+
+    parts.forEach(varName => {
+        if (!variables.includes(varName)) {
+            variables.push(varName);
+            // Add new input field to all existing sets
+            document.querySelectorAll(".set-row").forEach(row => {
+                const div = document.createElement("div");
+                div.classList.add("input-group");
+                div.innerHTML = `<input type="text" data-var="${varName}" placeholder=" " />
+                                 <label>${varName}</label>`;
+                row.insertBefore(div, row.querySelector("button") || null);
+                div.querySelector("input").addEventListener("input", updateValues);
+            });
+        }
+    });
+
+    updateVarList();
+    document.getElementById("var-input").value = "";
+}
+
+// Update variable list display with delete and drag handle
+function updateVarList() {
+    const container = document.getElementById("var-list");
+    container.innerHTML = variables.map((v, i) => `
+        <span draggable="true" data-index="${i}" class="draggable-var">
+            <span style="cursor:grab;">⋮⋮</span> ((${v})) <span style="cursor:grab;">⋮⋮</span> 
+            <button onclick="deleteVariable(${i})" style="margin-left:4px;background:#e74c3c;color:white;border:none;border-radius:3px;cursor:pointer;">x</button>
+        </span>
+    `).join("");
+
+    const draggables = container.querySelectorAll(".draggable-var");
+    draggables.forEach(el => {
+        el.addEventListener("dragstart", dragStartVar);
+        el.addEventListener("dragover", dragOverVar);
+        el.addEventListener("drop", dropVar);
+    });
+}
+
+// Delete variable
+function deleteVariable(index) {
+    const varName = variables[index];
+    variables.splice(index, 1);
+    updateVarList();
+
+    // Remove input fields for this variable in all existing sets
+    document.querySelectorAll(".set-row").forEach(row => {
+        row.querySelectorAll(`input[data-var="${varName}"]`).forEach(input => {
+            input.parentElement.remove();
+        });
+    });
+
+    updateValues();
+}
+
+// Clear all variables
+function clearVariables() {
+    variables = [];
+    updateVarList();
+    // Remove only inputs in sets, keep sets container empty
+    document.querySelectorAll(".set-row").forEach(row => {
+        row.innerHTML = "";
+    });
+    updateValues();
+}
+
+
+
+
+
+
+// Rebuild all set rows to match new variable order without losing values
+function reorderSetsAfterVarChange() {
+    const sets = document.querySelectorAll(".set-row");
+
+    sets.forEach(row => {
+        const oldValues = {};
+        row.querySelectorAll("input").forEach(inp => {
+            oldValues[inp.dataset.var] = inp.value;
+        });
+
+        // Clear row
+        row.innerHTML = "";
+
+        // Re-add inputs in the new variable order
+        variables.forEach(v => {
+            const div = document.createElement("div");
+            div.classList.add("input-group");
+            div.innerHTML = `<input type="text" data-var="${v}" placeholder=" " value="${oldValues[v] || ''}" />
+                             <label>${v}</label>`;
+            row.appendChild(div);
+
+            div.querySelector("input").addEventListener("input", updateValues);
+        });
+
+        // Re-add row buttons (up/down/delete)
+        const upBtn = document.createElement("button");
+        upBtn.className = "btn";
+        upBtn.style.background = "#3498db";
+        upBtn.style.marginLeft = "5px";
+        upBtn.innerText = "↑";
+        upBtn.onclick = () => moveSetUp(row);
+        row.appendChild(upBtn);
+
+        const downBtn = document.createElement("button");
+        downBtn.className = "btn";
+        downBtn.style.background = "#3498db";
+        downBtn.style.marginLeft = "2px";
+        downBtn.innerText = "↓";
+        downBtn.onclick = () => moveSetDown(row);
+        row.appendChild(downBtn);
+
+        const delBtn = document.createElement("button");
+        delBtn.className = "btn";
+        delBtn.style.background = "#e74c3c";
+        delBtn.style.marginLeft = "5px";
+        delBtn.innerText = "Delete Set";
+        delBtn.onclick = () => deleteSet(row);
+        row.appendChild(delBtn);
+    });
+
+    updateValues();
+}
+
+// ----------------- DRAG & DROP VARIABLES -----------------
+let draggedVarIndex = null;
+function dragStartVar(e) { draggedVarIndex = e.currentTarget.dataset.index; }
+function dragOverVar(e) { e.preventDefault(); }
+function dropVar(e) {
+    const targetIndex = e.currentTarget.dataset.index;
+    if (draggedVarIndex === null || targetIndex === draggedVarIndex) return;
+
+    // Reorder variables array
+    const temp = variables[draggedVarIndex];
+    variables.splice(draggedVarIndex, 1);
+    variables.splice(targetIndex, 0, temp);
+
+    draggedVarIndex = null;
+    updateVarList();
+    reorderSetsAfterVarChange(); // <-- preserve values, rebuild inputs
+}
+
+
+// ---------- SETS ----------
+
+// Add a new set row
+function addSet() {
+    if (variables.length === 0) return alert("Add variables first!");
     const container = document.getElementById("sets-container");
     const div = document.createElement("div");
     div.classList.add("set-row");
+
     div.innerHTML = variables.map(v => `
       <div class="input-group">
         <input type="text" data-var="${v}" placeholder=" " />
         <label>${v}</label>
       </div>
-    `).join("");
+    `).join("") + `
+    <button class="btn" style="background:#3498db; margin-left:5px;" onclick="moveSetUp(this.parentElement)">↑</button>
+    <button class="btn" style="background:#3498db; margin-left:2px;" onclick="moveSetDown(this.parentElement)">↓</button>
+    <button class="btn" style="background:#e74c3c; margin-left:5px;" onclick="deleteSet(this.parentElement)">Delete Set</button>`;
+
     container.appendChild(div);
     div.querySelectorAll("input").forEach(inp => inp.addEventListener("input", updateValues));
-  }
+}
 
-  function updateValues() {
+
+function moveSetUp(row) {
+    const container = document.getElementById("sets-container");
+    if (row.previousElementSibling) {
+        container.insertBefore(row, row.previousElementSibling);
+        updateValues();
+    }
+}
+
+function moveSetDown(row) {
+    const container = document.getElementById("sets-container");
+    if (row.nextElementSibling) {
+        container.insertBefore(row.nextElementSibling, row);
+        updateValues();
+    }
+}
+
+
+
+// Delete a set
+function deleteSet(row) {
+    row.remove();
+    updateValues();
+}
+
+// Clear all sets
+function clearSets() {
+    document.getElementById("sets-container").innerHTML = "";
+    updateValues();
+}
+
+// ---------- DRAG & DROP SETS ----------
+let draggedSet = null;
+function dragStartSet(e) { draggedSet = e.currentTarget; }
+function dragOverSet(e) { e.preventDefault(); }
+function dropSet(e) {
+    const container = document.getElementById("sets-container");
+    if (!draggedSet || draggedSet === e.currentTarget) return;
+    container.insertBefore(draggedSet, e.currentTarget);
+    draggedSet = null;
+    updateValues();
+}
+
+// ---------- UPDATE VALUES OUTPUT ----------
+function updateValues() {
     const sets = document.querySelectorAll(".set-row");
     let allSets = [];
     sets.forEach(row => {
       let parts = [];
       row.querySelectorAll("input").forEach(inp => {
-        if (inp.value.trim()) {
-          parts.push(`${inp.dataset.var} = ${inp.value.trim()}`);
-        }
+        if (inp.value.trim()) parts.push(`${inp.dataset.var} = ${inp.value.trim()}`);
       });
-      if (parts.length > 0) {
-        allSets.push(parts.join(" // "));
-      }
+      if (parts.length > 0) allSets.push(parts.join(" // "));
     });
     document.getElementById("output-values").innerText = allSets.join(" | ");
-  }
+}
+
+
+
+
+
+
+// Trigger addVariable() when Enter is pressed
+document.getElementById("var-input").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        e.preventDefault(); // prevent form submission / newline
+        addVariable();
+    }
+});
+
+
 </script>
 
 <br><br><br>
