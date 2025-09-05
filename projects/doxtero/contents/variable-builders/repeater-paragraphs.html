@@ -91,7 +91,7 @@ h2 {
 input[type="text"], textarea {
   display: block;
   width: 100%;              /* always within parent */
-  max-width: 300px;         /* prevent overspill */
+  max-width: auto;         /* prevent overspill */
   box-sizing: border-box;   /* include padding/border */
   padding: 8px;
   border: 1px solid #ccc;
@@ -349,15 +349,9 @@ textarea {
   </div><br>
 
 
-<!--       <h2>Step 1: Define Variables</h2>
-      <input type="text" id="var-input" placeholder="Insert variable - example: name">
-      <button class="btn" onclick="addVariable()">+ Add Variable</button>
-      <br><br>
-      <div class="var-list" id="var-list"></div> -->
-    
-    <!-- Step 1: Define Variables -->
 <h2>Step 1: Define Variables</h2>
-<input type="text" id="var-input" placeholder="Insert variable - example: name">
+
+<input type="text" id="var-input" placeholder="Insert variables - example:  [SINGLE VARIABLE]    name       [OR MULTIPLE VARIABLES at one go]   name // age     [OR]    [v: name // age]  ">
 <button class="btn" onclick="addVariable()">+ Add Variable</button>
 <button class="btn" onclick="clearVariables()" style="background:#e74c3c">Clear All Variables</button>
 <br><br>
