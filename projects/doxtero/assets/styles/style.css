@@ -48,6 +48,14 @@ body, html {
 
 }
 
+
+.container-2rows {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  margin-bottom: 2em;
+}
+
 .container-squished {
     width: 70%;
     margin: 0 auto;
@@ -360,3 +368,6 @@ h1,
 .center {
     text-align: center;
 }
+
+
+

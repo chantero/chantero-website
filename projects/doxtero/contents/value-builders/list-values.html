@@ -7,43 +7,66 @@
 </head>
 
 <body>
+
 <div class="container">
 
-<h1>List Values</h1>
+  <h1>List Values</h1>
 
-<div class="column-container">
-
-  <div class="input-container">
-
-    <!-- Paste multi-line container -->
-    <div class="paste-container">
-      <h2>≡ Multi-line Text Input</h2>
-      <textarea id="paste_input" rows="5" placeholder="Paste or type text here..."></textarea>
-    </div>
-
-    <h2>⚟ Split List Items Input</h2>
-    <div id="list_items"></div>
-
-    <button id="add_line_button" type="button">Add Line</button>
-    <button class="color-light-blue" id="to_uppercase" type="button">Upper</button>
-    <button class="color-light-blue" id="to_lowercase" type="button">Lower</button>
-    <button class="color-light-blue" id="to_titlecase" type="button">Title</button>
-    <button class="color-red" id="clear_all" type="button">Clear</button>
-  </div>
-
-  <div class="output-container">
-    <div>
-      <h2>List Values</h2>
-
-      <div class="note-yellow">
-        Use this to format the "values" for "list variables"
+  <!-- Row 1: Inputs -->
+  <div class="container-2rows">
+    <div class="input-container">
+      <div class="paste-container">
+        <h2>≡ Multi-line Text Input (Vertical List)</h2>
+        <textarea id="paste_input" rows="5" placeholder="Paste or type text here..."></textarea>
       </div>
+    </div>
 
-      <div id="output" class="output-box" contenteditable="true" onclick="copyToClipboard(this)"></div>
+    <div class="input-container">
+      <h2>⚟ Split List Items Input</h2>
+      <div id="list_items"></div>
+      <button id="add_line_button" type="button">Add Line</button>
+      <button class="color-light-blue" id="to_uppercase" type="button">Upper</button>
+      <button class="color-light-blue" id="to_lowercase" type="button">Lower</button>
+      <button class="color-light-blue" id="to_titlecase" type="button">Title</button>
+      <button class="color-red" id="clear_all" type="button">Clear</button>
     </div>
   </div>
 
+  <br><br>
+
+  <!-- Row 2: Outputs -->
+  <div class="container-2rows">
+    <div class="output-container">
+      <h2>List Values </h2>
+      <div class="note-yellow">
+        Values joined with <code>|</code>
+      </div>
+      <div id="output_pipe" class="output-box" contenteditable="true" onclick="copyToClipboard(this)"></div>
+    </div>
+
+
+    <div class="output-container">
+      <h2>Horizontal Line (Custom)</h2>
+      <div class="note-yellow">
+        Values joined with ➜ 
+
+        <input id="custom_delimiter" 
+               type="text" 
+               value=", " 
+               style="width:4em; 
+                      text-align:center; 
+                      font-weight:bold; 
+                      border:4px solid #EC4899; 
+                      background-color:white">
+
+      </div>
+      <div id="output_custom" class="output-box" contenteditable="true" onclick="copyToClipboard(this)"></div>
+    </div>
+
+<br><br><br>
 </div>
+
+
 
 <script>
 
@@ -141,11 +164,31 @@ function syncAll() {
   pasteInput.value = lines.join('\n');
 }
 
-// Update the output box
+
 function updateOutput() {
   const filtered = lines.filter(line => line.trim() !== '');
-  output_div.textContent = filtered.join('|');
+
+  // Pipe-separated
+  document.getElementById("output_pipe").innerText = filtered.join(" | ");
+
+  // Always use value from the "form input" (even if empty or spaces)
+  let customDelimiter = document.getElementById("custom_delimiter").value;
+
+  // Interpret escapes (\n = newline, \t = tab)
+  customDelimiter = customDelimiter
+    .replace(/\\n/g, "\n")
+    .replace(/\\t/g, "\t");
+
+  // Custom-separated output
+  document.getElementById("output_custom").innerText = filtered.join(customDelimiter);
 }
+
+
+// Attach live update when delimiter changes
+document.getElementById("custom_delimiter").addEventListener("input", updateOutput);
+
+
+
 
 // Apply a function to all lines and sync
 function applyToLines(callback) {
@@ -185,6 +228,11 @@ document.getElementById('clear_all').addEventListener('click', () => {
   applyToLines(() => '');
 });
 
+
+
+
+
+
 // Copy output to clipboard
 function copyToClipboard(el) {
   const text = el.textContent || el.innerText;
@@ -196,8 +244,6 @@ function copyToClipboard(el) {
 
 // Initial render
 renderLines();
-
-
 
 
 

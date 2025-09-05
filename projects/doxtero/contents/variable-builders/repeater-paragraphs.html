@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Repeater & Variable Tool</title>
+  <style>
+
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f9fc;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.tabs {
+  display: flex;
+  background: #2c3e50;
+  padding: 10px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  background: #34495e;
+  margin-right: 5px;
+  border-radius: 6px 6px 0 0;
+  transition: 0.3s;
+}
+
+.tab-pink {
+  background-color: #754860 !important;
+}
+.tab-pink.active {
+  background-color: #c25d93 !important;
+}
+
+.tab.active {
+  background: #1abc9c;
+  font-weight: bold;
+}
+
+.note-box {
+  background: #eafaf1;
+  border-left: 4px solid #1abc9c;
+  padding: 12px;
+  margin: 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+.note-box-pink {
+  background: rgba(255, 255, 255, 0.6);       
+  border-left: 4px solid #1abc9c;
+  padding: 12px;
+  margin: 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0 6px 6px 6px;
+  margin: 0 15px 15px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+/* --- General Inputs --- */
+input[type="text"], textarea {
+  display: block;
+  width: 100%;              /* always within parent */
+  max-width: 300px;         /* prevent overspill */
+  box-sizing: border-box;   /* include padding/border */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+textarea {
+  width: 100%;
+  max-width: 100%;          /* textareas expand but respect container */
+  height: 80px;
+  resize: vertical;
+}
+
+.output-box {
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  font-family: monospace;
+  cursor: pointer;
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  position: relative;
+}
+
+.output-box:hover {
+  background: #e0f7f1;
+}
+
+/* Floating copied indicator */
+.copied-indicator {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: #1abc9c;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.var-list {
+  margin-bottom: 10px;
+}
+
+.var-list span {
+  display: inline-block;
+  background: #dfe6e9;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 5px;
+  font-size: 13px;
+}
+
+.set-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+/* Floating label styling */
+.input-group {
+  position: relative;
+  flex: 1;
+  min-width: 120px;
+  max-width: 250px; /* keeps them neat */
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.input-group label {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: #888;
+  font-size: 14px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 8px;
+  background: black;
+  color: white;
+  padding: 0 2px;
+
+}
+
+.btn {
+  background: #1abc9c;
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 8px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background: #16a085;
+}
+
+/* --- Special styling for Variable Values Tool tab --- */
+#tab-values {
+  background: #FEF2F2;
+  border: 1px solid #f5c6cb;
+  border-radius: 10px;
+  padding: 22px;
+  box-shadow: 0 2px 6px rgba(178, 58, 72, 0.1);
+}
+
+#tab-values h2 {
+  color: #8a1c3a;
+  font-weight: 600;
+  border-bottom: 2px solid #f5c6cb;
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+}
+
+
+#tab-values .btn {
+  background: #b23a48;
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#tab-values .btn:hover {
+  background: #8a1c3a;
+  transform: translateY(-1px);
+}
+
+#tab-values .btn:active {
+  transform: translateY(0);
+}
+
+#tab-values .output-box {
+  background: #fff0f3;
+  border: 1px dashed #d6336c;
+  color: #7b1e3b;
+  border-radius: 8px;
+  padding: 12px;
+  transition: background 0.2s ease;
+}
+
+#tab-values .output-box:hover {
+  background: #ffe6eb;
+}
+
+#tab-values .copied-indicator {
+  background: #b23a48;
+  color: white;
+  font-weight: 600;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('simple')">Simple Repeater</div>
+    <div class="tab" onclick="switchTab('variable')">Variable Repeater</div>
+    <div class="tab tab-pink" onclick="switchTab('values')">Variable Repeater : Values Tool</div>
+  </div><br>
+
+
+
+  <!-- SIMPLE REPEATER -->
+  <div id="tab-simple" class="tab-content active">
+
+
+    <div class="section">
+
+
+  <div class="note-box">
+    <h1>Simple Repeater</h1>
+    Use the tool below to generate "simple repeaters"
+  </div><br>
+
+      <h2>Condition</h2>
+      <input type="text" id="simple-condition" placeholder="Enter condition / keyword">
+      <br><br>
+      <h2>Simple Text Repeater</h2>
+      <textarea id="simple-text" placeholder="Insert text"></textarea>
+    </div>
+
+    <div class="section">
+        <br>
+      <h2>Outputs</h2>
+      <div id="output-r" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+      <div id="output-rol" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+      <div id="output-rul" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+      <div id="output-rh" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+    </div>
+  </div>
+
+  <!-- VARIABLE REPEATER -->
+  <div id="tab-variable" class="tab-content">
+    <div class="section">
+
+  <div class="note-box">
+    <h1>Variables Repeater</h1>
+    Use the tool below to generate "variables repeaters"
+  </div><br>
+
+      <h2>Condition</h2>
+      <input type="text" id="var-condition" placeholder="Enter condition / keyword">
+      <br><br>
+      <h2>Variables Text Repeater</h2>
+      <textarea id="var-text" placeholder="Insert text. Variables in double brackets - Example: Hello ((name)), good ((time of day))."></textarea>
+    </div>
+
+    <div class="section">
+        <br>
+      <h2>Outputs</h2>
+      <div id="output-x" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+      <div id="output-xol" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+      <div id="output-xul" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+      <div id="output-xh" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+    </div>
+  </div>
+
+  <!-- VARIABLE VALUES TOOL -->
+  <div id="tab-values" class="tab-content">
+    <div class="section">
+
+  <div class="note-box-pink">
+    <h1>Variable Repeater : Values Tool</h1>
+    Use the tool below to generate the "values" for the "variables repeaters"
+  </div><br>
+
+
+      <h2>Step 1: Define Variables</h2>
+      <input type="text" id="var-input" placeholder="Insert variable - example: name">
+      <button class="btn" onclick="addVariable()">+ Add Variable</button>
+      <br><br>
+      <div class="var-list" id="var-list"></div>
+    </div>
+
+    <div class="section">
+
+        <br>
+      <h2>Step 2: Add Variable & Value Sets</h2>
+      <button class="btn" onclick="addSet()">+ Add Set</button>
+      <br><br>
+      <div id="sets-container"></div>
+    </div>
+
+    <div class="section">
+        <br>
+      <h2>Values Output</h2>
+      <div id="output-values" class="output-box" onclick="copyToClipboard(this)"><div class="copied-indicator">Copied!</div></div>
+    </div>
+  </div>
+
+
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    document.querySelector(`.tab[onclick*="${tab}"]`).classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+  }
+
+  function copyToClipboard(el) {
+    const text = el.innerText.replace("Copied!", "").trim();
+    navigator.clipboard.writeText(text);
+    const indicator = el.querySelector(".copied-indicator");
+    if (indicator) {
+      indicator.style.opacity = 1;
+      setTimeout(() => { indicator.style.opacity = 0; }, 1000);
+    }
+  }
+
+  // Simple Repeater
+  document.getElementById("simple-condition").addEventListener("input", updateSimple);
+  document.getElementById("simple-text").addEventListener("input", updateSimple);
+
+  function updateSimple() {
+    const cond = document.getElementById("simple-condition").value.trim();
+    let text = document.getElementById("simple-text").value.trim().replace(/\n/g, "<br>");
+    document.getElementById("output-r").innerText   = `[[r? ${cond}]]${text}[[/]]`;
+    document.getElementById("output-rol").innerText = `[[rol? ${cond}]]${text}[[/]]`;
+    document.getElementById("output-rul").innerText = `[[rul? ${cond}]]${text}[[/]]`;
+    document.getElementById("output-rh").innerText  = `[[rh? ${cond}]]${text}[[/]]`;
+  }
+
+  // Variable Repeater
+  document.getElementById("var-condition").addEventListener("input", updateVar);
+  document.getElementById("var-text").addEventListener("input", updateVar);
+
+  function updateVar() {
+    const cond = document.getElementById("var-condition").value.trim();
+    let text = document.getElementById("var-text").value.trim().replace(/\n/g, "<br>");
+    document.getElementById("output-x").innerText   = `[[x? ${cond}]]${text}[[/]]`;
+    document.getElementById("output-xol").innerText = `[[xol? ${cond}]]${text}[[/]]`;
+    document.getElementById("output-xul").innerText = `[[xul? ${cond}]]${text}[[/]]`;
+    document.getElementById("output-xh").innerText  = `[[xh? ${cond}]]${text}[[/]]`;
+  }
+
+  // Variable Values Tool
+  let variables = [];
+
+  function addVariable() {
+    const varName = document.getElementById("var-input").value.trim();
+    if (varName && !variables.includes(varName)) {
+      variables.push(varName);
+      document.getElementById("var-list").innerHTML = variables.map(v => `<span>((${v}))</span>`).join(" ");
+      document.getElementById("var-input").value = "";
+    }
+  }
+
+  function addSet() {
+    const container = document.getElementById("sets-container");
+    const div = document.createElement("div");
+    div.classList.add("set-row");
+    div.innerHTML = variables.map(v => `
+      <div class="input-group">
+        <input type="text" data-var="${v}" placeholder=" " />
+        <label>${v}</label>
+      </div>
+    `).join("");
+    container.appendChild(div);
+    div.querySelectorAll("input").forEach(inp => inp.addEventListener("input", updateValues));
+  }
+
+  function updateValues() {
+    const sets = document.querySelectorAll(".set-row");
+    let allSets = [];
+    sets.forEach(row => {
+      let parts = [];
+      row.querySelectorAll("input").forEach(inp => {
+        if (inp.value.trim()) {
+          parts.push(`${inp.dataset.var} = ${inp.value.trim()}`);
+        }
+      });
+      if (parts.length > 0) {
+        allSets.push(parts.join(" // "));
+      }
+    });
+    document.getElementById("output-values").innerText = allSets.join(" | ");
+  }
+</script>
+
+<br><br><br>
+</body>
+</html>
