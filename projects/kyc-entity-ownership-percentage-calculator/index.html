@@ -254,29 +254,35 @@
 
 
     function calculateOwnership() {
-      let totalShares = document.getElementById('totalShares').value || 0;
-      let shareholders = document.getElementsByClassName('shareholderShares');
-      let shareholderNames = document.getElementsByClassName('shareholderName');
-      let entityName = document.getElementById('entityName').value || 'Entity';
+        let totalShares = parseFloat(document.getElementById('totalShares').value) || 0;
+        let shareholders = document.getElementsByClassName('shareholderShares');
+        let shareholderNames = document.getElementsByClassName('shareholderName');
+        let entityName = document.getElementById('entityName').value || 'Entity';
 
-      let resultText = '';
+        let resultText = '';
+        let totalEnteredShares = 0; // Add this to accumulate entered shares
 
-      if (totalShares > 0) {
-        resultText += `<p><span class="bold upper">${entityName}</span>'s ownership:</p>`;
-        resultText += `<ul>`;
-        for (let i = 0; i < shareholders.length; i++) {
-          let shareholderName = shareholderNames[i].value.trim() || `Shareholder ${i + 1}`;
-          let shareholderShares = parseFloat(shareholders[i].value);
-          let ownershipPercentage = (shareholderShares / totalShares) * 100;
-          resultText += `<li><span class="bold upper">${shareholderName}</span>: <span class="bold">${ownershipPercentage.toFixed(2)}% </span>(${shareholderShares} / ${totalShares} shares)</li>`;
+        if (totalShares > 0) {
+            resultText += `<p><span class="bold upper">${entityName}</span>'s ownership:</p>`;
+            resultText += `<ul>`;
+            for (let i = 0; i < shareholders.length; i++) {
+                let shareholderName = shareholderNames[i].value.trim() || `Shareholder ${i + 1}`;
+                let shareholderShares = parseFloat(shareholders[i].value);
+                totalEnteredShares += shareholderShares;  // Add to total shares
+                let ownershipPercentage = (shareholderShares / totalShares) * 100;
+                resultText += `<li><span class="bold upper">${shareholderName}</span>: <span class="bold">${ownershipPercentage.toFixed(2)}% </span>(${shareholderShares} / ${totalShares} shares)</li>`;
+            }
+            resultText += `</ul>`;
+
+            // Display the total shares entered by shareholders
+            resultText += `<p class="bold">Total Shares Entered: ${totalEnteredShares} shares</p>`;
+        } else {
+            resultText = '<p>Please enter the total shares.</p>';
         }
-        resultText += `</ul>`;
-      } else {
-        resultText = '<p>Please enter the total shares.</p>';
-      }
 
-      document.getElementById('result').innerHTML = resultText;
+        document.getElementById('result').innerHTML = resultText;
     }
+
 
     function exportToHTML() {
       let entityName = document.getElementById('entityName').value.trim();
