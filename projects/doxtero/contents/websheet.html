@@ -723,7 +723,7 @@ table input[type="text"] {
         <button id="convertToTitle" class='text-transform-button'>title</button>
         <button id="convertToSentence" class='text-transform-button'>sentence</button>
         <button id="removeDashes" class='text-transform-button'>no dash</button>
-
+        <button id="newlineToPipe" class='text-transform-button'>line to |</button>
     </section>
 
 
@@ -2226,6 +2226,30 @@ document.getElementById('removeDashes').addEventListener('click', function () {
     //     alert('Please select a cell');
     }
 });
+
+
+// Convert newline or <br> to pipe (address style)
+document.getElementById('newlineToPipe').addEventListener('click', function () {
+    if (selectedCell) {
+        let oldText = selectedCell.textContent;  // Get the cell text (textContent)
+
+        // If we want to handle visual newlines (e.g., <br> tags in HTML):
+        oldText = selectedCell.innerHTML.replace(/<br\s*\/?>/g, '\n'); // Replace <br> tags with newline
+
+        // Split by newline, filter out empty strings, and join with pipes
+        let newText = oldText.split('\n')          // Split by newlines
+                            .filter(line => line.trim() !== '')  // Remove empty or whitespace-only lines
+                            .join(' | ');         // Join with pipes
+
+        selectedCell.textContent = newText;  // Set the new text with pipes
+    }
+});
+
+
+
+
+
+
 
 // Convert text to Title Case (Helper function)
 function toTitleCase(str) {
