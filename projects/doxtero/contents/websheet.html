@@ -22,7 +22,7 @@
 body {
     font-family: Arial, sans-serif;
     padding: 2em;
-    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%); 
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%); /* default bg */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -633,6 +633,39 @@ table input[type="text"] {
 
 
 
+.text-transform-button {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: 100px;
+  margin-inline: 5px;
+  margin-bottom: 20px;
+}
+
+.text-transform-button:hover {
+  background-color: lightyellow;
+  font-weight: bold;
+}
+
+
+
+
+
+
 </style>
 </head>
 
@@ -672,7 +705,6 @@ table input[type="text"] {
 <button id="table-tool-toggle-button" onclick="toggleSection()">&#9660; Hide Table Tools</button>
 <br>
 
-
 <section id='table-tool-container'>
 
     <form id="radio-selection">
@@ -680,7 +712,22 @@ table input[type="text"] {
         <label for="radio-select-row"><input type="radio" name="selection" id="radio-select-row">Select Row</label>
         <label for="radio-select-column"><input type="radio" name="selection" id="radio-select-column">Select Column</label>
     </form>
+
+
+
     
+    <section>
+
+        <button id="convertToUpper" class='text-transform-button'>upper</button>
+        <button id="convertToLower" class='text-transform-button'>lower</button>
+        <button id="convertToTitle" class='text-transform-button'>title</button>
+        <button id="convertToSentence" class='text-transform-button'>sentence</button>
+        <button id="removeDashes" class='text-transform-button'>no dash</button>
+
+    </section>
+
+
+
 
     <section class='buttons-container'>
         <!-- table tool buttons -->
@@ -689,6 +736,7 @@ table input[type="text"] {
 
         <button id="clear-button" class='table-tool-button'>Clear Selected</button>
         <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
+
     </section>
 
          <p id='table-tool-tip'>Important note: You should only copy one [Column] at a time</p>
@@ -774,14 +822,12 @@ table input[type="text"] {
                             <li>tag [text case, eg. upper]</li>
                             <li>line</li>
                             <li>line [text case, eg. upper]</li>
-                            <br>
-                            <li>default(...insert default value...)</li>
                         </ul>
 
                     </td>
                     
                     <td>This is an example</td>
-                    <td>Note:<br><br>For "default(...)" method, user should insert a "dash" as value to trigger the default text</td>
+                    <td> - </td>
                 </tr>
 
 
@@ -855,14 +901,7 @@ table input[type="text"] {
                         </ul>
                     </td>
 
-                    <td>
-                        Date inputs can be in most human readable format:<br><br>
-                        Date numbers: 19980514 / 202004021130<br>
-                        or<br>
-                        1 jan 2025<br>
-                        or<br>
-                        February 2nd 2025 (5:00am)<br>
-                    </td>
+                    <td>19980514</td>
                     <td class="table-notes">
                         <strong><span class="blue">YYYYMMDD</span></strong><br>
                         <strong><span class="blue">YYYYMMDD</span><span class="red">HHMM</span></strong>
@@ -938,10 +977,6 @@ table input[type="text"] {
                             <br>
                             <li>[[# condition]] true text // false text [[/]]</li>
                             <br>
-                            <li>[[# condition]] true text // false text // default text[[/]]</li>
-                            <br>
-                            <li>[[# condition]] true text // false text [[/color]]</li>
-                            <br>
                             <li>[[# condition]] true text only [[/]]</li>
                             <br>
                             <li>[[# condition]] // false text only [[/]]</li><br>
@@ -955,13 +990,6 @@ table input[type="text"] {
                         <br><br>
                         Negative indicator:<br>
                         <strong><span class="red">no, n, false, f, female, f</span></strong>
-                        <br><br>
-                        <u>Notes:</u><br><br>
-                        (1) Inline smart paragraphs have an option to switch the colours of the results based on the "true" or "false" value. Use the [[/color]] close tag to set this
-                        <br><br>
-                        (2) If got the "default" (3rd option), the default value will be triggered when the user inserts "dash" [ - ] </li>
-
-
                     </td>
                 </tr>
 
@@ -1063,14 +1091,10 @@ table input[type="text"] {
                     <td>Evaluation Paragraphs</td>
                     <td>
 
-                        <u>Template</u> <br>[[if? {{age}} > 10]] true text // false text [[/]]<br><br><br>
-
-                        [[if? {{age}} > 10]] true text // false text // default text[[/]]<br><br><br>
-
-                        <br>[[if? {{age}} > 10]] true text // false text [[/color]]<br><br><br>
+                        <u>Template</u> <br>[[? {{age}} > 10]] true text // false text [[/]]<br><br><br>
 
                         <u>"Calculation Variables" in "Evaluation Paragraphs"</u><br><br>
-                        [[if? (^^ {{age}} + 10 ^^) >= 18 ]] You are an adult // You are a child [[/]]
+                        [[? ^^ {{age}} + 10 ^^ >= 18 ]] You are an adult // You are a child [[/]]
                     </td>
                     
                     <td>
@@ -1086,15 +1110,8 @@ table input[type="text"] {
                         -
                     </td>
                     <td class="table-notes">
-                        <u>Notes:</u><br><br>
-                        (1) This evaluates automatically based on the evaluation paragraph's open tag,
+                        This evaluates automatically based on the evaluation paragraph's open tag,
                         and shows the "true text" or "false text"
-                        <br><br>
-                        (2) Use the [[/color]] close tag to automatically change the colour depending on the "true" or "false" value
-                        <br><br>
-                        (3) "Calculation variables" should be "bracketed" when used in "evaluation paragraphs".
-                        <br><br>
-                        (4) If default value (3rd option) is set, the default value will be triggered if unable to evaluate.
                     </td>
                 </tr>
 
@@ -1260,44 +1277,6 @@ table input[type="text"] {
 
                     </td>
                 </tr>
-
-
-
-
-                <tr>
-                    <td>Hyperlinks [Beta]</td>
-                    <td> <u>Template</u> <br>{{variable | link}} <br><br> 
-                         <u>variables.csv</u><br> {{variable}}
-                    </td>
-                    
-                    <td>
-                        <ul>
-                            <li>link</li>
-                        </ul>
-                    </td>
-
-                    <td>
-                        <ul>
-                            <li>"https://example.com"</li>
-                            <li>"https://example.com | Example Website"</li>
-                        </ul>
-
-                    <td class="table-notes">
-                        <span class="blue"> | </span> = Item separator to separate [url] and [text]<br>
-                        <br>
-                            https://example.com 
-                            <span class="blue"> | </span>
-                            Example Website
-                        <br><br>
-                        </strong>
-                        <u>Important:</u><br><br>
-                        (1) You cannot be place 2 different hyperlinks in the same paragraph! It will not work properly!<br><br>
-                        (2) You must insert "https://example.com" [and NOT "example.com" only] or else the link won't work to open up the website.<br><br>
-                        (3) You may link to a "local file" (example: "sample.pdf | PDF File") but do you really need this?<br><br>
-                        (4) Hyperlinks do not retain the "style" (eg. font, size, etc.) of the "variable".
-                    </td>
-                </tr>
-
 
 
 
@@ -1714,8 +1693,6 @@ function toggleSection() {
 
 
 
-
-
 let highlighted_row = null;
 let highlighted_column = null;
 let highlighted_rows = new Set();
@@ -1889,10 +1866,14 @@ function update_delete_button_text() {
         delete_button.textContent = 'Delete Rows';
     } else if (document.querySelector('#radio-select-column').checked) {
         delete_button.textContent = 'Delete Columns';
+
+ 
     } else {
        delete_button.textContent = 'Nothing Selected';
     }
+
 }
+
 
 // Function to clear selected row or column
 function clear_selected() {
@@ -1941,6 +1922,8 @@ function update_clear_button_text() {
         clear_button.textContent = 'Clear Columns';
     } else {
        clear_button.textContent = 'Nothing Selected';
+
+
     }
 }
 
@@ -2034,6 +2017,7 @@ function update_copy_button_text() {
         copy_button.textContent = 'Copy Columns';
     } else {
         copy_button.textContent = 'Nothing Selected';
+
     }
 }
 
@@ -2093,6 +2077,8 @@ function update_paste_button_text() {
         paste_button.textContent = 'Paste Columns';
     } else {
         paste_button.textContent = 'Nothing Selected';
+
+
     }
 }
 
@@ -2167,8 +2153,94 @@ update_paste_button_text();
 
 
 
+// TEXT TRANSFORM SECTION
+
+ let selectedCell = null;
+
+// Event delegation for clicking on any table cell
+document.body.addEventListener('click', function(event) {
+    // Check if the clicked element is a td cell
+    if (event.target.tagName.toLowerCase() === 'td') {
+        // Deselect previous cell, if any
+        if (selectedCell) {
+            selectedCell.classList.remove('selected');
+        }
+
+        // Select the new cell
+        selectedCell = event.target;
+        selectedCell.classList.add('selected');
+    }
+});
+
+// Convert to Uppercase
+document.getElementById('convertToUpper').addEventListener('click', function () {
+    if (selectedCell) {
+        const oldText = selectedCell.textContent;
+        const newText = oldText.toUpperCase();
+        selectedCell.textContent = newText;
+    // } else {
+    //     alert('Please select a cell');
+    }
+});
+
+// Convert to Lowercase
+document.getElementById('convertToLower').addEventListener('click', function () {
+    if (selectedCell) {
+        const oldText = selectedCell.textContent;
+        const newText = oldText.toLowerCase();
+        selectedCell.textContent = newText;
+    // } else {
+    //     alert('Please select a cell');
+    }
+});
+
+// Convert to Title Case
+document.getElementById('convertToTitle').addEventListener('click', function () {
+    if (selectedCell) {
+        const oldText = selectedCell.textContent;
+        const newText = toTitleCase(oldText);
+        selectedCell.textContent = newText;
+    // } else {
+    //     alert('Please select a cell');
+    }
+});
+
+// Convert to Sentence Case
+document.getElementById('convertToSentence').addEventListener('click', function () {
+    if (selectedCell) {
+        const oldText = selectedCell.textContent;
+        const newText = toSentenceCase(oldText);
+        selectedCell.textContent = newText;
+    // } else {
+    //     alert('Please select a cell');
+    }
+});
+
+// Remove Dashes (hyphen and underscore)
+document.getElementById('removeDashes').addEventListener('click', function () {
+    if (selectedCell) {
+        const oldText = selectedCell.textContent;
+        const newText = oldText.replace(/[-_]/g, ''); // Removes dashes and underscores
+        selectedCell.textContent = newText;
+    // } else {
+    //     alert('Please select a cell');
+    }
+});
+
+// Convert text to Title Case (Helper function)
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(word) {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    });
+}
+
+// Convert text to Sentence Case (Helper function)
+function toSentenceCase(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
 
 
+// 
 
 
 </script>
