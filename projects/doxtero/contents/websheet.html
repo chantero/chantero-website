@@ -662,6 +662,13 @@ table input[type="text"] {
 }
 
 
+.undo-redo-button {
+
+margin: 15px;
+width: 7em;
+height: 2.5em;
+}
+
 
 
 
@@ -675,6 +682,8 @@ table input[type="text"] {
 <!-- Note: run the setup() [javascript below] when the website loads up -->
 
 <h1>Doxtero Websheet</h1>
+
+
 
 
 <!-- CSV FILE DROP CONTAINER -->
@@ -724,6 +733,7 @@ table input[type="text"] {
         <button id="convertToSentence" class='text-transform-button'>sentence</button>
         <button id="removeDashes" class='text-transform-button'>no dash</button>
         <button id="newlineToPipe" class='text-transform-button'>line to |</button>
+        <button id="newlineToBr" class='text-transform-button'>line to br</button>
     </section>
 
 
@@ -752,7 +762,23 @@ table input[type="text"] {
         <button type="button" class="bottom-button button-purple" id="button-export-to-html">Export HTML</button>
     </section>
 
+
+
+    <section>
+
+        <button id="undoButton" class="undo-redo-button" disabled>◀ undo</button>
+        <button id="redoButton" class="undo-redo-button" disabled> redo ▶</button>
+
+    </section>
+
+
+    
 </section>
+
+
+
+
+
 
 
 <!-- TABLE -->
@@ -2228,20 +2254,36 @@ document.getElementById('removeDashes').addEventListener('click', function () {
 });
 
 
-// Convert newline or <br> to pipe (address style)
+// Convert newline to pipe (address style)
 document.getElementById('newlineToPipe').addEventListener('click', function () {
     if (selectedCell) {
-        let oldText = selectedCell.textContent;  // Get the cell text (textContent)
 
-        // If we want to handle visual newlines (e.g., <br> tags in HTML):
-        oldText = selectedCell.innerHTML.replace(/<br\s*\/?>/g, '\n'); // Replace <br> tags with newline
+        let oldText = selectedCell.textContent; 
 
-        // Split by newline, filter out empty strings, and join with pipes
-        let newText = oldText.split('\n')          // Split by newlines
-                            .filter(line => line.trim() !== '')  // Remove empty or whitespace-only lines
-                            .join(' | ');         // Join with pipes
+        oldText = selectedCell.innerHTML.replace(/<br\s*\/?>/g, '\n');
 
-        selectedCell.textContent = newText;  // Set the new text with pipes
+        let newText = oldText.split('\n')    
+                            .filter(line => line.trim() !== '')  
+                            .join(' | ');  
+        selectedCell.textContent = newText; 
+    }
+});
+
+
+
+// Newline to <br>
+document.getElementById('newlineToBr').addEventListener('click', function () {
+    if (selectedCell) {
+
+        let oldText = selectedCell.textContent; 
+
+        oldText = selectedCell.innerHTML.replace(/<br\s*\/?>/g, '\n');
+
+        let newText = oldText.split('\n')    
+                            .filter(line => line.trim() !== '')  
+                            .join('<br>'); 
+
+        selectedCell.textContent = newText; 
     }
 });
 
@@ -2260,11 +2302,103 @@ function toTitleCase(str) {
 
 // Convert text to Sentence Case (Helper function)
 function toSentenceCase(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  // Lowercase everything first
+  str = str.toLowerCase();
+
+  // Uppercase the first letter of each sentence
+  return str.replace(/(^\s*\w|[.!?]\s*\w)/g, function(match) {
+    return match.toUpperCase();
+  });
 }
 
 
-// 
+
+
+
+
+// UNDO AND REDO
+
+const contentDiv = document.getElementById('table-container');
+const undoButton = document.getElementById('undoButton');
+const redoButton = document.getElementById('redoButton');
+
+let undoStack = [];
+let redoStack = [];
+
+
+const observer = new MutationObserver(saveState);
+
+// Helper to update button states
+function updateButtons() {
+  undoButton.disabled = undoStack.length <= 1;
+  redoButton.disabled = redoStack.length === 0;
+}
+
+// Save current state to undo stack if different
+function saveState() {
+  const currentState = contentDiv.innerHTML;
+  if (undoStack[undoStack.length - 1] !== currentState) {
+    undoStack.push(currentState);
+    redoStack = []; // clear redo stack after new edit
+    updateButtons();
+  }
+}
+
+// Initial state
+undoStack.push(contentDiv.innerHTML);
+updateButtons();
+
+// Observe changes to the DOM (text, structure, etc.)
+// const observer = new MutationObserver(saveState);
+observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
+
+// Undo
+undoButton.addEventListener('click', () => {
+  if (undoStack.length > 1) {
+    const current = undoStack.pop();
+    redoStack.push(current);
+
+    observer.disconnect();
+    contentDiv.innerHTML = undoStack[undoStack.length - 1];
+    observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
+
+
+
+    placeCaretAtEnd(contentDiv);
+    updateButtons();
+  }
+});
+
+// Redo
+redoButton.addEventListener('click', () => {
+  if (redoStack.length > 0) {
+    const redoState = redoStack.pop();
+
+    // Temporarily disconnect observer
+    observer.disconnect();
+    contentDiv.innerHTML = redoState;
+    observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
+
+    undoStack.push(redoState);
+    placeCaretAtEnd(contentDiv);
+    updateButtons();
+  }
+});
+
+
+// Keep caret at the end after undo/redo
+function placeCaretAtEnd(el) {
+  el.focus();
+  if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+}
+
 
 
 </script>
