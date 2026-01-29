@@ -772,7 +772,7 @@ height: 2.5em;
     </section>
 
 
-    
+
 </section>
 
 
@@ -2317,87 +2317,88 @@ function toSentenceCase(str) {
 
 
 // UNDO AND REDO
+function enableUndoRedo(contentDivId, undoButtonId, redoButtonId) {
+  const contentDiv = document.getElementById(contentDivId);
+  const undoButton = document.getElementById(undoButtonId);
+  const redoButton = document.getElementById(redoButtonId);
 
-const contentDiv = document.getElementById('table-container');
-const undoButton = document.getElementById('undoButton');
-const redoButton = document.getElementById('redoButton');
+  if (!contentDiv || !undoButton || !redoButton) {
+    console.error('One or more elements not found.');
+    return;
+  }
 
-let undoStack = [];
-let redoStack = [];
+  let undoStack = [];
+  let redoStack = [];
 
+  const observer = new MutationObserver(saveState);
 
-const observer = new MutationObserver(saveState);
+  // Helper to update button states
+  function updateButtons() {
+    undoButton.disabled = undoStack.length <= 1;
+    redoButton.disabled = redoStack.length === 0;
+  }
 
-// Helper to update button states
-function updateButtons() {
-  undoButton.disabled = undoStack.length <= 1;
-  redoButton.disabled = redoStack.length === 0;
+  // Save current state to undo stack if different
+  function saveState() {
+    const currentState = contentDiv.innerHTML;
+    if (undoStack[undoStack.length - 1] !== currentState) {
+      undoStack.push(currentState);
+      redoStack = []; // clear redo stack after new edit
+      updateButtons();
+    }
+  }
+
+  // Keep caret at the end after undo/redo
+  function placeCaretAtEnd(el) {
+    el.focus();
+    if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
+
+  // Initialize
+  undoStack.push(contentDiv.innerHTML);
+  updateButtons();
+  observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
+
+  // Undo
+  undoButton.addEventListener('click', () => {
+    if (undoStack.length > 1) {
+      const current = undoStack.pop();
+      redoStack.push(current);
+
+      observer.disconnect();
+      contentDiv.innerHTML = undoStack[undoStack.length - 1];
+      observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
+
+      placeCaretAtEnd(contentDiv);
+      updateButtons();
+    }
+  });
+
+  // Redo
+  redoButton.addEventListener('click', () => {
+    if (redoStack.length > 0) {
+      const redoState = redoStack.pop();
+
+      observer.disconnect();
+      contentDiv.innerHTML = redoState;
+      observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
+
+      undoStack.push(redoState);
+      placeCaretAtEnd(contentDiv);
+      updateButtons();
+    }
+  });
 }
 
-// Save current state to undo stack if different
-function saveState() {
-  const currentState = contentDiv.innerHTML;
-  if (undoStack[undoStack.length - 1] !== currentState) {
-    undoStack.push(currentState);
-    redoStack = []; // clear redo stack after new edit
-    updateButtons();
-  }
-}
+enableUndoRedo('table-container', 'undoButton', 'redoButton');
 
-// Initial state
-undoStack.push(contentDiv.innerHTML);
-updateButtons();
-
-// Observe changes to the DOM (text, structure, etc.)
-// const observer = new MutationObserver(saveState);
-observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
-
-// Undo
-undoButton.addEventListener('click', () => {
-  if (undoStack.length > 1) {
-    const current = undoStack.pop();
-    redoStack.push(current);
-
-    observer.disconnect();
-    contentDiv.innerHTML = undoStack[undoStack.length - 1];
-    observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
-
-
-
-    placeCaretAtEnd(contentDiv);
-    updateButtons();
-  }
-});
-
-// Redo
-redoButton.addEventListener('click', () => {
-  if (redoStack.length > 0) {
-    const redoState = redoStack.pop();
-
-    // Temporarily disconnect observer
-    observer.disconnect();
-    contentDiv.innerHTML = redoState;
-    observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
-
-    undoStack.push(redoState);
-    placeCaretAtEnd(contentDiv);
-    updateButtons();
-  }
-});
-
-
-// Keep caret at the end after undo/redo
-function placeCaretAtEnd(el) {
-  el.focus();
-  if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
-    const range = document.createRange();
-    range.selectNodeContents(el);
-    range.collapse(false);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-}
 
 
 
