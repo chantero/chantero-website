@@ -732,6 +732,7 @@ height: 2.5em;
         <button id="convertToTitle" class='text-transform-button'>title</button>
         <button id="convertToSentence" class='text-transform-button'>sentence</button>
         <button id="removeDashes" class='text-transform-button'>no dash</button>
+        <button id="numbersOnly" class='text-transform-button'>num only</button>
         <button id="newlineToPipe" class='text-transform-button'>line to |</button>
         <button id="newlineToBr" class='text-transform-button'>line to br</button>
     </section>
@@ -2252,6 +2253,20 @@ document.getElementById('removeDashes').addEventListener('click', function () {
     //     alert('Please select a cell');
     }
 });
+
+
+
+document.getElementById('numbersOnly').addEventListener('click', function () {
+    if (selectedCell) {
+        const oldText = selectedCell.textContent;
+        // Extract all digits anywhere and join them
+        const newText = oldText.match(/\d+/g)?.join('')?.trim() || '';
+        selectedCell.textContent = newText;
+    } else {
+        alert('Please select a cell');
+    }
+});
+
 
 
 // Convert newline to pipe (address style)
