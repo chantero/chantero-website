@@ -116,7 +116,6 @@ button {
 
 /* TABLE TOOLS */
 
-/* CSS */
 #table-tool-toggle-button {
     align-items: center;
     appearance: none;
@@ -177,7 +176,7 @@ button {
 }
 
 
-/* table tools all buttons class*/
+/* table tools all buttons class */
 .buttons-container {
     display: flex;
     flex-direction: row; 
@@ -188,7 +187,7 @@ button {
 }
 
 
-#radio-selection {
+#table-tool-radio-selection {
     display: flex;
     flex-wrap: wrap;        /* Allow wrapping to a new line */
     justify-content: center;
@@ -197,7 +196,7 @@ button {
     cursor: pointer;
 }
 
-#radio-selection > label {
+#table-tool-radio-selection > label {
     width: 160px;
     cursor: pointer;
     padding-bottom: 10px;
@@ -677,12 +676,13 @@ height: 2.5em;
 </head>
 
 
-<body onload='setup()'>
 
 <!-- Note: run the setup() [javascript below] when the website loads up -->
+<body onload='setup()'>
+
+
 
 <h1>Doxtero Websheet</h1>
-
 
 
 
@@ -698,8 +698,10 @@ height: 2.5em;
 </section>
 
 
+
 <!-- CHECKBOX (Switch between Edit Mode and Copyboard Mode) -->
 <section id='checkbox-container'>
+
     <article class='checkbox-container'>
         <label for='copyboard-checkbox'>Switch to Copyboard</label>
         <input type='checkbox' id='copyboard-checkbox' name='copyboard-checkbox'>
@@ -710,52 +712,66 @@ height: 2.5em;
 
 
 
- <!-- Toggle icon for table tools -->
+<!-- TABLE TOOLS -->
+
+<!-- Toggle Icon -->
 <button id="table-tool-toggle-button" onclick="toggleSection()">&#9660; Hide Table Tools</button>
 <br>
 
+
 <section id='table-tool-container'>
 
-    <form id="radio-selection">
-        <label for="radio-default"><input type="radio" name="selection" value="select-default" id="radio-default" checked> Default</label>
-        <label for="radio-select-row"><input type="radio" name="selection" id="radio-select-row">Select Row</label>
-        <label for="radio-select-column"><input type="radio" name="selection" id="radio-select-column">Select Column</label>
+
+
+    <!-- Table Tools : Radio Buttons -->
+    <form id="table-tool-radio-selection">
+
+        <label for="radio-default">
+            <input type="radio" name="selection" value="select-default" id="radio-default" checked> Default
+        </label>
+
+        <label for="radio-select-row">
+            <input type="radio" name="selection" id="radio-select-row">Select Row
+        </label>
+
+        <label for="radio-select-column">
+            <input type="radio" name="selection" id="radio-select-column">Select Column
+        </label>
+    
     </form>
 
 
 
-    
+    <!-- Table Tools : Text Transform -->
     <section>
-
-        <button id="convertToUpper" class='text-transform-button'>upper</button>
-        <button id="convertToLower" class='text-transform-button'>lower</button>
-        <button id="convertToTitle" class='text-transform-button'>title</button>
-        <button id="convertToSentence" class='text-transform-button'>sentence</button>
-        <button id="removeDashes" class='text-transform-button'>no dash</button>
-        <button id="numbersOnly" class='text-transform-button'>num only</button>
-        <button id="newlineToPipe" class='text-transform-button'>line to |</button>
-        <button id="newlineToBr" class='text-transform-button'>line to br</button>
+        <button id="transform-upper" class='text-transform-button'>upper</button>
+        <button id="transform-lower" class='text-transform-button'>lower</button>
+        <button id="transform-title" class='text-transform-button'>title</button>
+        <button id="transform-sentence" class='text-transform-button'>sentence</button>
+        <button id="transform-remove-dash" class='text-transform-button'>no dash</button>
+        <button id="transform-numbers-only" class='text-transform-button'>num only</button>
+        <button id="transform-newline-pipe" class='text-transform-button'>line to |</button>
+        <button id="transform-newline-br" class='text-transform-button'>line to br</button>
     </section>
 
 
 
-
+    <!-- Table Tools : Copy, Paste, Clear -->
     <section class='buttons-container'>
-        <!-- table tool buttons -->
         <button id="copy-button" class='table-tool-button button-apple'>Copy</button>
         <button id="paste-button" class='table-tool-button button-peach'>Paste</button>
-
         <button id="clear-button" class='table-tool-button'>Clear Selected</button>
         <button id="delete-button" class='table-tool-button button-black'>Delete Selected</button>
-
     </section>
+
 
          <p id='table-tool-tip'>Important note: You should only copy one [Column] at a time</p>
  
-        <!-- main buttons -->
+    
+
+    <!-- Table Tools : Table Maker & Export -->
     <section class='buttons-container'>
         <button type="button" class="bottom-button button-amber" id="button-new-table">New Table</button>
-        
         <button type="button" class="bottom-button button-green" id="button-add-row">Add Row</button>
         <button type="button" class= "bottom-button button-green" id="button-add-column">Add Column</button>
         <button type="button" class="bottom-button button-blue" id="button-export-to-csv">Export CSV</button>
@@ -765,32 +781,28 @@ height: 2.5em;
 
 
 
+    <!-- Table Tools : Undo and Redo -->
     <section>
-
-        <button id="undoButton" class="undo-redo-button" disabled>◀ undo</button>
-        <button id="redoButton" class="undo-redo-button" disabled> redo ▶</button>
-
+        <button id="undo_button" class="undo-redo-button" disabled>◀ undo</button>
+        <button id="redo_button" class="undo-redo-button" disabled> redo ▶</button>
     </section>
 
 
 
-</section>
+</section> 
+<!-- End of Table Tools -->
+
+
+
+<!-- MAIN TABLE -->
+<!-- The table will be generated automatically via generate_html_table_from_csv() below -->
+<section id='table-container' class='outer-table' style='overflow-x:auto;'></section>
 
 
 
 
 
-
-
-<!-- TABLE -->
-<section id='table-container' class='outer-table' style='overflow-x:auto;'>
-    <!-- Table will be generated automatically via generate_html_table_from_csv() below -->
-</section>
-
-
-
-<!-- Overlay / Hint Box -->
-
+<!-- HINT BOX OVERLAY -->
 <section>
     <!-- The "hint" button -->
     <button class="hint-button" id="hint_button">?</button>
@@ -1318,9 +1330,9 @@ height: 2.5em;
 
 
 
-<footer>
-<br><br><br>
-</footer>
+<footer><br><br><br></footer>
+<!-- END OF HTML -->
+
 
 
 
@@ -1329,10 +1341,11 @@ height: 2.5em;
 <script>
 
 
-// main javascript packed in setup()
+// All Javascript packed in setup()
 function setup() {
-    // these are just variables to point to the elements in the html
+    
 
+    // VARIABLES to point to the elements in the html
 
     const drop_zone = document.getElementById('drop-zone');
     const csv_input = document.getElementById('csv-input');
@@ -1349,15 +1362,17 @@ function setup() {
     const button_export_to_html = document.getElementById('button-export-to-html');
 
 
-// -- CSV FILE INPUT IN DROP AREA
 
-    // (1) csv input: "click" [#csv-input] when user clicks [#drop-zone]
+    // -- CSV FILE INPUT IN DROP ZONE
+
+    // (1) csv input: "click" to insert csv file in drop-zone
     drop_zone.addEventListener('click', () => {
         csv_input.click();
-    });    // drop area click input close bracket
+    });
 
 
-    // (2) csv input: drag & drop of the csv file to [#drop-zone]
+
+    // (2) csv input: "drag & drop" csv file to drop-zone
     ['dragover', 'dragleave', 'drop'].forEach(eventName => {
         drop_zone.addEventListener(eventName, (event) => {
             event.preventDefault();
@@ -1369,13 +1384,12 @@ function setup() {
                 drop_zone.classList.remove('drag-over');
             }
 
-            // Handle file drop
+            // handle file drop
             if (eventName === 'drop') {
                 const file = event.dataTransfer.files[0];
                 if (file && file.type === 'text/csv') {
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        // Efficient DOM update after CSV processing
                         generate_html_table_from_csv(e.target.result);
                     };
                     reader.readAsText(file);
@@ -1385,7 +1399,8 @@ function setup() {
     });    // end - drag & drop file drop area
 
 
-    // (3) csv input: load csv file and [generate_html_table_from_csv()]
+
+    // (3) csv input: load csv file and "generate_html_table_from_csv()"
     csv_input.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file && file.type === 'text/csv') {
@@ -1399,62 +1414,62 @@ function setup() {
     });  // end - handle csv file selection
 
 
-// // PARSE CSV FILE FUNCTION 
-    // used in [generate_html_table_from_csv()]
-function parse_csv(csv_text) {
-    // Normalize quotes
-    const normalized_csv_text = csv_text.replace(/‘|’|‛|`|´|‵|′/g, "'")
-                                        .replace(/“|”|〝|〞|‶|″|‟/g, '"');
-    
-    const rows = [];
-    let current_row = [];
-    let current_field = '';
-    let in_quotes = false;
-    let i = 0;
 
-    while (i < normalized_csv_text.length) {
-        const char = normalized_csv_text[i];
+    // Helper: PARSE CSV FILE FUNCTION - used in "generate_html_table_from_csv()"
+    function parse_csv(csv_text) {
+        // Normalize quotes
+        const normalized_csv_text = csv_text.replace(/‘|’|‛|`|´|‵|′/g, "'")
+                                            .replace(/“|”|〝|〞|‶|″|‟/g, '"');
+        
+        const rows = [];
+        let current_row = [];
+        let current_field = '';
+        let in_quotes = false;
+        let i = 0;
 
-        if (char === '"') {
-            // Handle quoted fields
-            if (in_quotes && normalized_csv_text[i + 1] === '"') {
-                current_field += '"';
-                i++; // Skip the next quote
+        while (i < normalized_csv_text.length) {
+            const char = normalized_csv_text[i];
+
+            if (char === '"') {
+                // Handle quoted fields
+                if (in_quotes && normalized_csv_text[i + 1] === '"') {
+                    current_field += '"';
+                    i++; // Skip the next quote
+                } else {
+                    in_quotes = !in_quotes;
+                }
+            } else if (char === ',' && !in_quotes) {
+                // Handle field delimiter
+                current_row.push(current_field.trim());
+                current_field = '';
+            } else if ((char === '\n' || char === '\r') && !in_quotes) {
+                // Handle end of row
+                if (char === '\r' && normalized_csv_text[i + 1] === '\n') {
+                    i++; // Skip \n after \r
+                }
+                current_row.push(current_field.trim());
+                rows.push(current_row);
+                current_row = [];
+                current_field = '';
             } else {
-                in_quotes = !in_quotes;
+                current_field += char;
             }
-        } else if (char === ',' && !in_quotes) {
-            // Handle field delimiter
-            current_row.push(current_field.trim());
-            current_field = '';
-        } else if ((char === '\n' || char === '\r') && !in_quotes) {
-            // Handle end of row
-            if (char === '\r' && normalized_csv_text[i + 1] === '\n') {
-                i++; // Skip \n after \r
-            }
+            i++;
+        }
+
+        // Handle the last row/field
+        if (current_field !== '' || current_row.length > 0) {
             current_row.push(current_field.trim());
             rows.push(current_row);
-            current_row = [];
-            current_field = '';
-        } else {
-            current_field += char;
         }
-        i++;
-    }
 
-    // Handle the last row/field
-    if (current_field !== '' || current_row.length > 0) {
-        current_row.push(current_field.trim());
-        rows.push(current_row);
-    }
-
-    return rows;
-}   /* end parse csv */
+        return rows;
+    }   /* end parse csv */
 
 
 
-// // GENERATE HTML TABLE FROM CSV FILE
-    // this is the main part, to load the csv as html table
+    // GENERATE HTML TABLE FROM CSV FILE
+    // this is the main function to load the csv as html table
     function generate_html_table_from_csv(csv_text) {
         const rows = parse_csv(csv_text);  // parse the csv file -- got "," in the text
         const table = document.createElement('table');
@@ -1471,14 +1486,18 @@ function parse_csv(csv_text) {
 
                 // [edit mode] vs [locked mode - for copyboard]
                 copyboard_checkbox.addEventListener('change', function() {
+
+                refresh_table();                        
+
                     if (this.checked) {
-                       // when checkbox is checked - not editable / copyboard on
+                    // when checkbox is checked - not editable / copyboard on
+                    
                         td.contentEditable = false;
                         td.addEventListener('click', copyboard_function);
-
-                    
+    
                     } else {
                         // when checkbox not check - editable / copyboard off
+
                         td.contentEditable = true;
                         td.removeEventListener('click', copyboard_function);
                     }
@@ -1489,16 +1508,12 @@ function parse_csv(csv_text) {
             });
             table.appendChild(tr);
 
-
-            // Insert the Table Tools here:
-                // select and highlight rows and columns
+            // This is for the select/highlight rows and columns
             table.addEventListener('click', table_row_click);
             table.addEventListener('click', table_column_click);
 
-
-            // set table's id
+            // Set table's id
             table.id = 'generated-table';
-
 
 
         });
@@ -1506,12 +1521,13 @@ function parse_csv(csv_text) {
         table_container.appendChild(table);
  
 
-
     }    // end - generate html table from csv
 
 
 
-//  COPYBOARD - used in generate html table from csv
+
+
+    //  Helper: COPY TO CLIPBOARD
     function copy_to_clipboard(text) {
         const temporary_input = document.createElement('input');
         document.body.appendChild(temporary_input);
@@ -1521,13 +1537,15 @@ function parse_csv(csv_text) {
         document.body.removeChild(temporary_input);
     } // end - copy to clipboard
 
-    // Function to show copy indicator
+
+
+    //  Helper: COPY INDICATOR
     function show_copy_indicator(copied_text) {
         const indicator = document.createElement('div');
         indicator.textContent = `copied: ${copied_text}`;
         indicator.className = 'copy-indicator'
         document.body.appendChild(indicator);
-        // Auto-hide the indicator after 0.5 seconds
+        // Auto-hide the indicator after xxx seconds
         setTimeout(() => {
             document.body.removeChild(indicator);
         }, 600);
@@ -1535,8 +1553,8 @@ function parse_csv(csv_text) {
 
 
 
-    // Final Combined Copyboard Function
-        // using the above: copy_to_clipboard(), show_copy_indicator()
+    // MAIN COPYBOARD FUNCTION
+    // This uses the above: copy_to_clipboard(), show_copy_indicator()
     function copyboard_function(event) {
         const td = event.target;
         const copied_text = td.textContent;
@@ -1553,7 +1571,7 @@ function parse_csv(csv_text) {
     }; // end - copyboard function
 
 
-
+    // Copyboard colour change
     copyboard_checkbox.addEventListener('change', function() {
         if (this.checked) {
             document.body.classList.add('copyboard-background');
@@ -1568,7 +1586,9 @@ function parse_csv(csv_text) {
 
 
 
-// BUTTONS
+
+    // BUTTONS - NEW TABLE, ADD ROW, ADD COLUMN & EXPORT
+
 
     // (1) Button - Generate New Table
     const new_table_text = "{{variable}},";
@@ -1576,7 +1596,9 @@ function parse_csv(csv_text) {
         generate_html_table_from_csv(new_table_text);
     });   // end - new table
 
-    // (2) Button Add Row
+
+
+    // (2) Button - Add Row
     function add_row() {
         const table = document.querySelector('#table-container table');
         if (table) {
@@ -1603,7 +1625,9 @@ function parse_csv(csv_text) {
         add_row();
     }); // end - add row
 
-    // (3) Button Add Column
+
+
+    // (3) Button - Add Column
     function add_column() {
         const table = document.querySelector('#table-container table');
         if (table) {
@@ -1631,8 +1655,8 @@ function parse_csv(csv_text) {
     }); // end - add column
 
 
-    // (4) Export to CSV
 
+    // (4) Export to CSV
     function export_to_csv(filename) {
         const rows = document.querySelectorAll('#table-container table tr');
         let csvContent = '';
@@ -1669,6 +1693,7 @@ function parse_csv(csv_text) {
     //---- end - export to csv
 
 
+
     // (5) Export HTML
 
     function export_to_html(filename) {
@@ -1696,437 +1721,434 @@ function parse_csv(csv_text) {
     });    // end - export to html
 
 
+
 }   // setup() close bracket
 
 
 
 
 
-//  TABLE TOOLS
+    //  TABLE TOOLS
 
-// Toggle the table tool show/hide
-// Function to toggle the section visibility
-function toggleSection() {
-    var section = document.getElementById('table-tool-container');
-    var icon = document.getElementById('table-tool-toggle-button');
-    if (section.style.display === "none") {
-        section.style.display = "block";
-        icon.innerHTML = "&#9660; Hide Table Tools"; // Change icon and text
-    } else {
-        section.style.display = "none";
-        icon.innerHTML = "&#9654; Show Table Tools"; // Change icon and text
+    // Toggle the table tools visibility (show/hide)
+    function toggleSection() {
+        var section = document.getElementById('table-tool-container');
+        var icon = document.getElementById('table-tool-toggle-button');
+        if (section.style.display === "none") {
+            section.style.display = "block";
+            icon.innerHTML = "&#9660; Hide Table Tools"; // Change icon and text
+        } else {
+            section.style.display = "none";
+            icon.innerHTML = "&#9654; Show Table Tools"; // Change icon and text
+        }
     }
-}
 
 
 
-let highlighted_row = null;
-let highlighted_column = null;
-let highlighted_rows = new Set();
-let highlighted_columns = new Set();
+    let highlighted_row = null;
+    let highlighted_column = null;
+    let highlighted_rows = new Set();
+    let highlighted_columns = new Set();
 
-// Function to handle row click
-function table_row_click(event) {
-    const clicked_cell = event.target.closest('td');
-    
-    if (clicked_cell) {
-        const row = clicked_cell.closest('tr');
+
+    // Function to handle row click
+    function table_row_click(event) {
+        const clicked_cell = event.target.closest('td');
         
-        if (document.querySelector('#radio-select-row').checked) {
-            if (highlighted_rows.has(row)) {
-                row.classList.remove('highlight_row');
-                highlighted_rows.delete(row);
-            } else {
-                row.classList.add('highlight_row');
-                highlighted_rows.add(row);
-            }
+        if (clicked_cell) {
+            const row = clicked_cell.closest('tr');
             
-            // Clear column highlight when switching to multi-select row
-            clear_column_highlight();
-        }
-    }
-}
-
-// Function to handle column click
-function table_column_click(event) {
-    const clicked_cell = event.target.closest('td');
-    
-    if (clicked_cell) {
-        const column_index = Array.from(clicked_cell.parentElement.children).indexOf(clicked_cell);
-        const table = document.querySelector('#table-container table');
-        const rows = table.querySelectorAll('tr');
-        
-        if (document.querySelector('#radio-select-column').checked) {
-            if (highlighted_columns.has(column_index)) {
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll('td');
-                    if (cells[column_index]) {
-                        cells[column_index].classList.remove('highlight_column');
-                    }
-                });
-                highlighted_columns.delete(column_index);
-            } else {
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll('td');
-                    if (cells[column_index]) {
-                        cells[column_index].classList.add('highlight_column');
-                    }
-                });
-                highlighted_columns.add(column_index);
+            if (document.querySelector('#radio-select-row').checked) {
+                if (highlighted_rows.has(row)) {
+                    row.classList.remove('highlight_row');
+                    highlighted_rows.delete(row);
+                } else {
+                    row.classList.add('highlight_row');
+                    highlighted_rows.add(row);
+                }
+                
+                // Clear column highlight when switching to multi-select row
+                clear_column_highlight();
             }
         }
     }
-}
 
-// Function to clear row highlight
-function clear_row_highlight() {
-    if (highlighted_row) {
-        highlighted_row.classList.remove('highlight_row');
-        highlighted_row = null;
-    }
-    highlighted_rows.forEach(row => row.classList.remove('highlight_row'));
-    highlighted_rows.clear();
-}
-
-// Function to clear column highlight
-function clear_column_highlight() {
-    if (highlighted_column !== null) {
-        const table = document.querySelector('#table-container table');
-        if (table) {
+    // Function to handle column click
+    function table_column_click(event) {
+        const clicked_cell = event.target.closest('td');
+        
+        if (clicked_cell) {
+            const column_index = Array.from(clicked_cell.parentElement.children).indexOf(clicked_cell);
+            const table = document.querySelector('#table-container table');
             const rows = table.querySelectorAll('tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells[highlighted_column]) {
-                    cells[highlighted_column].classList.remove('highlight_column');
+            
+            if (document.querySelector('#radio-select-column').checked) {
+                if (highlighted_columns.has(column_index)) {
+                    rows.forEach(row => {
+                        const cells = row.querySelectorAll('td');
+                        if (cells[column_index]) {
+                            cells[column_index].classList.remove('highlight_column');
+                        }
+                    });
+                    highlighted_columns.delete(column_index);
+                } else {
+                    rows.forEach(row => {
+                        const cells = row.querySelectorAll('td');
+                        if (cells[column_index]) {
+                            cells[column_index].classList.add('highlight_column');
+                        }
+                    });
+                    highlighted_columns.add(column_index);
                 }
-            });
+            }
         }
-        highlighted_column = null;
     }
-    highlighted_columns.forEach(colIndex => {
-        const table = document.querySelector('#table-container table');
-        if (table) {
-            const rows = table.querySelectorAll('tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells[colIndex]) {
-                    cells[colIndex].classList.remove('highlight_column');
-                }
-            });
-        }
-    });
-    highlighted_columns.clear();
-}
 
-// LINK Row and Column Selection TO RADIO BUTTONS
-// Function to handle table clicks based on selected radio button
-function handle_table_click(event) {
-    if (document.querySelector('#radio-select-row').checked) {
-        table_row_click(event);
-    } else if (document.querySelector('#radio-select-column').checked) {
-        table_column_click(event);
-    }
-}
 
-// Attach event listener to the table and radio buttons
-const table = document.querySelector('#table-container table');
-if (table) {
-    table.addEventListener('click', handle_table_click);
-}
-
-// Attach event listener to radio buttons to reset highlights
-document.querySelectorAll('input[name="selection"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-        clear_row_highlight();
-        clear_column_highlight();
-        update_delete_button_text();
-        update_clear_button_text();
-        update_copy_button_text();
-        update_paste_button_text();
-    });
-});
-
-// DELETE ROW or COLUMN
-
-// Function to delete selected row or column
-function delete_selected() {
-    const table = document.querySelector('#table-container table');
-    
-    if (table) {
+    // Function to clear row highlight
+    function clear_row_highlight() {
         if (highlighted_row) {
-            highlighted_row.remove();
-            clear_row_highlight();
-            clear_column_highlight();
-        } else if (highlighted_column !== null) {
-            const rows = table.querySelectorAll('tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells[highlighted_column]) {
-                    cells[highlighted_column].remove();
-                }
-            });
-            clear_column_highlight();
-        } else if (highlighted_rows.size > 0) {
-            highlighted_rows.forEach(row => row.remove());
-            clear_row_highlight();
-            clear_column_highlight();
-        } else if (highlighted_columns.size > 0) {
-            const rows = table.querySelectorAll('tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                highlighted_columns.forEach(colIndex => {
-                    if (cells[colIndex]) {
-                        cells[colIndex].remove();
-                    }
-                });
-            });
-            clear_column_highlight();
+            highlighted_row.classList.remove('highlight_row');
+            highlighted_row = null;
         }
-        update_delete_button_text();  // Update button text after deletion
-    }
-}
-
-// Function to update the text of the delete button
-function update_delete_button_text() {
-    const delete_button = document.getElementById('delete-button');
-    if (document.querySelector('#radio-select-row').checked) {
-        delete_button.textContent = 'Delete Rows';
-    } else if (document.querySelector('#radio-select-column').checked) {
-        delete_button.textContent = 'Delete Columns';
-
- 
-    } else {
-       delete_button.textContent = 'Nothing Selected';
+        highlighted_rows.forEach(row => row.classList.remove('highlight_row'));
+        highlighted_rows.clear();
     }
 
-}
 
-
-// Function to clear selected row or column
-function clear_selected() {
-    const table = document.querySelector('#table-container table');
-    
-    if (table) {
-        if (highlighted_row) {
-            highlighted_row.querySelectorAll('td').forEach(cell => cell.textContent = '');
-            clear_row_highlight();
-            clear_column_highlight();
-        } else if (highlighted_column !== null) {
-            const rows = table.querySelectorAll('tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells[highlighted_column]) {
-                    cells[highlighted_column].textContent = '';
-                }
-            });
-            clear_column_highlight();
-        } else if (highlighted_rows.size > 0) {
-            highlighted_rows.forEach(row => row.querySelectorAll('td').forEach(cell => cell.textContent = ''));
-            clear_row_highlight();
-            clear_column_highlight();
-        } else if (highlighted_columns.size > 0) {
-            const rows = table.querySelectorAll('tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                highlighted_columns.forEach(colIndex => {
-                    if (cells[colIndex]) {
-                        cells[colIndex].textContent = '';
-                    }
-                });
-            });
-            clear_column_highlight();
-        }
-        update_clear_button_text();  // Update button text after clearing
-    }
-}
-
-// Function to update the text of the clear button
-function update_clear_button_text() {
-    const clear_button = document.getElementById('clear-button');
-    if (document.querySelector('#radio-select-row').checked) {
-        clear_button.textContent = 'Clear Rows';
-    } else if (document.querySelector('#radio-select-column').checked) {
-        clear_button.textContent = 'Clear Columns';
-    } else {
-       clear_button.textContent = 'Nothing Selected';
-
-
-    }
-}
-
-
-//  COPY and PASTE
-
-let copied_data = []; // Variable to store copied data
-
-// Function to copy selected row or column data
-function copy_selected() {
-    const table = document.querySelector('#table-container table');
-    copied_data = [];
-    const rows = table.querySelectorAll('tr');
-    let copied_message = ''; // Variable to hold the copy message
-
-    if (table) {
-        if (highlighted_row) {
-            // Copy data from a single highlighted row
-            const cells = highlighted_row.querySelectorAll('td');
-            cells.forEach(cell => copied_data.push(cell.textContent));
-            copied_message = 'Copied 1 row';
-        } else if (highlighted_column !== null) {
-            // Copy data from a single highlighted column
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells[highlighted_column]) {
-                    copied_data.push(cells[highlighted_column].textContent || ''); // Handle blank values
-                }
-            });
-            copied_message = 'Copied 1 column';
-        } else if (highlighted_rows.size > 0) {
-            // Copy data from multiple highlighted rows
-            highlighted_rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                cells.forEach(cell => copied_data.push(cell.textContent || '')); // Handle blank values
-            });
-            copied_message = `Copied ${highlighted_rows.size} rows`;
-        } else if (highlighted_columns.size > 0) {
-            // Copy data from multiple highlighted columns
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                highlighted_columns.forEach(colIndex => {
-                    if (cells[colIndex]) {
-                        copied_data.push(cells[colIndex].textContent || ''); // Handle blank values
-                    }
-                });
-            });
-            copied_message = `Copied ${highlighted_columns.size} columns`;
-        }
-    }
-
-    // Display the copy message if any data was copied
-    if (copied_message) {
-        select_row_column_copy_indicator(copied_message);
-    }
-    // ---->>> TO CONFIRM
-    update_copy_button_text()
-}
-
-
-// Function to show the copy indicator message
-function select_row_column_copy_indicator(message) {
-    const indicator = document.createElement('div');
-    indicator.textContent = message;
-    indicator.style.position = 'fixed';
-    indicator.style.top = '50%';
-    indicator.style.left = '50%';
-    indicator.style.transform = 'translate(-50%, -50%)';
-    indicator.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    indicator.style.color = 'white';
-    indicator.style.padding = '10px 20px';
-    indicator.style.borderRadius = '5px';
-    indicator.style.zIndex = '1000';
-    document.body.appendChild(indicator);
-
-    // Remove the indicator after 1 second
-    setTimeout(() => {
-        document.body.removeChild(indicator);
-    }, 1000);
-}
-
-
-
-
-// Function to update the text of the copy button
-function update_copy_button_text() {
-    const copy_button = document.getElementById('copy-button');
-    if (document.querySelector('#radio-select-row').checked) {
-        copy_button.textContent = 'Copy Rows';
-    } else if (document.querySelector('#radio-select-column').checked) {
-        copy_button.textContent = 'Copy Columns';
-    } else {
-        copy_button.textContent = 'Nothing Selected';
-
-    }
-}
-
-
-
-// Function to paste data into the selected rows or columns, handling multiple selections
-function paste_selected() {
-    const table = document.querySelector('#table-container table');
-    
-    if (table && copied_data.length > 0) {
-        const rows = table.querySelectorAll('tr');
-        // const numRows = rows.length;
-        let data_index = 0;
-
-        if (highlighted_rows.size > 0) {
-            // Paste data into multiple rows
-            const selected_rows = Array.from(highlighted_rows);
-            selected_rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                cells.forEach((cell, cellIndex) => {
-                    if (data_index < copied_data.length) {
-                        cell.textContent = copied_data[data_index++] || ''; // Handle blank values
-                    }
-                });
-                if (data_index >= copied_data.length) {
-                    data_index = 0; // Restart if needed
-                }
-            });
-        } else if (highlighted_columns.size > 0) {
-            // Paste data into multiple columns
-            const selected_columns = Array.from(highlighted_columns);
-            selected_columns.forEach((colIndex) => {
+    // Function to clear column highlight
+    function clear_column_highlight() {
+        if (highlighted_column !== null) {
+            const table = document.querySelector('#table-container table');
+            if (table) {
+                const rows = table.querySelectorAll('tr');
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
-                    if (cells[colIndex] && data_index < copied_data.length) {
-                        cells[colIndex].textContent = copied_data[data_index++] || ''; // Handle blank values
+                    if (cells[highlighted_column]) {
+                        cells[highlighted_column].classList.remove('highlight_column');
                     }
                 });
-                if (data_index >= copied_data.length) {
-                    data_index = 0; // Restart if needed
-                }
-            });
-        
+            }
+            highlighted_column = null;
         }
-        update_paste_button_text() 
+        highlighted_columns.forEach(colIndex => {
+            const table = document.querySelector('#table-container table');
+            if (table) {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[colIndex]) {
+                        cells[colIndex].classList.remove('highlight_column');
+                    }
+                });
+            }
+        });
+        highlighted_columns.clear();
     }
-}
 
 
 
-// Function to update the text of the paste button
-function update_paste_button_text() {
-    const paste_button = document.getElementById('paste-button');
-    if (document.querySelector('#radio-select-row').checked) {
-        paste_button.textContent = 'Paste Rows';
-    } else if (document.querySelector('#radio-select-column').checked) {
-        paste_button.textContent = 'Paste Columns';
-    } else {
-        paste_button.textContent = 'Nothing Selected';
-
-
+    // LINK Row and Column Selection TO RADIO BUTTONS
+    // Function to handle table clicks based on selected radio button
+    function handle_table_click(event) {
+        if (document.querySelector('#radio-select-row').checked) {
+            table_row_click(event);
+        } else if (document.querySelector('#radio-select-column').checked) {
+            table_column_click(event);
+        }
     }
-}
+
+    // Attach event listener to the table and radio buttons
+    const table = document.querySelector('#table-container table');
+    if (table) {
+        table.addEventListener('click', handle_table_click);
+    }
+
+    // Attach event listener to radio buttons to reset highlights
+    document.querySelectorAll('input[name="selection"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            clear_row_highlight();
+            clear_column_highlight();
+            update_delete_button_text();
+            update_clear_button_text();
+            update_copy_button_text();
+            update_paste_button_text();
+        });
+    });
 
 
 
-// Attach event listener to the delete, clear, copy and paste button
-document.getElementById('delete-button').addEventListener('click', delete_selected);
-document.getElementById('clear-button').addEventListener('click', clear_selected);
-document.getElementById('copy-button').addEventListener('click', copy_selected);
-document.getElementById('paste-button').addEventListener('click', paste_selected);
+    // DELETE ROW or COLUMN
+    // Function to delete selected row or column
+    function delete_selected() {
+        const table = document.querySelector('#table-container table');
+        
+        if (table) {
+            if (highlighted_row) {
+                highlighted_row.remove();
+                clear_row_highlight();
+                clear_column_highlight();
+            } else if (highlighted_column !== null) {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[highlighted_column]) {
+                        cells[highlighted_column].remove();
+                    }
+                });
+                clear_column_highlight();
+            } else if (highlighted_rows.size > 0) {
+                highlighted_rows.forEach(row => row.remove());
+                clear_row_highlight();
+                clear_column_highlight();
+            } else if (highlighted_columns.size > 0) {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    highlighted_columns.forEach(colIndex => {
+                        if (cells[colIndex]) {
+                            cells[colIndex].remove();
+                        }
+                    });
+                });
+                clear_column_highlight();
+            }
+            update_delete_button_text();  // Update button text after deletion
+        }
+    }
 
 
-// Initial update of the button text
-update_delete_button_text();
-update_clear_button_text();
-update_copy_button_text();
-update_paste_button_text();
+    // Function to update the text of the delete button
+    function update_delete_button_text() {
+        const delete_button = document.getElementById('delete-button');
+        if (document.querySelector('#radio-select-row').checked) {
+            delete_button.textContent = 'Delete Rows';
+        } else if (document.querySelector('#radio-select-column').checked) {
+            delete_button.textContent = 'Delete Columns';
+        } else {
+           delete_button.textContent = 'Nothing Selected';
+        }
+    }
 
 
 
-// HINT BOX OVERLAY
+    // Function to clear selected row or column
+    function clear_selected() {
+        const table = document.querySelector('#table-container table');
+        
+        if (table) {
+            if (highlighted_row) {
+                highlighted_row.querySelectorAll('td').forEach(cell => cell.textContent = '');
+                clear_row_highlight();
+                clear_column_highlight();
+            } else if (highlighted_column !== null) {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[highlighted_column]) {
+                        cells[highlighted_column].textContent = '';
+                    }
+                });
+                clear_column_highlight();
+            } else if (highlighted_rows.size > 0) {
+                highlighted_rows.forEach(row => row.querySelectorAll('td').forEach(cell => cell.textContent = ''));
+                clear_row_highlight();
+                clear_column_highlight();
+            } else if (highlighted_columns.size > 0) {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    highlighted_columns.forEach(colIndex => {
+                        if (cells[colIndex]) {
+                            cells[colIndex].textContent = '';
+                        }
+                    });
+                });
+                clear_column_highlight();
+            }
+            update_clear_button_text();  // Update button text after clearing
+        }
+    }
+
+
+    // Function to update the text of the clear button
+    function update_clear_button_text() {
+        const clear_button = document.getElementById('clear-button');
+        if (document.querySelector('#radio-select-row').checked) {
+            clear_button.textContent = 'Clear Rows';
+        } else if (document.querySelector('#radio-select-column').checked) {
+            clear_button.textContent = 'Clear Columns';
+        } else {
+           clear_button.textContent = 'Nothing Selected';
+        }
+    }
+
+
+    //  COPY AND PASTE
+
+    let copied_data = []; // Variable to store copied data
+
+    // Function to copy selected row or column data
+    function copy_selected() {
+        const table = document.querySelector('#table-container table');
+        copied_data = [];
+        const rows = table.querySelectorAll('tr');
+        let copied_message = ''; // Variable to hold the copy message
+
+        if (table) {
+            if (highlighted_row) {
+                // Copy data from a single highlighted row
+                const cells = highlighted_row.querySelectorAll('td');
+                cells.forEach(cell => copied_data.push(cell.textContent));
+                copied_message = 'Copied 1 row';
+            } else if (highlighted_column !== null) {
+                // Copy data from a single highlighted column
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells[highlighted_column]) {
+                        copied_data.push(cells[highlighted_column].textContent || ''); // Handle blank values
+                    }
+                });
+                copied_message = 'Copied 1 column';
+            } else if (highlighted_rows.size > 0) {
+                // Copy data from multiple highlighted rows
+                highlighted_rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    cells.forEach(cell => copied_data.push(cell.textContent || '')); // Handle blank values
+                });
+                copied_message = `Copied ${highlighted_rows.size} rows`;
+            } else if (highlighted_columns.size > 0) {
+                // Copy data from multiple highlighted columns
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    highlighted_columns.forEach(colIndex => {
+                        if (cells[colIndex]) {
+                            copied_data.push(cells[colIndex].textContent || ''); // Handle blank values
+                        }
+                    });
+                });
+                copied_message = `Copied ${highlighted_columns.size} columns`;
+            }
+        }
+
+        // Display the copy message if any data was copied
+        if (copied_message) {
+            select_row_column_copy_indicator(copied_message);
+        }
+        update_copy_button_text()
+    }
+
+
+    // Function to show the COPY INDICATOR message
+    function select_row_column_copy_indicator(message) {
+        const indicator = document.createElement('div');
+        indicator.textContent = message;
+        indicator.style.position = 'fixed';
+        indicator.style.top = '50%';
+        indicator.style.left = '50%';
+        indicator.style.transform = 'translate(-50%, -50%)';
+        indicator.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        indicator.style.color = 'white';
+        indicator.style.padding = '10px 20px';
+        indicator.style.borderRadius = '5px';
+        indicator.style.zIndex = '1000';
+        document.body.appendChild(indicator);
+
+        // Remove the indicator after xxx seconds
+        setTimeout(() => {
+            document.body.removeChild(indicator);
+        }, 1000);
+    }
+
+
+
+    // Function to update the text of the copy button
+    function update_copy_button_text() {
+        const copy_button = document.getElementById('copy-button');
+        if (document.querySelector('#radio-select-row').checked) {
+            copy_button.textContent = 'Copy Rows';
+        } else if (document.querySelector('#radio-select-column').checked) {
+            copy_button.textContent = 'Copy Columns';
+        } else {
+            copy_button.textContent = 'Nothing Selected';
+        }
+    }
+
+
+
+    // Function to paste data into the selected rows or columns, handling multiple selections
+    function paste_selected() {
+        const table = document.querySelector('#table-container table');
+        
+        if (table && copied_data.length > 0) {
+            const rows = table.querySelectorAll('tr');
+
+            let data_index = 0;
+
+            if (highlighted_rows.size > 0) {
+                // Paste data into multiple rows
+                const selected_rows = Array.from(highlighted_rows);
+                selected_rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    cells.forEach((cell, cellIndex) => {
+                        if (data_index < copied_data.length) {
+                            cell.textContent = copied_data[data_index++] || ''; // Handle blank values
+                        }
+                    });
+                    if (data_index >= copied_data.length) {
+                        data_index = 0; // Restart if needed
+                    }
+                });
+            } else if (highlighted_columns.size > 0) {
+                // Paste data into multiple columns
+                const selected_columns = Array.from(highlighted_columns);
+                selected_columns.forEach((colIndex) => {
+                    rows.forEach(row => {
+                        const cells = row.querySelectorAll('td');
+                        if (cells[colIndex] && data_index < copied_data.length) {
+                            cells[colIndex].textContent = copied_data[data_index++] || ''; // Handle blank values
+                        }
+                    });
+                    if (data_index >= copied_data.length) {
+                        data_index = 0; // Restart if needed
+                    }
+                });
+            }
+            update_paste_button_text() 
+        }
+    }
+
+
+
+    // Function to update the text of the paste button
+    function update_paste_button_text() {
+        const paste_button = document.getElementById('paste-button');
+        if (document.querySelector('#radio-select-row').checked) {
+            paste_button.textContent = 'Paste Rows';
+        } else if (document.querySelector('#radio-select-column').checked) {
+            paste_button.textContent = 'Paste Columns';
+        } else {
+            paste_button.textContent = 'Nothing Selected';
+        }
+    }
+
+
+    // Attach event listener to the delete, clear, copy and paste button
+    document.getElementById('delete-button').addEventListener('click', delete_selected);
+    document.getElementById('clear-button').addEventListener('click', clear_selected);
+    document.getElementById('copy-button').addEventListener('click', copy_selected);
+    document.getElementById('paste-button').addEventListener('click', paste_selected);
+
+    // Initial update of the button text
+    update_delete_button_text();
+    update_clear_button_text();
+    update_copy_button_text();
+    update_paste_button_text();
+
+
+
+
+    // HINT BOX OVERLAY
 
     function show_hint_box() {
         document.getElementById("overlay").style.display = "block";
@@ -2180,259 +2202,245 @@ update_paste_button_text();
 
 
 
-// TEXT TRANSFORM SECTION
 
- let selectedCell = null;
+    // TEXT-TRANSFORM SECTION
 
-// Event delegation for clicking on any table cell
-document.body.addEventListener('click', function(event) {
-    // Check if the clicked element is a td cell
-    if (event.target.tagName.toLowerCase() === 'td') {
-        // Deselect previous cell, if any
-        if (selectedCell) {
-            selectedCell.classList.remove('selected');
+     let selected_cell = null;
+
+    // Event delegation for clicking on any table cell
+    document.body.addEventListener('click', function(event) {
+        // Check if the clicked element is a td cell
+        if (event.target.tagName.toLowerCase() === 'td') {
+            // Deselect previous cell, if any
+            if (selected_cell) {
+                selected_cell.classList.remove('selected');
+            }
+
+            // Select the new cell
+            selected_cell = event.target;
+            selected_cell.classList.add('selected');
         }
-
-        // Select the new cell
-        selectedCell = event.target;
-        selectedCell.classList.add('selected');
-    }
-});
-
-// Convert to Uppercase
-document.getElementById('convertToUpper').addEventListener('click', function () {
-    if (selectedCell) {
-        const oldText = selectedCell.textContent;
-        const newText = oldText.toUpperCase();
-        selectedCell.textContent = newText;
-    // } else {
-    //     alert('Please select a cell');
-    }
-});
-
-// Convert to Lowercase
-document.getElementById('convertToLower').addEventListener('click', function () {
-    if (selectedCell) {
-        const oldText = selectedCell.textContent;
-        const newText = oldText.toLowerCase();
-        selectedCell.textContent = newText;
-    // } else {
-    //     alert('Please select a cell');
-    }
-});
-
-// Convert to Title Case
-document.getElementById('convertToTitle').addEventListener('click', function () {
-    if (selectedCell) {
-        const oldText = selectedCell.textContent;
-        const newText = toTitleCase(oldText);
-        selectedCell.textContent = newText;
-    // } else {
-    //     alert('Please select a cell');
-    }
-});
-
-// Convert to Sentence Case
-document.getElementById('convertToSentence').addEventListener('click', function () {
-    if (selectedCell) {
-        const oldText = selectedCell.textContent;
-        const newText = toSentenceCase(oldText);
-        selectedCell.textContent = newText;
-    // } else {
-    //     alert('Please select a cell');
-    }
-});
-
-// Remove Dashes (hyphen and underscore)
-document.getElementById('removeDashes').addEventListener('click', function () {
-    if (selectedCell) {
-        const oldText = selectedCell.textContent;
-        const newText = oldText.replace(/[-_]/g, ''); // Removes dashes and underscores
-        selectedCell.textContent = newText;
-    // } else {
-    //     alert('Please select a cell');
-    }
-});
-
-
-
-document.getElementById('numbersOnly').addEventListener('click', function () {
-    if (selectedCell) {
-        const oldText = selectedCell.textContent;
-        // Extract all digits anywhere and join them
-        const newText = oldText.match(/\d+/g)?.join('')?.trim() || '';
-        selectedCell.textContent = newText;
-    } else {
-        alert('Please select a cell');
-    }
-});
-
-
-
-// Convert newline to pipe (address style)
-document.getElementById('newlineToPipe').addEventListener('click', function () {
-    if (selectedCell) {
-
-        let oldText = selectedCell.textContent; 
-
-        oldText = selectedCell.innerHTML.replace(/<br\s*\/?>/g, '\n');
-
-        let newText = oldText.split('\n')    
-                            .filter(line => line.trim() !== '')  
-                            .join(' | ');  
-        selectedCell.textContent = newText; 
-    }
-});
-
-
-
-// Newline to <br>
-document.getElementById('newlineToBr').addEventListener('click', function () {
-    if (selectedCell) {
-
-        let oldText = selectedCell.textContent; 
-
-        oldText = selectedCell.innerHTML.replace(/<br\s*\/?>/g, '\n');
-
-        let newText = oldText.split('\n')    
-                            .filter(line => line.trim() !== '')  
-                            .join('<br>'); 
-
-        selectedCell.textContent = newText; 
-    }
-});
-
-
-
-
-
-
-
-// Convert text to Title Case (Helper function)
-function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(word) {
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     });
-}
-
-// Convert text to Sentence Case (Helper function)
-function toSentenceCase(str) {
-  // Lowercase everything first
-  str = str.toLowerCase();
-
-  // Uppercase the first letter of each sentence
-  return str.replace(/(^\s*\w|[.!?]\s*\w)/g, function(match) {
-    return match.toUpperCase();
-  });
-}
 
 
 
+    // Uppercase
+    document.getElementById('transform-upper').addEventListener('click', function () {
+        if (selected_cell) {
+            const old_text = selected_cell.textContent;
+            const new_text = old_text.toUpperCase();
+            selected_cell.textContent = new_text;
+        }
+    });
 
 
 
-// // UNDO AND REDO
-function enableUndoRedo(contentDivId, undoButtonId, redoButtonId) {
-  const contentDiv = document.getElementById(contentDivId);
-  const undoButton = document.getElementById(undoButtonId);
-  const redoButton = document.getElementById(redoButtonId);
+    // Lowercase
+    document.getElementById('transform-lower').addEventListener('click', function () {
+        if (selected_cell) {
+            const old_text = selected_cell.textContent;
+            const new_text = old_text.toLowerCase();
+            selected_cell.textContent = new_text;
+        }
+    });
 
-  if (!contentDiv || !undoButton || !redoButton) {
-    console.error('One or more elements not found.');
-    return;
-  }
 
-  let undoStack = [];
-  let redoStack = [];
 
-  const observer = new MutationObserver(saveState);
+    // Title Case
+    document.getElementById('transform-title').addEventListener('click', function () {
+        if (selected_cell) {
+            const old_text = selected_cell.textContent;
+            const new_text = toTitleCase(old_text);
+            selected_cell.textContent = new_text;
+        }
+    });
 
-  // Helper to update button states
-  function updateButtons() {
-    undoButton.disabled = undoStack.length <= 1;
-    redoButton.disabled = redoStack.length === 0;
-  }
-
-  // Save current state to undo stack if different
-  function saveState() {
-    const currentState = contentDiv.innerHTML;
-    if (undoStack[undoStack.length - 1] !== currentState) {
-      undoStack.push(currentState);
-      redoStack = []; // clear redo stack after new edit
-      updateButtons();
+    // Helper: for Convert to Title Case
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        });
     }
-  }
 
-  // Keep caret at the end after undo/redo
-  function placeCaretAtEnd(el) {
-    el.focus();
-    if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
+
+    // Sentence Case
+    document.getElementById('transform-sentence').addEventListener('click', function () {
+        if (selected_cell) {
+            const old_text = selected_cell.textContent;
+            const new_text = toSentenceCase(old_text);
+            selected_cell.textContent = new_text;
+        }
+    });
+
+    // Helper: for convert to Sentence Case
+    function toSentenceCase(str) {
+      // Lowercase everything first
+      str = str.toLowerCase();
+      // Uppercase the first letter of each sentence
+      return str.replace(/(^\s*\w|[.!?]\s*\w)/g, function(match) {
+        return match.toUpperCase();
+      });
     }
-  }
 
-  // Initialize
-  undoStack.push(contentDiv.innerHTML);
-  updateButtons();
-  observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
 
-  // Undo
-  undoButton.addEventListener('click', () => {
-    if (undoStack.length > 1) {
-      const current = undoStack.pop();
-      redoStack.push(current);
 
-      observer.disconnect();
-      contentDiv.innerHTML = undoStack[undoStack.length - 1];
-      observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
+    // Remove Dashes (and underscore)
+    document.getElementById('transform-remove-dash').addEventListener('click', function () {
+        if (selected_cell) {
+            const old_text = selected_cell.textContent;
+            const new_text = old_text.replace(/[-_]/g, ''); // removes dashes and underscores
+            selected_cell.textContent = new_text;
+        }
+    });
 
-      refreshTable(); // <-- refresh table 
-      placeCaretAtEnd(contentDiv);
-      updateButtons();
+
+
+    // Extract numbers only
+    document.getElementById('transform-numbers-only').addEventListener('click', function () {
+        if (selected_cell) {
+            const old_text = selected_cell.textContent;
+            // Extract all digits anywhere and join them
+            const new_text = old_text.match(/\d+/g)?.join('')?.trim() || '';
+            selected_cell.textContent = new_text;
+        } else {
+            alert('Please select a cell');
+        }
+    });
+
+
+
+    // Newline to pipe (address style)
+    document.getElementById('transform-newline-pipe').addEventListener('click', function () {
+        if (selected_cell) {
+
+            let old_text = selected_cell.textContent; 
+            old_text = selected_cell.innerHTML.replace(/<br\s*\/?>/g, '\n');
+
+            let new_text = old_text.split('\n')    
+                                .filter(line => line.trim() !== '')  
+                                .join(' | ');  
+            selected_cell.textContent = new_text; 
+        }
+    });
+
+
+
+    // Newline to <br>
+    document.getElementById('transform-newline-br').addEventListener('click', function () {
+        if (selected_cell) {
+
+            let old_text = selected_cell.textContent; 
+            old_text = selected_cell.innerHTML.replace(/<br\s*\/?>/g, '\n');
+
+            let new_text = old_text.split('\n')    
+                                .filter(line => line.trim() !== '')  
+                                .join('<br>'); 
+            selected_cell.textContent = new_text; 
+        }
+    });
+
+
+
+
+    // UNDO AND REDO SECTION
+
+    function enableUndoRedo(content_div_id, undo_button_id, redo_button_id) {
+      const content_div = document.getElementById(content_div_id);
+      const undo_button = document.getElementById(undo_button_id);
+      const redo_button = document.getElementById(redo_button_id);
+
+      if (!content_div || !undo_button || !redo_button) {
+        console.error('One or more elements not found.');
+        return;
+      }
+
+      let undo_stack = [];
+      let redo_stack = [];
+
+      const observer = new MutationObserver(save_undo_redo_state);
+
+      // Helper to update button states
+      function update_undo_redo_button_state() {
+        undo_button.disabled = undo_stack.length <= 1;
+        redo_button.disabled = redo_stack.length === 0;
+      }
+
+      // Save current state to undo stack if different
+      function save_undo_redo_state() {
+        const currentState = content_div.innerHTML;
+        if (undo_stack[undo_stack.length - 1] !== currentState) {
+          undo_stack.push(currentState);
+          redo_stack = []; // clear redo stack after new edit
+          update_undo_redo_button_state();
+        }
+      }
+
+      // Keep caret at the end after undo/redo
+      function put_caret_at_end_after_undo_redo(el) {
+        el.focus();
+        if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+          const range = document.createRange();
+          range.selectNodeContents(el);
+          range.collapse(false);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+
+      // Initialize
+      undo_stack.push(content_div.innerHTML);
+      update_undo_redo_button_state();
+      observer.observe(content_div, { childList: true, subtree: true, characterData: true });
+
+
+
+      // Undo
+      undo_button.addEventListener('click', () => {
+        if (undo_stack.length > 1) {
+          const current = undo_stack.pop();
+          redo_stack.push(current);
+
+          observer.disconnect();
+          content_div.innerHTML = undo_stack[undo_stack.length - 1];
+          observer.observe(content_div, { childList: true, subtree: true, characterData: true });
+
+          refresh_table(); 
+          put_caret_at_end_after_undo_redo(content_div);
+          update_undo_redo_button_state();
+        }
+      });
+
+
+      // Redo
+      redo_button.addEventListener('click', () => {
+        if (redo_stack.length > 0) {
+          const redoState = redo_stack.pop();
+
+          observer.disconnect();
+          content_div.innerHTML = redoState;
+          observer.observe(content_div, { childList: true, subtree: true, characterData: true });
+
+          undo_stack.push(redoState);
+
+          refresh_table(); 
+          put_caret_at_end_after_undo_redo(content_div);
+          update_undo_redo_button_state();
+        }
+      });
     }
-  });
 
-  // Redo
-  redoButton.addEventListener('click', () => {
-    if (redoStack.length > 0) {
-      const redoState = redoStack.pop();
+    enableUndoRedo('table-container', 'undo_button', 'redo_button');
 
-      observer.disconnect();
-      contentDiv.innerHTML = redoState;
-      observer.observe(contentDiv, { childList: true, subtree: true, characterData: true });
 
-      undoStack.push(redoState);
 
-      refreshTable(); // <-- refresh table 
-      placeCaretAtEnd(contentDiv);
-      updateButtons();
+    function refresh_table() {
+      const table = document.querySelector('#table-container table');
+      if (!table) return;
+      table.removeEventListener('click', handle_table_click);
     }
-  });
-}
-
-enableUndoRedo('table-container', 'undoButton', 'redoButton');
 
 
-
-function refreshTable() {
-  // This ensures your event listeners, selections, etc. are intact
-  // Can be empty if you don’t need extra logic
-  const table = document.querySelector('#table-container table');
-  if (!table) return;
-
-  // Optionally, re-attach table click handler if needed
-  table.removeEventListener('click', handle_table_click);
-  table.addEventListener('click', handle_table_click);
-
-  // You can also re-highlight rows/columns if you want
-  // clear_row_highlight();
-  // clear_column_highlight();
-}
 
 
 </script>
