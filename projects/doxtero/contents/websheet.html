@@ -2365,6 +2365,7 @@ function setup() {
         redo_button.disabled = redo_stack.length === 0;
       }
 
+
       // Save current state to undo stack if different
       function save_undo_redo_state() {
         const currentState = content_div.innerHTML;
@@ -2392,7 +2393,7 @@ function setup() {
       undo_stack.push(content_div.innerHTML);
       update_undo_redo_button_state();
       observer.observe(content_div, { childList: true, subtree: true, characterData: true });
-
+      refresh_table();
 
 
       // Undo
@@ -2414,6 +2415,7 @@ function setup() {
 
       // Redo
       redo_button.addEventListener('click', () => {
+
         if (redo_stack.length > 0) {
           const redoState = redo_stack.pop();
 
@@ -2426,6 +2428,8 @@ function setup() {
           refresh_table(); 
           put_caret_at_end_after_undo_redo(content_div);
           update_undo_redo_button_state();
+
+                    
         }
       });
     }
@@ -2438,6 +2442,7 @@ function setup() {
       const table = document.querySelector('#table-container table');
       if (!table) return;
       table.removeEventListener('click', handle_table_click);
+      table.addEventListener('click', handle_table_click);
     }
 
 
