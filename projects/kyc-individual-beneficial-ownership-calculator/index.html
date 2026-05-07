@@ -430,6 +430,7 @@ input[type=number] {
 
                     <input
                         type="number"
+                        input="decimal"
                         class="entity"
                         id="entity1"
                         min="0"
@@ -453,6 +454,7 @@ input[type=number] {
 
                         <input
                             type="number"
+                            input="decimal"
                             id="sharesOwned1"
                             placeholder="Shares"
                             step="any"
@@ -463,6 +465,7 @@ input[type=number] {
 
                         <input
                             type="number"
+                            input="decimal"
                             id="totalShares1"
                             placeholder="Total Shares"
                             step="any"
@@ -566,6 +569,7 @@ function addEntity() {
 
             <input
                 type="number"
+                input="decimal"
                 class="entity"
                 id="entity${entityCounter}"
                 min="0"
@@ -591,6 +595,7 @@ function addEntity() {
 
                 <input
                     type="number"
+                    input="decimal"
                     id="sharesOwned${entityCounter}"
                     placeholder="Shares"
                     step="any"
@@ -601,6 +606,7 @@ function addEntity() {
 
                 <input
                     type="number"
+                    input="decimal"
                     id="totalShares${entityCounter}"
                     placeholder="Total Shares"
                     step="any"
@@ -889,8 +895,65 @@ function removeBox(button) {
 
         box.remove();
 
+        renumberShareholders();
+
         calculateOwnership();
     }
+}
+
+
+function renumberShareholders() {
+
+    let boxes =
+        document.querySelectorAll(
+            '#shareholders .entity-box'
+        );
+
+    shareholderCounter = boxes.length;
+
+    boxes.forEach((box, index) => {
+
+        let number = index + 1;
+
+        /* LABELS */
+
+        let labels =
+            box.querySelectorAll('label');
+
+        labels[0].textContent =
+            `Shareholder ${number} Name:`;
+
+        labels[1].textContent =
+            `Shares:`;
+
+        /* INPUTS */
+
+        let nameInput =
+            box.querySelector('.shareholderName');
+
+        let sharesInput =
+            box.querySelector('.shareholderShares');
+
+        nameInput.id =
+            `shareholderName${number}`;
+
+        sharesInput.id =
+            `shareholderShares${number}`;
+
+        /* LABEL FOR ATTRIBUTES */
+
+        labels[0].setAttribute(
+            'for',
+            `shareholderName${number}`
+        );
+
+        labels[1].setAttribute(
+            'for',
+            `shareholderShares${number}`
+        );
+    });
+
+    updateColors();
 }
 
 
