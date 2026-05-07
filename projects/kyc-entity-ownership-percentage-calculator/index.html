@@ -87,6 +87,12 @@ input[type="number"] {
     text-align: center;
 }
 
+
+input {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
 button {
 
     background-color: #6495ED;
@@ -151,7 +157,12 @@ button:hover {
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /*align-items: center;*/
+    align-items: stretch;
+
+    width: 100%;
+    box-sizing: border-box;
+
 }
 
 .entity-box {
