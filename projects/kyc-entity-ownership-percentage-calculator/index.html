@@ -67,6 +67,8 @@ label {
     font-size: large;
 }
 
+
+
 input[type="text"],
 input[type="number"] {
 
@@ -87,19 +89,19 @@ input[type="number"] {
     text-align: center;
 }
 
-/* Chrome, Safari, Edge, Opera */
+/* IMPORTANT SAFARI FIX */
+input[type="number"] {
+    -webkit-appearance: textfield;
+    appearance: textfield;
+}
 
-/* remove the "updown button from number input" */
+/* remove arrows */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
 
 
 button {
@@ -342,7 +344,7 @@ button:hover {
 <body>
 
 <div class="calculator-container">
-  <h1>Entity Ownership Percentage Calculator</h1>
+  <h1> Ownership Percentage Calculator</h1>
 
     <subtitle>
         <p>Calculate a shareholder's ownership percentage in an Entity</p> 
@@ -371,10 +373,10 @@ button:hover {
             Total Shares (Optional):
         </label>
 
-        <input
-            type="number"
+         <input
+            type="text"
+            inputmode="decimal"
             id="totalShares"
-            class="totalShares"
             oninput="calculateOwnership()"
             placeholder="Leave empty to auto-sum"
         >
