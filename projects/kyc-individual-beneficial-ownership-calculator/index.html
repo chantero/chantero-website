@@ -3,385 +3,802 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Individual Beneficial Ownership Calculator</title>
 
 <style>
-    body {
-        padding: 2.5em;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to top, #EF629F, #EECDA3);
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        flex-direction: column;
-    }
+
+body {
+    padding: 2.5em;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to top, #EF629F, #EECDA3);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.footer-links a {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: xxx-large;
+    text-decoration: none;
+}
+
+.calculator-container {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 2em;
+    width: 100%;
+    max-width: 700px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #343a40;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+subtitle {
+    display: block;
+    color: #495057;
+    margin: 0 0 1.5em;
+}
+
+p {
+    margin: 0 0 1em;
+}
+
+ul {
+    margin: 0;
+    padding-left: 1.5em;
+    color: #495057;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5em;
+    color: #212529;
+    text-align: center;
+    font-size: large;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+
+    font-size: 1em;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    max-width: 280px;
+}
+
+button {
+    appearance: button;
+    background-color: #6495ED;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 10px 20px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+    margin: 20px 0;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #40B5AD;
+}
+
+.export-button {
+    background-color: #B47CC7;
+}
+
+.export-button:hover {
+    background-color: #90af76;
+}
+
+.result {
+    background-color: #fdfddc;
+    border: 2px solid black;
+    border-radius: 4px;
+    padding: 1em;
+    margin-top: 1em;
+}
+
+.entity-box {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1em;
+    margin-bottom: 1em;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.entity-box:nth-child(1) {
+    background-color: #ffebee;
+}
+
+.entity-box:nth-child(2) {
+    background-color: #e3f2fd;
+}
+
+.entity-box:nth-child(3) {
+    background-color: #e8f5e9;
+}
+
+.entity-box:nth-child(4) {
+    background-color: #f3e5f5;
+}
+
+.entity-box:nth-child(5) {
+    background-color: #fffde7;
+}
+
+.entity-box input[type="text"],
+.entity-box input[type="number"] {
+    width: 100%;
+    max-width: 280px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.upper {
+    text-transform: uppercase;
+}
+
+.arrow-down {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.copy-indicator {
+    position: absolute;
+    background-color: rgba(0,0,0,0.7);
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    font-size: 14px;
+    text-align: center;
+    margin: 10px;
+}
+
+.ownership-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.ownership-row input {
+    width: 140px !important;
+    margin-bottom: 0;
+}
+
+.or-divider {
+    font-weight: bold;
+    color: #666;
+}
+
+.mode-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 
-    .footer-links a {
-        text-align: center;
-        margin-bottom: 2em;
-        font-size: xxx-large;
-        text-decoration: none;
-    }
+
+.mode-percentage {
+    background-color:#F3F4F6;
+    color: #326089; 
+    /* some sort of blue */
+}
+
+.mode-shares {
+    background-color: #F3F4F6;
+    color: #9D174D;
+    /* some sort of maroon */
+}
+
+
+@media (max-width: 600px) {
 
     .calculator-container {
-        background-color: #ffffff;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 2em;
-        width: 100%;
-        max-width: 600px;
-    }
-
-    h1 {
-        font-size: 2.5em;
-        color: #343a40;
-        margin-bottom: 0.5em;
-        text-align: center;
-    }
-
-    subtitle {
-        display: block;
-        color: #495057;
-        margin: 0 0 1.5em;
-
-    }
-
-    p {
-        margin: 0 0 1em;
-    }
-
-    ul {
-        margin: 0;
-        padding-left: 1.5em;
-        color: #495057;
-    }
-
-    input[type="text"], input[type="number"] {
-        font-size: 1em;
-        padding: 10px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        box-sizing: border-box;
-        width: calc(100% - 22px);
-        margin-bottom: 1em;
-        display: block;
-        text-align: center;
-    }
-
-    label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 0.5em;
-        color: #212529;
-        text-align: center;
-        font-size: large;
+        padding: 1em;
     }
 
     button {
-        appearance: button;
-        background-color: #6495ED;
-        border: none;
-        border-radius: 4px;
-        color: white;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 1em;
-        font-weight: bold;
-        padding: 10px 20px;
-        text-align: center;
-        text-transform: uppercase;
-        transition: background-color 0.3s, box-shadow 0.3s;
-        margin: 20px 0;
         width: 100%;
-
     }
 
-    button:hover {
-        background-color: #40B5AD;
+    input[type="text"],
+    input[type="number"] {
+        max-width: 100%;
     }
 
-    .export-button {
-        background-color: #B47CC7;
-    }
-
-    .export-button:hover {
-        background-color: #90af76;
-    }
-
-    .result {
-        background-color: #fdfddc;
-        border: 2px solid black;
-        border-radius: 4px;
-        padding: 1em;
-        margin-top: 1em;
-    }
-
-    .entity-box {
-        background-color: #ffffff;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 1em;
-        margin-bottom: 1em;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
+    .ownership-row {
         flex-direction: column;
-        align-items: center;
     }
 
-    .entity-box:nth-child(1) {
-        background-color: #ffebee; /* Pastel Pink */
+    .ownership-row input {
+        width: 100% !important;
     }
-
-    .entity-box:nth-child(2) {
-        background-color: #e3f2fd; /* Pastel Blue */
-    }
-
-    .entity-box:nth-child(3) {
-        background-color: #e8f5e9; /* Pastel Green */
-    }
-
-    .entity-box:nth-child(4) {
-        background-color: #f3e5f5; /* Pastel Purple */
-    }
-
-    .entity-box:nth-child(5) {
-        background-color: #fffde7; /* Pastel Yellow */
-    }
-
-    .entity-box label {
-        display: block;
-        margin-bottom: 0.5em;
-        color: #343a40;
-    }
-
-    .entity-box input[type="text"], .entity-box input[type="number"] {
-        width: 100%;
-        max-width: 280px;
-    }
-
-    .bold {
-        font-weight: bold;
-    }
-
-    .upper {
-        text-transform: uppercase;
-    }
-
-    @media (max-width: 600px) {
-        .calculator-container {
-            padding: 1em;
-        }
-
-        button {
-            width: 100%;
-        }
-
-        input[type="text"], input[type="number"] {
-            max-width: 100%;
-        }
-    }
-
-
-    .copy-indicator {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: #ffffff;
-        padding: 10px;
-        border-radius: 5px;
-        display: none;
-        font-size: 14px;
-        text-align: center;
-        margin: 10px
- 
-    }
-
-    .arrow-down {
-        font-size: 1.5em;
-        font-weight: bold;
-    }
-
-
-
+}
 
 </style>
-
 </head>
 
 <body>
 
 <div class="calculator-container">
+
     <h1>Individual Beneficial Ownership Calculator</h1>
 
     <subtitle>
-        <p>Calculate an individual's ultimate beneficial ownership percentage in an entity (through multiple layers of entities)</p> 
+
+        <p>
+            Calculate an individual's ultimate beneficial ownership percentage in an entity (through multiple layers of entities)
+        </p>
+
         <ul>
-            <li>"Ultimate Owner" is the individual shareholder of "Entity 1"</li> 
+            <li>"Ultimate Owner" is the individual shareholder of "Entity 1"</li>
             <li>"Entity 1" is the shareholder of "Entity 2"</li>
             <li>"Entity 2" is the shareholder of "Entity 3"</li>
         </ul>
+
         <br>
-         <p>See also: <a href="https://chantero.com/projects/kyc-entity-ownership-percentage-calculator/">Entity Ownership Percentage Calculator</a></p>
+
+        <p>
+            See also:
+            <a href="https://chantero.com/projects/kyc-entity-ownership-percentage-calculator/">
+                Entity Ownership Percentage Calculator
+            </a>
+        </p>
 
     </subtitle>
 
     <hr><br>
 
     <div>
-        <label for="ultimateOwner">Name of Ultimate Owner:</label>
-        <input type="text" id="ultimateOwner" oninput="calculateUltimateOwnership()" placeholder="Ultimate Owner">
+
+        <label for="ultimateOwner">
+            Name of Ultimate Owner:
+        </label>
+
+        <input
+            type="text"
+            id="ultimateOwner"
+            placeholder="Ultimate Owner"
+            oninput="calculateUltimateOwnership()"
+        >
+
     </div>
 
-    <center><p class="arrow-down">↓</p></center>
+    <center>
+        <p class="arrow-down">↓</p>
+    </center>
 
     <form>
+
         <div id="entities">
+
+            <!-- ENTITY 1 -->
+
             <div class="entity-box">
-                <label for="entityName1">Entity 1 Name:</label>
-                <input type="text" class="entityName" id="entityName1" placeholder="Entity 1" oninput="calculateUltimateOwnership()">
-                <label for="entity1">Entity 1 Ownership (%):</label>
-                <input type="number" class="entity" id="entity1" min="0" max="100" step="any" required oninput="calculateUltimateOwnership()">
+
+                <label for="entityName1">
+                    Entity 1 Name:
+                </label>
+
+                <input
+                    type="text"
+                    class="entityName"
+                    id="entityName1"
+                    placeholder="Entity 1"
+                    oninput="calculateUltimateOwnership()"
+                >
+
+                <label>
+                    Input Type:
+                </label>
+
+                <select id="mode1" onchange="toggleOwnershipMode(1)">
+                    <option value="percentage">Percentage</option>
+                    <option value="shares">Shares</option>
+                </select>
+
+                <!-- PERCENTAGE MODE -->
+
+                <div id="percentageMode1" class="mode-section">
+
+                    <label for="entity1">
+                        Ownership (%):
+                    </label>
+
+                    <input
+                        type="number"
+                        class="entity"
+                        id="entity1"
+                        min="0"
+                        max="100"
+                        step="any"
+                        placeholder="%"
+                        oninput="calculateUltimateOwnership()"
+                    >
+
+                </div>
+
+                <!-- SHARES MODE -->
+
+                <div id="sharesMode1" class="mode-section" style="display:none;">
+
+                    <label>
+                        Ownership (Shares):
+                    </label>
+
+                    <div class="ownership-row">
+
+                        <input
+                            type="number"
+                            id="sharesOwned1"
+                            placeholder="Shares"
+                            step="any"
+                            oninput="calculatePercentageFromShares(1)"
+                        >
+
+                        <span>/</span>
+
+                        <input
+                            type="number"
+                            id="totalShares1"
+                            placeholder="Total Shares"
+                            step="any"
+                            oninput="calculatePercentageFromShares(1)"
+                        >
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
 
-        <button type="button" onclick="addEntity()">Add a Subsidiary Entity</button>
+        <button type="button" onclick="addEntity()">
+            Add a Subsidiary Entity
+        </button>
+
     </form>
 
     <div id="result" onclick="copyResults()" class="result"></div>
 
-    <!-- Copy indicator -->
-    <div id="copy-indicator" class="copy-indicator">copied to clipboard</div>
-    
-    <button class="export-button" type="button" onclick="exportToHTML()">Export Form</button>
-</div>
-
-
-
-<!-- Footer with links -->
-    <div class="footer-links">
-        <br>
-      <hr>
-      <a href="https://chantero.com/projects">🍪</a>
-      <a href="https://chantero.com">🧁</a>
+    <div id="copy-indicator" class="copy-indicator">
+        copied to clipboard
     </div>
 
+    <button
+        class="export-button"
+        type="button"
+        onclick="exportToHTML()"
+    >
+        Export Form
+    </button>
 
+</div>
 
+<!-- FOOTER -->
 
+<div class="footer-links">
+
+    <br>
+    <hr>
+
+    <a href="https://chantero.com/projects">🍪</a>
+    <a href="https://chantero.com">🧁</a>
+
+</div>
 
 <script>
+
 let entityCounter = 1;
 
+/* ADD ENTITY */
+
 function addEntity() {
+
+
+
+
     entityCounter++;
+
     let newEntityDiv = document.createElement('div');
+
     newEntityDiv.classList.add('entity-box');
+
     newEntityDiv.innerHTML = `
-        <label for="entityName${entityCounter}">Entity ${entityCounter} Name:</label>
-        <input type="text" class="entityName" id="entityName${entityCounter}" placeholder="Entity ${entityCounter}" oninput="calculateUltimateOwnership()">
-        <label for="entity${entityCounter}">Entity ${entityCounter} Ownership (%):</label>
-        <input type="number" class="entity" id="entity${entityCounter}" min="0" max="100" step="any" required oninput="calculateUltimateOwnership()">
+
+        <label for="entityName${entityCounter}">
+            Entity ${entityCounter} Name:
+        </label>
+
+        <input
+            type="text"
+            class="entityName"
+            id="entityName${entityCounter}"
+            placeholder="Entity ${entityCounter}"
+            oninput="calculateUltimateOwnership()"
+        >
+
+        <label>
+            Input Type:
+        </label>
+
+        <select id="mode${entityCounter}"
+                onchange="toggleOwnershipMode(${entityCounter})">
+
+            <option value="percentage">Percentage</option>
+            <option value="shares">Shares</option>
+
+        </select>
+
+        <!-- PERCENTAGE MODE -->
+
+        <div id="percentageMode${entityCounter}" class="mode-section">
+
+            <label for="entity${entityCounter}">
+                Ownership (%):
+            </label>
+
+            <input
+                type="number"
+                class="entity"
+                id="entity${entityCounter}"
+                min="0"
+                max="100"
+                step="any"
+                placeholder="%"
+                oninput="calculateUltimateOwnership()"
+            >
+
+        </div>
+
+        <!-- SHARES MODE -->
+
+        <div id="sharesMode${entityCounter}"
+             class="mode-section"
+             style="display:none;">
+
+            <label>
+                Ownership (Shares):
+            </label>
+
+            <div class="ownership-row">
+
+                <input
+                    type="number"
+                    id="sharesOwned${entityCounter}"
+                    placeholder="Shares"
+                    step="any"
+                    oninput="calculatePercentageFromShares(${entityCounter})"
+                >
+
+                <span>/</span>
+
+                <input
+                    type="number"
+                    id="totalShares${entityCounter}"
+                    placeholder="Total Shares"
+                    step="any"
+                    oninput="calculatePercentageFromShares(${entityCounter})"
+                >
+
+            </div>
+
+        </div>
+
     `;
+
     document.getElementById('entities').appendChild(newEntityDiv);
+    toggleOwnershipMode(entityCounter);
+
     updateEntityBoxColors();
 }
 
+/* TOGGLE INPUT MODE */
+
+function toggleOwnershipMode(entityId) {
+
+    let select =
+        document.getElementById(`mode${entityId}`);
+
+    let mode = select.value;
+
+    let percentageDiv =
+        document.getElementById(`percentageMode${entityId}`);
+
+    let sharesDiv =
+        document.getElementById(`sharesMode${entityId}`);
+
+    /* SHOW / HIDE INPUTS */
+
+    if (mode === 'percentage') {
+
+        percentageDiv.style.display = 'flex';
+        sharesDiv.style.display = 'none';
+
+    } else {
+
+        percentageDiv.style.display = 'none';
+        sharesDiv.style.display = 'flex';
+    }
+
+    /* DROPDOWN COLORS */
+
+    select.classList.remove(
+        'mode-percentage',
+        'mode-shares'
+    );
+
+    if (mode === 'percentage') {
+
+        select.classList.add('mode-percentage');
+
+    } else {
+
+        select.classList.add('mode-shares');
+    }
+}
+
+/* SHARE CALCULATOR */
+
+function formatPercentage(value) {
+    // to 6 decimals
+    return parseFloat(value.toFixed(6)).toString();
+}
+
+
+function calculatePercentageFromShares(entityId) {
+
+    let owned = parseFloat(
+        document.getElementById(`sharesOwned${entityId}`).value
+    );
+
+    let total = parseFloat(
+        document.getElementById(`totalShares${entityId}`).value
+    );
+
+    if (!isNaN(owned) &&
+        !isNaN(total) &&
+        total > 0) {
+
+        let percentage = (owned / total) * 100;
+
+        document.getElementById(`entity${entityId}`).value =
+            formatPercentage(percentage);
+
+        calculateUltimateOwnership();
+    }
+}
+
+/* ENTITY COLORS */
+
 function updateEntityBoxColors() {
+
     const boxes = document.querySelectorAll('.entity-box');
-    const colors = ['#ffebee', '#e3f2fd', '#e8f5e9', '#f3e5f5', '#fffde7'];
+
+    const colors = [
+        '#ffebee',
+        '#e3f2fd',
+        '#e8f5e9',
+        '#f3e5f5',
+        '#fffde7'
+    ];
+
     boxes.forEach((box, index) => {
-        box.style.backgroundColor = colors[index % colors.length];
+
+        box.style.backgroundColor =
+            colors[index % colors.length];
+
     });
 }
 
+/* CALCULATE OWNERSHIP */
+
 function calculateUltimateOwnership() {
-    let entities = document.getElementsByClassName('entity');
-    let entityNames = document.getElementsByClassName('entityName');
-    let ultimateOwner = document.getElementById('ultimateOwner').value || "Ultimate Owner";
+
+    let entities =
+        document.getElementsByClassName('entity');
+
+    let entityNames =
+        document.getElementsByClassName('entityName');
+
+    let ultimateOwner =
+        document.getElementById('ultimateOwner').value
+        || "Ultimate Owner";
 
     let resultText = '';
 
-    // Calculate ultimate ownership
     let cumulativeOwnership = 1;
+
     let ownershipBreakdown = [];
+
     for (let i = 0; i < entities.length; i++) {
-        let entityName = entityNames[i].value.trim() || `Entity ${i + 1}`;
-        let ownershipPercentage = parseFloat(entities[i].value);
+
+        let entityName =
+            entityNames[i].value.trim()
+            || `Entity ${i + 1}`;
+
+        let ownershipPercentage =
+            parseFloat(entities[i].value);
+
+        if (isNaN(ownershipPercentage)) {
+            continue;
+        }
 
         cumulativeOwnership *= ownershipPercentage / 100;
 
-        // Display ownership for each entity
-        let ownershipInPercent = cumulativeOwnership * 100;
-        ownershipBreakdown.push(`<span class="bold">${ownershipInPercent.toFixed(2)}%</span> in <span class="bold upper">${entityName}</span>`);
+        let ownershipInPercent =
+            cumulativeOwnership * 100;
+
+        ownershipBreakdown.push(
+            `<li>
+                <span class="bold">
+                    ${formatPercentage(ownershipInPercent)}%
+                </span>
+                in
+                <span class="bold upper">
+                    ${entityName}
+                </span>
+            </li>`
+        );
     }
 
-    // Display ownership breakdown
-    resultText += `<p><span class="bold upper">${ultimateOwner}</span>'s beneficial ownership (BO) percentage:</p>`;
+    resultText += `
+        <p>
+            <span class="bold upper">
+                ${ultimateOwner}</span>'s beneficial ownership (BO) percentage:
+        </p>
+    `;
+
     resultText += `<ul>`;
-    ownershipBreakdown.forEach(line => {
-        resultText += `<li>${line}</li>`;
-    });
+    resultText += ownershipBreakdown.join('');
     resultText += `</ul>`;
 
-    document.getElementById('result').innerHTML = resultText;
+    document.getElementById('result').innerHTML =
+        resultText;
 }
 
-    // Function to handle form export
-    function exportToHTML() {
+/* EXPORT HTML */
 
-        // Get the name of the ultimate owner
-        var ultimateOwnerName = document.getElementById('ultimateOwner').value.trim();
-        var filename = ultimateOwnerName ? `ownership - ${ultimateOwnerName}.html` : 'ownership.html';
+function exportToHTML() {
 
-        // Get all input elements (text and number types)
-        var inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+    var ultimateOwnerName =
+        document.getElementById('ultimateOwner')
+        .value
+        .trim();
 
-        // Update the value attribute of all input elements with the user's input
-        inputs.forEach(function(input) {
-            input.setAttribute('value', input.value);
-        });
+    var filename =
+        ultimateOwnerName
+        ? `ownership - ${ultimateOwnerName}.html`
+        : 'ownership.html';
 
-        // Export the HTML with updated values
-        var htmlContent = document.documentElement.outerHTML;
-        var encodedHTML = encodeURIComponent(htmlContent);
-        var link = document.createElement('a');
-        link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+    var inputs =
+        document.querySelectorAll(
+            'input[type="text"], input[type="number"]'
+        );
 
+    inputs.forEach(function(input) {
 
-    function copyResults() {
-    // Get the result container's text including newlines
-    const resultText = document.getElementById('result').innerText;
+        input.setAttribute('value', input.value);
 
-    // Copy to clipboard
-    navigator.clipboard.writeText(resultText).then(() => {
-        showCopyIndicator();
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
     });
+
+    var htmlContent =
+        document.documentElement.outerHTML;
+
+    var encodedHTML =
+        encodeURIComponent(htmlContent);
+
+    var link =
+        document.createElement('a');
+
+    link.setAttribute(
+        'href',
+        'data:text/html;charset=utf-8,' + encodedHTML
+    );
+
+    link.setAttribute('download', filename);
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
 }
 
-    function showCopyIndicator() {
-        const indicator = document.getElementById('copy-indicator');
-        indicator.style.display = 'block';
-        setTimeout(() => {
-            indicator.style.display = 'none';
-        }, 800); // Display for 800ms
-    }
+/* COPY RESULTS */
 
+function copyResults() {
+
+    const resultText =
+        document.getElementById('result').innerText;
+
+    navigator.clipboard.writeText(resultText)
+        .then(() => {
+
+            showCopyIndicator();
+
+        })
+        .catch(err => {
+
+            console.error('Failed to copy: ', err);
+
+        });
+}
+
+/* COPY INDICATOR */
+
+function showCopyIndicator() {
+
+    const indicator =
+        document.getElementById('copy-indicator');
+
+    indicator.style.display = 'block';
+
+    setTimeout(() => {
+
+        indicator.style.display = 'none';
+
+    }, 800);
+}
+
+
+window.onload = function() {
+
+    for (let i = 1; i <= entityCounter; i++) {
+
+        toggleOwnershipMode(i);
+
+    }
+};
 
 </script>
 
-
-
-
-
 </body>
 </html>
+
+
+
