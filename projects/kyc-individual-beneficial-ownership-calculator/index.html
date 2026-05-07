@@ -258,6 +258,52 @@ button:hover {
     }
 }
 
+
+
+
+.delete-btn {
+
+    position: absolute;
+
+    top: 2px;
+    right: 15px;
+
+    background: grey;
+    color: white;
+
+    border: none;
+    border-radius: 50%;
+
+    width: 24px;
+    height: 24px;
+
+    padding: 0;              
+    line-height: 24px;       /* centers text properly */
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.entity-box {
+    position: relative; /* so delete button [X] stays inside box */
+}
+
+.delete-btn:hover {
+    background: red;
+}
+
+
+
+
+
+
+
 </style>
 </head>
 
@@ -318,6 +364,8 @@ button:hover {
             <!-- ENTITY 1 -->
 
             <div class="entity-box">
+
+                <button class="delete-btn" onclick="removeBox(this)">×</button>
 
                 <label for="entityName1">
                     Entity 1 Name:
@@ -449,6 +497,8 @@ function addEntity() {
     newEntityDiv.classList.add('entity-box');
 
     newEntityDiv.innerHTML = `
+
+        <button class="delete-btn" onclick="removeBox(this)">×</button>
 
         <label for="entityName${entityCounter}">
             Entity ${entityCounter} Name:
@@ -794,6 +844,23 @@ window.onload = function() {
 
     }
 };
+
+
+
+
+function removeBox(button) {
+
+    let box =
+        button.closest('.entity-box');
+
+    if (box) {
+
+        box.remove();
+
+        calculateOwnership();
+    }
+}
+
 
 </script>
 

@@ -6,171 +6,318 @@
 <title>Entity Ownership Percentage Calculator</title>
 
 <style>
-    body {
-        padding: 2.5em;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to bottom, #86fde8, #acb6e5);
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        flex-direction: column;
-    }
 
-    .footer-links a {
-        text-align: center;
-        margin-bottom: 2em;
-        font-size: xxx-large;
-        text-decoration: none;
-    }
+body {
+
+    padding: 2.5em;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(
+        to bottom,
+        #86fde8,
+        #acb6e5
+    );
+
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+
+    flex-direction: column;
+}
+
+.calculator-container {
+
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+
+    box-shadow:
+        0 4px 8px rgba(0,0,0,0.1);
+
+    padding: 2em;
+
+    width: 100%;
+    max-width: 700px;
+}
+
+h1 {
+
+    font-size: 2.3em;
+    color: #343a40;
+
+    margin-bottom: 0.5em;
+
+    text-align: center;
+}
+
+label {
+
+    font-weight: bold;
+    display: block;
+
+    margin-bottom: 0.5em;
+
+    color: #212529;
+
+    text-align: center;
+
+    font-size: large;
+}
+
+input[type="text"],
+input[type="number"] {
+
+    width: 100%;
+    max-width: 300px;
+
+    font-size: 1em;
+
+    padding: 10px;
+
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+
+    box-sizing: border-box;
+
+    margin-bottom: 1em;
+
+    text-align: center;
+}
+
+button {
+
+    background-color: #6495ED;
+
+    border: none;
+    border-radius: 4px;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 1em;
+    font-weight: bold;
+
+    padding: 12px;
+
+    text-transform: uppercase;
+
+    width: 100%;
+
+    margin-top: 1em;
+}
+
+button:hover {
+
+    background-color: #40B5AD;
+}
+
+.export-button {
+
+    background-color: #B47CC7;
+}
+
+.export-button:hover {
+
+    background-color: #90af76;
+}
+
+
+#shareholders {
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.entity-main-box {
+
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+
+    padding: 1em;
+
+    margin-bottom: 1em;
+
+    background-color: #f1ffe8;
+
+    box-shadow:
+        0 4px 8px rgba(0,0,0,0.1);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.entity-box {
+
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+
+    padding: 1.5em;
+
+    margin-bottom: 1em;
+
+    box-shadow:
+        0 4px 8px rgba(0,0,0,0.1);
+
+    width: 100%;
+    max-width: 420px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+.result {
+
+    background-color: #fdfddc;
+
+    border: 2px solid black;
+    border-radius: 4px;
+
+    padding: 1em;
+
+    margin-top: 1em;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.upper {
+    text-transform: uppercase;
+}
+
+.arrow-down {
+
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* WARNINGS */
+
+.warning {
+
+    margin-top: 1em;
+
+    padding: 1em;
+
+    border-radius: 6px;
+
+    width: 100%;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    box-sizing: border-box;
+}
+
+.warning-red {
+
+    background-color: #ffebee;
+    color: #c62828;
+
+    border: 2px solid #c62828;
+}
+
+.warning-green {
+
+    background-color: #e8f5e9;
+    color: #2e7d32;
+
+    border: 2px solid #2e7d32;
+}
+
+.copy-indicator {
+    position: absolute;
+    background-color: rgba(0,0,0,0.7);
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    font-size: 14px;
+    text-align: center;
+    margin: 10px;
+}
+
+
+.delete-btn {
+
+    position: absolute;
+
+    top: 2px;
+    right: 15px;
+
+    background: grey;
+    color: white;
+
+    border: none;
+    border-radius: 50%;
+
+    width: 24px;
+    height: 24px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.entity-box {
+    position: relative; /* IMPORTANT so delete button [X] stays inside box */
+}
+
+.delete-btn:hover {
+    background: red;
+}
+
+
+
+.footer-links a {
+
+    text-align: center;
+
+    margin-bottom: 2em;
+
+    font-size: xxx-large;
+
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
 
     .calculator-container {
-        background-color: #ffffff;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 2em;
-        width: 100%;
-        max-width: 600px;
-    }
 
-    h1 {
-        font-size: 2.5em;
-        color: #343a40;
-        margin-bottom: 0.5em;
-        text-align: center;
-    }
-
-    input[type="text"], input[type="number"] {
-        font-size: 1em;
-        padding: 10px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        box-sizing: border-box;
-        margin-bottom: 1em;
-        display: block;
-        text-align: center;
-    }
-
-    .calculator-container > div {
-        margin-bottom: 1em;
-    }
-
-    label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 0.5em;
-        color: #212529;
-        text-align: center;
-        font-size: large;
-    }
-
-    /* Ensure the same width for labels and inputs */
-    div > label,
-    div > input {
-        width: 100%;
-    }
-
-    button {
-        background-color: #6495ED;
-        border: none;
-        border-radius: 4px;
-        color: white;
-        cursor: pointer;
-        font-size: 1em;
-        font-weight: bold;
-        padding: 10px 20px;
-        text-align: center;
-        text-transform: uppercase;
-        transition: background-color 0.3s;
-        margin: 20px 0;
-        width: 100%;
-    }
-
-    button:hover {
-        background-color: #40B5AD;
-    }
-
-    .export-button {
-        background-color: #B47CC7;
-    }
-
-    .export-button:hover {
-        background-color: #90af76;
-    }
-
-    .result {
-        background-color: #fdfddc;
-        border: 2px solid black;
-        border-radius: 4px;
         padding: 1em;
-        margin-top: 1em;
     }
 
-    .result .bold {
-        font-weight: bold;
+    input[type="text"],
+    input[type="number"] {
+
+        max-width: 100%;
     }
+}
 
-    .result .upper {
-        text-transform: uppercase;
-    }
-
-    .entity-main-box {
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 1em;
-        margin-bottom: 1em;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #f1ffe8;
-    }
-
-    .entity-box {
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 2em;
-        margin-bottom: 1em;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: auto;
-
-    }
-
-    .copy-indicator {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: #ffffff;
-        padding: 10px;
-        border-radius: 5px;
-        display: none;
-        font-size: 14px;
-        text-align: center;
-        margin: 10px;
-    }
-
-    .arrow-down {
-        font-size: 1.5em;
-        font-weight: bold;
-        padding: 0;
-        margin-top: 0;
-    }
-
-    #totalShares {
-        width: 300px;
-    }
-
-    #entityName {
-        width: 300px;
-    }
-
-
-
-    
 </style>
 
 </head>
+
 <body>
 
 <div class="calculator-container">
@@ -182,153 +329,650 @@
 
     </subtitle>
 
-  <div class="entity-main-box">
-    <label for="entityName">Entity Name:</label>
-    <input type="text" class="entityName" id="entityName" oninput="calculateOwnership()">
-    <div>
-      <label for="totalShares">Total Shares:</label>
-      <input type="number" class="totalShares" id="totalShares" onchange="calculateOwnership()">
+    <div class="entity-main-box">
+
+        <!-- ENTITY -->
+
+        <label for="entityName">
+            Entity Name:
+        </label>
+
+        <input
+            type="text"
+            id="entityName"
+            class="entityName"
+            oninput="calculateOwnership()"
+        >
+
+        <!-- TOTAL SHARES -->
+
+        <label for="totalShares">
+            Total Shares (Optional):
+        </label>
+
+        <input
+            type="number"
+            id="totalShares"
+            class="totalShares"
+            oninput="calculateOwnership()"
+            placeholder="Leave empty to auto-sum"
+        >
+
+        <center>
+            <p class="arrow-down">↓</p>
+        </center>
+
+        <!-- SHAREHOLDERS -->
+
+        <div id="shareholders">
+
+            <div class="entity-box">
+
+                <button class="delete-btn" onclick="removeBox(this)">×</button>
+
+                <label for="shareholderName1">
+                    Shareholder 1 Name:
+                </label>
+
+                <input
+                    type="text"
+                    class="shareholderName"
+                    id="shareholderName1"
+                    oninput="calculateOwnership()"
+                >
+
+                <label for="shareholderShares1">
+                    Shares:
+                </label>
+
+                <input
+                    type="number"
+                    class="shareholderShares"
+                    id="shareholderShares1"
+                    oninput="calculateOwnership()"
+                >
+
+            </div>
+
+        </div>
+
+        <!-- WARNING -->
+
+        <div
+            id="warning"
+            class="warning"
+            style="display:none;"
+        ></div>
+
+        <!-- BUTTON -->
+
+        <button
+            type="button"
+            onclick="addShareholder()"
+        >
+            Add Shareholder
+        </button>
+
     </div>
 
-    <center><p class="arrow-down">↓</p></center>
+    <!-- RESULT -->
 
-    <div id="shareholders">
-      <div class="entity-box">
-        <label for="shareholderName">Shareholder 1 Name:</label>
-        <input type="text" class="shareholderName" id="shareholderName" oninput="calculateOwnership()">
-        <label for="shareholderShares">Shares:</label>
-        <input type="number" class="shareholderShares" id="shareholderShares" onchange="calculateOwnership()">
-      </div>
+    <div
+        id="result"
+        class="result"
+        onclick="copyResults()"
+    ></div>
+
+    <!-- COPY -->
+
+    <div
+        id="copy-indicator"
+        class="copy-indicator"
+    >
+        copied to clipboard
     </div>
 
-    <button type="button" onclick="addShareholder()">Add Shareholder</button>
-  </div>
+    <!-- EXPORT -->
 
-  <div id="result" class="result" onclick="copyResults()"></div>
+    <button
+        class="export-button"
+        type="button"
+        onclick="exportToHTML()"
+    >
+        Export Form
+    </button>
 
-  <div id="copy-indicator" class="copy-indicator">Copied to clipboard</div>
-
-  <button class="export-button" type="button" onclick="exportToHTML()">Export Form</button>
 </div>
 
+<!-- FOOTER -->
 
+<div class="footer-links">
 
-<!-- Footer with links -->
-    <div class="footer-links">
-        <br>
-      <hr>
-      <a href="https://chantero.com/projects">🍪</a>
-      <a href="https://chantero.com">🧁</a>
-    </div>
+    <br>
+    <hr>
 
+    <a href="https://chantero.com/projects">
+        🍪
+    </a>
 
+    <a href="https://chantero.com">
+        🧁
+    </a>
+
+</div>
 
 <script>
-    let shareholderCounter = 1;
-    const colors = ['#ffebee', '#e3f2fd', '#e8f5e9', '#f3e5f5', '#fffde7', '#fbe9e7', '#e0f2f1', '#e8eaf6', '#f3e5f5', '#fff9c4'];
 
-    function addShareholder() {
-        shareholderCounter++;
-        let newShareholderDiv = document.createElement('div');
-        newShareholderDiv.classList.add('entity-box');
-        
-        // Set a unique pastel color for new shareholder boxes
-        newShareholderDiv.style.backgroundColor = colors[shareholderCounter % colors.length];
+let shareholderCounter = 1;
 
-        newShareholderDiv.innerHTML = `
-            <label for="shareholderName${shareholderCounter}">Shareholder ${shareholderCounter} Name:</label>
-            <input type="text" class="shareholderName" id="shareholderName${shareholderCounter}" oninput="calculateOwnership()">
-            <label for="shareholderShares${shareholderCounter}">Shares:</label>
-            <input type="number" class="shareholderShares" id="shareholderShares${shareholderCounter}" onchange="calculateOwnership()">
+const colors = [
+
+    '#ffebee',
+    '#e3f2fd',
+    '#e8f5e9',
+    '#f3e5f5',
+    '#fffde7',
+    '#fbe9e7',
+    '#e0f2f1',
+    '#e8eaf6',
+    '#fce4ec'
+];
+
+/* ADD SHAREHOLDER */
+
+function addShareholder() {
+
+    shareholderCounter++;
+
+    let div =
+        document.createElement('div');
+
+    div.classList.add('entity-box');
+
+    div.innerHTML = `
+        <button class="delete-btn" onclick="removeBox(this)">×</button>
+
+        <label for="shareholderName${shareholderCounter}">
+            Shareholder ${shareholderCounter} Name:
+        </label>
+
+        <input
+            type="text"
+            class="shareholderName"
+            id="shareholderName${shareholderCounter}"
+            oninput="calculateOwnership()"
+        >
+
+        <label for="shareholderShares${shareholderCounter}">
+            Shares:
+        </label>
+
+        <input
+            type="number"
+            class="shareholderShares"
+            id="shareholderShares${shareholderCounter}"
+            oninput="calculateOwnership()"
+        >
+    `;
+
+    document
+        .getElementById('shareholders')
+        .appendChild(div);
+
+    updateColors();
+}
+
+/* COLORS */
+
+function updateColors() {
+
+    let boxes =
+        document.querySelectorAll(
+            '#shareholders .entity-box'
+        );
+
+    boxes.forEach((box, index) => {
+
+        box.style.backgroundColor =
+            colors[index % colors.length];
+    });
+}
+
+updateColors();
+
+/* FORMAT */
+
+function formatPercentage(value) {
+
+    return parseFloat(
+        value.toFixed(6)
+    ).toString();
+}
+
+/* MAIN CALCULATION */
+
+
+function calculateOwnership() {
+
+    let totalSharesInput =
+        parseFloat(
+            document.getElementById(
+                'totalShares'
+            ).value
+        );
+
+    let shareholderInputs =
+        document.getElementsByClassName(
+            'shareholderShares'
+        );
+
+    let shareholderNames =
+        document.getElementsByClassName(
+            'shareholderName'
+        );
+
+    let entityName =
+        document.getElementById(
+            'entityName'
+        ).value
+        || 'Entity';
+
+    /*
+        AUTO TOTAL
+    */
+
+    let autoTotalShares = 0;
+
+    for (let i = 0; i < shareholderInputs.length; i++) {
+
+        let shares =
+            parseFloat(
+                shareholderInputs[i].value
+            );
+
+        if (!isNaN(shares)) {
+
+            autoTotalShares += shares;
+        }
+    }
+
+    /*
+        USE MANUAL OR AUTO TOTAL
+    */
+
+    let manualTotalUsed =
+        document.getElementById('totalShares')
+        .value.trim() !== '';
+
+    let totalShares =
+        (
+            !isNaN(totalSharesInput)
+            && totalSharesInput > 0
+        )
+        ? totalSharesInput
+        : autoTotalShares;
+
+    let resultText = `
+        <p>
+            <span class="bold upper">
+                ${entityName}
+            </span>
+            ownership:
+        </p>
+        <ul>
+    `;
+
+    /*
+        CALCULATE OWNERSHIP
+    */
+
+    for (let i = 0; i < shareholderInputs.length; i++) {
+
+        let shares =
+            parseFloat(
+                shareholderInputs[i].value
+            );
+
+        if (isNaN(shares)) continue;
+
+        let name =
+            shareholderNames[i].value.trim()
+            || `Shareholder ${i + 1}`;
+
+        let percentage =
+            totalShares > 0
+            ? (shares / totalShares) * 100
+            : 0;
+
+        resultText += `
+            <li>
+                <span class="bold upper">
+                    ${name}
+                </span>
+                :
+                <span class="bold">
+                    ${formatPercentage(percentage)}%
+                </span>
+                (${shares} / ${totalShares} shares)
+            </li>
         `;
-        
-        document.getElementById('shareholders').appendChild(newShareholderDiv);
-        updateShareholderBoxColors();
     }
 
-    function updateShareholderBoxColors() {
-        const boxes = document.querySelectorAll('#shareholders .entity-box');
-        boxes.forEach((box, index) => {
-            box.style.backgroundColor = colors[index % colors.length];
-        });
+    resultText += `</ul>`;
+
+    /*
+        SHARES SUMMARY (SMART LOGIC)
+    */
+
+    let remainingShares = totalShares - autoTotalShares;
+
+    resultText += `<br><br><hr><p class="bold upper">Shares Summary</p>`;
+
+    /* CASE 1: PERFECT MATCH */
+    if (manualTotalUsed && autoTotalShares === totalShares) {
+
+        resultText += `
+            <p>
+                Total Shares:
+                <span class="bold">
+                    ${formatNumber(totalShares)}
+                </span>
+            </p>
+        `;
     }
 
-    // Ensure initial color is set for the first shareholder box
-    updateShareholderBoxColors();
+    /* CASE 2: OVERALLOCATED */
+    else if (manualTotalUsed && autoTotalShares > totalShares) {
+
+        resultText += `
+            <p class="bold" style="color:red;">
+                ⚠ Overallocated shares
+            </p>
+
+            <p>
+                Entered:
+                <span class="bold">
+                    ${formatNumber(autoTotalShares)}
+                </span>
+            </p>
+
+            <p>
+                Total:
+                <span class="bold">
+                    ${formatNumber(totalShares)}
+                </span>
+            </p>
+
+            <p>
+                Excess:
+                <span class="bold">
+                    ${formatNumber(autoTotalShares - totalShares)}
+                </span>
+            </p>
+        `;
+    }
+
+    /* CASE 3: UNDERALLOCATED */
+    else if (manualTotalUsed && autoTotalShares < totalShares) {
+
+        resultText += `
+            <p>
+                Shares Entered:
+                <span class="bold">
+                    ${formatNumber(autoTotalShares)}
+                </span>
+            </p>
+
+            <p>
+                Remaining Shares:
+                <span class="bold">
+                    ${formatNumber(remainingShares)}
+                </span>
+            </p>
+
+            <p>
+                Total Shares:
+                <span class="bold">
+                    ${formatNumber(totalShares)}
+                </span>
+            </p>
+        `;
+    }
+
+    /* CASE 4: AUTO MODE */
+    else {
+
+        resultText += `
+            <p>
+                [auto-sum] Total Shares:
+                <span class="bold">
+                    ${formatNumber(autoTotalShares)}
+                </span>
+            </p>
+        `;
+    }
+
+    document.getElementById('result').innerHTML = resultText;
+
+    validateOwnership(
+        autoTotalShares,
+        totalShares
+    );
+}
+
+
+/* FORMAT HELPER */
+
+function formatNumber(value) {
+
+    if (isNaN(value)) return "0";
+
+    return parseFloat(value.toFixed(2))
+        .toString();
+}
 
 
 
-    function calculateOwnership() {
-        let totalShares = parseFloat(document.getElementById('totalShares').value) || 0;
-        let shareholders = document.getElementsByClassName('shareholderShares');
-        let shareholderNames = document.getElementsByClassName('shareholderName');
-        let entityName = document.getElementById('entityName').value || 'Entity';
+/* VALIDATION */
 
-        let resultText = '';
-        let totalEnteredShares = 0; // Add this to accumulate entered shares
+function validateOwnership(
+    enteredShares,
+    totalShares
+) {
 
-        if (totalShares > 0) {
-            resultText += `<p><span class="bold upper">${entityName}</span>'s ownership:</p>`;
-            resultText += `<ul>`;
-            for (let i = 0; i < shareholders.length; i++) {
-                let shareholderName = shareholderNames[i].value.trim() || `Shareholder ${i + 1}`;
-                let shareholderShares = parseFloat(shareholders[i].value);
-                totalEnteredShares += shareholderShares;  // Add to total shares
-                let ownershipPercentage = (shareholderShares / totalShares) * 100;
-                resultText += `<li><span class="bold upper">${shareholderName}</span>: <span class="bold">${ownershipPercentage.toFixed(2)}% </span>(${shareholderShares} / ${totalShares} shares)</li>`;
-            }
-            resultText += `</ul>`;
+    let warning =
+        document.getElementById(
+            'warning'
+        );
 
-            // Display the total shares entered by shareholders
-            resultText += `<p class="bold">Total Shares Entered: ${totalEnteredShares} shares</p>`;
-        } else {
-            resultText = '<p>Please enter the total shares.</p>';
+    warning.style.display = 'block';
+
+    warning.classList.remove(
+        'warning-red',
+        'warning-green'
+    );
+
+    /*
+        AUTO MODE
+    */
+
+    let manualTotalExists =
+        document.getElementById(
+            'totalShares'
+        ).value.trim() !== '';
+
+    /*
+        IF MANUAL TOTAL
+    */
+
+    if (manualTotalExists) {
+
+        if (enteredShares > totalShares) {
+
+            warning.classList.add(
+                'warning-red'
+            );
+
+            warning.innerHTML = `
+                ⚠ Shareholders exceed total shares
+                (${formatPercentage(enteredShares)}
+                / ${formatPercentage(totalShares)})
+            `;
         }
 
-        document.getElementById('result').innerHTML = resultText;
+        else if (
+            enteredShares === totalShares
+        ) {
+
+            warning.classList.add(
+                'warning-green'
+            );
+
+            warning.innerHTML = `
+                ✓ Shareholding = 100%
+            `;
+        }
+
+        else {
+
+            warning.classList.add(
+                'warning-red'
+            );
+
+            warning.innerHTML = `
+                ⚠ Ownership incomplete
+                (${formatPercentage(enteredShares)}
+                / ${formatPercentage(totalShares)})
+            `;
+        }
     }
 
+    /*
+        AUTO TOTAL MODE
+    */
 
-    function exportToHTML() {
-      let entityName = document.getElementById('entityName').value.trim();
-      let filename = entityName ? `ownership - ${entityName}.html` : 'ownership.html';
+    else {
 
-      let inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
-      inputs.forEach(function(input) {
-        input.setAttribute('value', input.value);
-      });
+        warning.classList.add(
+            'warning-green'
+        );
 
-      let htmlContent = document.documentElement.outerHTML;
-      let encodedHTML = encodeURIComponent(htmlContent);
-      let link = document.createElement('a');
-      link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodedHTML);
-      link.setAttribute('download', filename);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+        warning.innerHTML = `
+            ✓ [ auto-sum ] Total Shares:
+            ${formatPercentage(totalShares)}
+            shares
+        `;
     }
+}
 
-    function copyResults() {
-      const resultText = document.getElementById('result').innerText;
-      navigator.clipboard.writeText(resultText).then(() => {
-        showCopyIndicator();
-      }).catch(err => {
-        console.error('Failed to copy: ', err);
-      });
-    }
+/* EXPORT */
 
-    function showCopyIndicator() {
-      const indicator = document.getElementById('copy-indicator');
-      indicator.style.display = 'block';
-      setTimeout(() => {
+function exportToHTML() {
+
+    let entityName =
+        document.getElementById(
+            'entityName'
+        ).value.trim();
+
+    let filename =
+        entityName
+        ? `ownership - ${entityName}.html`
+        : 'ownership.html';
+
+    let inputs =
+        document.querySelectorAll(
+            'input[type="text"], input[type="number"]'
+        );
+
+    inputs.forEach(input => {
+
+        input.setAttribute(
+            'value',
+            input.value
+        );
+    });
+
+    let html =
+        document.documentElement.outerHTML;
+
+    let encoded =
+        encodeURIComponent(html);
+
+    let link =
+        document.createElement('a');
+
+    link.setAttribute(
+        'href',
+        'data:text/html;charset=utf-8,' + encoded
+    );
+
+    link.setAttribute(
+        'download',
+        filename
+    );
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+}
+
+/* COPY */
+
+function copyResults() {
+
+    let text =
+        document.getElementById(
+            'result'
+        ).innerText;
+
+    navigator.clipboard
+        .writeText(text)
+        .then(() => {
+
+            showCopyIndicator();
+        });
+}
+
+/* COPY INDICATOR */
+
+
+function showCopyIndicator() {
+
+    const indicator =
+        document.getElementById('copy-indicator');
+
+    indicator.style.display = 'block';
+
+    setTimeout(() => {
+
         indicator.style.display = 'none';
-      }, 800);
+
+    }, 800);
+}
+
+
+
+function removeBox(button) {
+
+    let box =
+        button.closest('.entity-box');
+
+    if (box) {
+
+        box.remove();
+
+        calculateOwnership();
     }
+}
 
 </script>
 
 </body>
+
 </html>
+
 
 
 
