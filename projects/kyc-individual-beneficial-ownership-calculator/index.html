@@ -279,41 +279,56 @@ input[type=number] {
 
 
 .delete-btn {
-
     position: absolute;
-
-    top: 2px;
-    right: 15px;
-
-    background: grey;
-    color: white;
-
-    border: none;
-    border-radius: 50%;
+    top: 10px;
+    right: 10px;
 
     width: 24px;
     height: 24px;
 
-    padding: 0;              
-    line-height: 24px;       /* centers text properly */
+    background: grey;
+    color: white;
 
-    font-size: 16px;
-    font-weight: bold;
+    border: 0;
+    border-radius: 50%;
+    box-sizing: border-box;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
 
     cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-appearance: none;
+    appearance: none;
+
+    transition: background-color 0.15s ease;
 }
 
 .entity-box {
-    position: relative; /* so delete button [X] stays inside box */
+    position: relative;
 }
 
 .delete-btn:hover {
     background: red;
 }
+
+.delete-btn span {
+    display: block;
+    transform: translateY(-1px);
+}
+
 
 
 
