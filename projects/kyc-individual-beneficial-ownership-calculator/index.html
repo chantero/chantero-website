@@ -397,7 +397,7 @@ input[type=number] {
 
             <div class="entity-box">
 
-                <button class="delete-btn" onclick="removeBox(this)">×</button>
+                <button type="button" class="delete-btn" onclick="removeBox(this)">×</button>
 
                 <label for="entityName1">
                     Entity 1 Name:
@@ -885,31 +885,28 @@ window.onload = function() {
 
 
 
-
 function removeBox(button) {
 
-    let box =
-        button.closest('.entity-box');
+    let box = button.closest('.entity-box');
 
     if (box) {
 
         box.remove();
 
-        renumberShareholders();
+        renumberEntities();
 
-        calculateOwnership();
+        calculateUltimateOwnership();
     }
 }
 
-
-function renumberShareholders() {
+function renumberEntities() {
 
     let boxes =
         document.querySelectorAll(
-            '#shareholders .entity-box'
+            '#entities .entity-box'
         );
 
-    shareholderCounter = boxes.length;
+    entityCounter = boxes.length;
 
     boxes.forEach((box, index) => {
 
@@ -917,45 +914,87 @@ function renumberShareholders() {
 
         /* LABELS */
 
-        let labels =
-            box.querySelectorAll('label');
+        let labels = box.querySelectorAll('label');
 
         labels[0].textContent =
-            `Shareholder ${number} Name:`;
+            `Entity ${number} Name:`;
 
-        labels[1].textContent =
-            `Shares:`;
-
-        /* INPUTS */
+        /* NAME INPUT */
 
         let nameInput =
-            box.querySelector('.shareholderName');
-
-        let sharesInput =
-            box.querySelector('.shareholderShares');
+            box.querySelector('.entityName');
 
         nameInput.id =
-            `shareholderName${number}`;
+            `entityName${number}`;
 
-        sharesInput.id =
-            `shareholderShares${number}`;
-
-        /* LABEL FOR ATTRIBUTES */
+        nameInput.placeholder =
+            `Entity ${number}`;
 
         labels[0].setAttribute(
             'for',
-            `shareholderName${number}`
+            `entityName${number}`
         );
 
-        labels[1].setAttribute(
-            'for',
-            `shareholderShares${number}`
+        /* MODE SELECT */
+
+        let modeSelect =
+            box.querySelector('select');
+
+        modeSelect.id = `mode${number}`;
+        modeSelect.setAttribute(
+            'onchange',
+            `toggleOwnershipMode(${number})`
+        );
+
+        /* PERCENTAGE SECTION */
+
+        let percentageDiv =
+            box.querySelector('[id^="percentageMode"]');
+
+        percentageDiv.id =
+            `percentageMode${number}`;
+
+        let percentageInput =
+            percentageDiv.querySelector('.entity');
+
+        percentageInput.id =
+            `entity${number}`;
+
+        percentageInput.setAttribute(
+            'oninput',
+            'calculateUltimateOwnership()'
+        );
+
+        /* SHARES SECTION */
+
+        let sharesDiv =
+            box.querySelector('[id^="sharesMode"]');
+
+        sharesDiv.id =
+            `sharesMode${number}`;
+
+        let shareInputs =
+            sharesDiv.querySelectorAll('input');
+
+        shareInputs[0].id =
+            `sharesOwned${number}`;
+
+        shareInputs[1].id =
+            `totalShares${number}`;
+
+        shareInputs[0].setAttribute(
+            'oninput',
+            `calculatePercentageFromShares(${number})`
+        );
+
+        shareInputs[1].setAttribute(
+            'oninput',
+            `calculatePercentageFromShares(${number})`
         );
     });
 
-    updateColors();
+    updateEntityBoxColors();
 }
-
 
 </script>
 
