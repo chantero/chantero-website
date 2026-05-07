@@ -87,11 +87,20 @@ input[type="number"] {
     text-align: center;
 }
 
+/* Chrome, Safari, Edge, Opera */
 
-input {
-    -webkit-appearance: none;
-    appearance: none;
+/* remove the "updown button from number input" */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 
 button {
 
@@ -157,8 +166,8 @@ button:hover {
 
     display: flex;
     flex-direction: column;
-    /*align-items: center;*/
-    align-items: stretch;
+    align-items: center;
+    
 
     width: 100%;
     box-sizing: border-box;
@@ -186,6 +195,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+
 
     box-sizing: border-box;
 }
